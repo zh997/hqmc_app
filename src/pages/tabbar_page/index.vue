@@ -1,33 +1,27 @@
 <!-- NavigationBarPage -->
 <template>
   <div>
-    
+     <HomePage />
   </div>
 </template>
 
 <script lang='ts'>
-import { reactive,toRefs,onBeforeMount,onMounted} from 'vue'
-interface DataProps {}
-export default {
-    name: '',
-      setup() {
-          console.log('1-开始创建组件-setup')
-          const data: DataProps = reactive({
+import { Options, Vue } from 'vue-class-component';
+import HomePage from '@/pages/home_page/index.vue';
+import { onMounted } from '@vue/runtime-core';
 
-          })
-          onBeforeMount(() => {
-              console.log('2.组件挂载页面之前执行----onBeforeMount')
-          })
-          onMounted(() => {
-              console.log('3.-组件挂载到页面之后执行-------onMounted')
-          })
-          const refData = toRefs(data);
-          return {
-              ...refData,
-          }
+@Options({
+    components: {
+      HomePage
+    }
+})
+export default class TabbarPage extends Vue{
+  setup(){
+    onMounted(()=>{
 
-      }
-  };
+    })
+  }
+}
 </script>
 <style scoped>
 </style>
