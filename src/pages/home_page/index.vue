@@ -6,27 +6,54 @@
     <div class="both-sides local-btn"><span class="local-btn-active">中文</span> / <span>英文</span></div>
   </div>
   <div class="banner"></div>
-  <Swipe class="home-swipe" indicator-color="white">
-    <SwipeItem v-for="item,index in swiperData" :key="index">
+  <swipe class="home-swipe" indicator-color="white">
+    <swipe-item v-for="item,index in swiperData" :key="index">
       <img :src="item.url" alt="">
-    </SwipeItem>
-  </Swipe>
+    </swipe-item>
+  </swipe>
   <div class="grid-group">
     <div class="grid-group-item" v-for="item,index in gridItems" :key="index">
       <img :src="item.icon" alt="">
       <span>{{item.text}}</span>
     </div>
   </div>
+  <v-chart class="chart" :option="option" />
 </template>
 
 <script lang='ts'>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { Swipe, SwipeItem } from 'vant';
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { LineChart } from "echarts/charts";
+import {
+  TitleComponent,
+  LegendComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  SingleAxisComponent,
+  GridComponent
+} from "echarts/components";
+import VChart, { THEME_KEY } from "vue-echarts";
+use([
+  CanvasRenderer,
+  LineChart,
+  TitleComponent,
+  TooltipComponent,
+  ToolboxComponent,
+  LegendComponent,
+  SingleAxisComponent,
+  GridComponent
+]);
 export default {
     name: 'home_page',
     components: {
       Swipe,
-      SwipeItem
+      SwipeItem,
+      VChart
+    },
+    provide: {
+      [THEME_KEY]: "light"
     },
     setup() {
       const swiperData = reactive([
@@ -77,7 +104,85 @@ export default {
           text: '生态'
         },
       ])
-      return { swiperData, gridItems }
+
+      const option = ref({
+            tooltip: {
+                trigger: 'axis'
+            },
+            // legend: {
+            //     data: ['最高气温', '最低气温']
+            // },
+            // toolbox: {
+            //     show: true,
+            //     feature: {
+            //         dataZoom: {
+            //             yAxisIndex: 'none'
+            //         },
+            //         dataView: {readOnly: false},
+            //         magicType: {type: ['line', 'bar']},
+            //         restore: {},
+            //         saveAsImage: {}
+            //     }
+            // },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['09:30', '10:30', '11:30', '14:00', '15:00', '16:00', '18:00']
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            },
+            series: [
+                {
+                    name: '最高气温',
+                    type: 'line',
+                    data: [10, 11, 13, 11, 12, 12, 9],
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name: '最低气温',
+                    type: 'line',
+                    data: [1, -2, 2, 5, 3, 2, 0],
+                    markPoint: {
+                        data: [
+                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'},
+                            [{
+                                symbol: 'none',
+                                x: '90%',
+                                yAxis: 'max'
+                            }, {
+                                symbol: 'circle',
+                                label: {
+                                    position: 'start',
+                                    formatter: '最大值'
+                                },
+                                type: 'max',
+                                name: '最高点'
+                            }]
+                        ]
+                    }
+                }
+            ]
+      });
+      return { swiperData, gridItems, option }
     }
   };
 </script>
