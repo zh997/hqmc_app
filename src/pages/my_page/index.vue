@@ -1,6 +1,6 @@
 <!-- 个人中心 -->
 <template>
-  <div class="page-wrap tabbar-page">
+  <div class="tabbar-page">
     <div class="my-header">
         <div class="my-avatar">
             <div class="avatar-clip">
@@ -20,58 +20,16 @@
             </div>
             <img :src="require('@/assets/icon_right_arrow@2x.png')" alt="">
         </div>
-        <div class="list-item">
-            <div class="list-item-label">
-                <img :src="require('@/assets/my_icon_1@2x.png')" alt="">
-                <span>邀请好友</span>
-            </div>
-            <img :src="require('@/assets/icon_right_arrow@2x.png')" alt="">
-        </div>
-        <div class="list-item">
-            <div class="list-item-label">
-                <img :src="require('@/assets/my_icon_2@2x.png')" alt="">
-                <span>团队收益</span>
-            </div>
-            <img :src="require('@/assets/icon_right_arrow@2x.png')" alt="">
-        </div>
-        <div class="list-item">
-            <div class="list-item-label">
-                <img :src="require('@/assets/my_icon_6@2x.png')" alt="">
-                <span>产币记录</span>
-            </div>
-            <img :src="require('@/assets/icon_right_arrow@2x.png')" alt="">
-        </div>
-        <div class="list-item">
-            <div class="list-item-label">
-                <img :src="require('@/assets/my_icon_3@2x.png')" alt="">
-                <span>账号安全</span>
-            </div>
-            <img :src="require('@/assets/icon_right_arrow@2x.png')" alt="">
-        </div>
-        <div class="list-item">
-            <div class="list-item-label">
-                <img :src="require('@/assets/my_icon_5@2x.png')" alt="">
-                <span>语言设置</span>
-            </div>
-            <img :src="require('@/assets/icon_right_arrow@2x.png')" alt="">
-        </div>
-        <div class="list-item">
-            <div class="list-item-label">
-                <img :src="require('@/assets/my_icon_4@2x.png')" alt="">
-                <span>平台介绍</span>
-            </div>
-            <img :src="require('@/assets/icon_right_arrow@2x.png')" alt="">
-        </div>
     </div>
     
   </div>
 </template>
 
 <script lang='ts'>
-import {  } from 'vue';
+import { } from 'vue';
 import {  } from 'vant';
 import { useRouter } from 'vue-router';
-import { listItemData } from './hooks/init';
+import { listItemData } from './hooks/useInit';
 import { IInitState } from './type.d';
 
 

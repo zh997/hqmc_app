@@ -1,6 +1,6 @@
 <!-- 首页 -->
 <template>
-  <Tabbar v-model="active" @change="onChange">
+  <Tabbar v-model="tabbarIndex" @change="onChange">
     <TabbarItem v-for="item, index in tabbar" :key="index" :to="item.path">
        <span>{{item.title}}</span>
        <template #icon="props">
@@ -11,10 +11,10 @@
 </template>
 
 <script lang='ts'>
-import { ref, reactive, onMounted } from 'vue'
+import { reactive } from 'vue'
 import { Tabbar, TabbarItem } from 'vant';
-import { useRouter } from 'vue-router';
 import { ITabbarItem } from './type';
+import { useGlobalHooks } from '@/hooks';
 export default {
     name: 'home_page',
     components: {
@@ -22,7 +22,6 @@ export default {
         TabbarItem
     },
     setup() {
-      const active = ref(0);
       const tabbar = reactive<ITabbarItem[]>([
         {
           icon: require('@/assets/tabbar_icon_home@2x.png'),
@@ -49,22 +48,10 @@ export default {
           path: '/my'
         }
       ])
-      onMounted(() => {
-        const router = useRouter();
-        const currentRoute = router.currentRoute.value;
-        const tabbarPaths = tabbar.map(item => item.path);
-        if (tabbarPaths.includes(currentRoute.fullPath)) {
-          console.log(tabbarPaths.indexOf(currentRoute.fullPath));
-          active.value = tabbarPaths.indexOf(currentRoute.fullPath);
-        }
-      })
-      
-      const onChange = (index: number) => active.value = index;
 
       return {
-          active,
-          onChange,
-          tabbar
+          tabbar,
+          ...useGlobalHooks()
       };
     }
   };

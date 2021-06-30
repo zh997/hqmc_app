@@ -1,20 +1,18 @@
 <template>
    <router-view></router-view>
-   <TabbarPage />
+   <TabbarPage v-if="isShowTabbar"/>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { useGlobalHooks } from '@/hooks';
 import TabbarPage from '@/pages/tabbar_page/index.vue';
 
-@Options({
-  components: {
+export default {
+   components: {
     TabbarPage,
   },
-})
-export default class App extends Vue {
   setup(){
-     return {}
+    return { ...useGlobalHooks() }
   }
 }
 </script>

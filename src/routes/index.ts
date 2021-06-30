@@ -10,7 +10,10 @@ const TeamIncomePage = () => import('@/pages/team_income_page/index.vue');
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
-        redirect: routePath.home_page
+        redirect: routePath.home_page,
+        props: {
+            isShowTabbar: true
+        }
     },
     {
         path:  routePath.home_page,

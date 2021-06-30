@@ -1,6 +1,6 @@
 <!-- 团队收益 -->
 <template>
-  <div></div>
+  <div>团队收益</div>
 </template>
 
 <script lang='ts'>
