@@ -1,59 +1,43 @@
 <!-- 首页 -->
 <template>
-  <div class="top-bar">
-    <div class="both-sides"></div>
-    <img :src="require('@/assets/LOGO@2x.png')" class="logo-img" alt="">
-    <div class="both-sides local-btn"><span class="local-btn-active">中文</span> / <span>英文</span></div>
-  </div>
-  <div class="banner"></div>
-  <swipe class="home-swipe" indicator-color="white">
-    <swipe-item v-for="item,index in swiperData" :key="index">
-      <img :src="item.url" alt="">
-    </swipe-item>
-  </swipe>
-  <div class="grid-group">
-    <div class="grid-group-item" v-for="item,index in gridItems" :key="index">
-      <img :src="item.icon" alt="">
-      <span>{{item.text}}</span>
+  <div class="tabbar-page">
+    <Header/>
+    <div class="grid-group">
+      <div class="grid-group-item" v-for="item,index in gridItems" :key="index">
+        <img :src="item.icon" alt="">
+        <span>{{item.text}}</span>
+      </div>
+    </div>
+    
+    <div class="block-title">
+      <img :src="require('@/assets/home_icon_9@2x.png')" alt="">
+      <span>资产</span>
+    </div>
+    <div class="asstes-group">
+      <div class="asstes-group-item">
+        <span>USDT钱包</span>
+        <span class="asstes-value">￥888.88</span>
+      </div>
+      <div class="asstes-group-item">
+        <span>HQC钱包</span>
+        <span class="asstes-value">￥888.88</span>
+      </div>
+      <div class="asstes-group-item">
+        <span>HQMC钱包</span>
+        <span class="asstes-value">￥888.88</span>
+      </div>
     </div>
   </div>
-  <v-chart class="chart" :option="option" />
 </template>
 
 <script lang='ts'>
 import { reactive, ref } from 'vue'
-import { Swipe, SwipeItem } from 'vant';
-import { use } from "echarts/core";
-import { CanvasRenderer } from "echarts/renderers";
-import { LineChart } from "echarts/charts";
-import {
-  TitleComponent,
-  LegendComponent,
-  ToolboxComponent,
-  TooltipComponent,
-  SingleAxisComponent,
-  GridComponent
-} from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
-use([
-  CanvasRenderer,
-  LineChart,
-  TitleComponent,
-  TooltipComponent,
-  ToolboxComponent,
-  LegendComponent,
-  SingleAxisComponent,
-  GridComponent
-]);
+import Header from '@/components/header/index.vue';
+
 export default {
     name: 'home_page',
     components: {
-      Swipe,
-      SwipeItem,
-      VChart
-    },
-    provide: {
-      [THEME_KEY]: "light"
+      Header
     },
     setup() {
       const swiperData = reactive([

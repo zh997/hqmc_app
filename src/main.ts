@@ -7,6 +7,7 @@ import enUS from 'vant/es/locale/lang/en-US';
 import routes from '@/routes/index';
 import App from './App.vue';
 import './styles/reset_vantcss.less';
+import './styles/common.less';
 
 
 const app = createApp(App);

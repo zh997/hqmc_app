@@ -11,8 +11,9 @@
 </template>
 
 <script lang='ts'>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { Tabbar, TabbarItem } from 'vant';
+import { useRouter } from 'vue-router';
 import { ITabbarItem } from './type';
 export default {
     name: 'home_page',
@@ -39,16 +40,27 @@ export default {
           icon: require('@/assets/tabbar_icon_deal@2x.png'),
           selected_icon: require('@/assets/tabbar_icon_deal_selected@2x.png'),
           title: '交易',
-          path: '/'
+          path: '/deal'
         },
         {
           icon: require('@/assets/tabbar_icon_my@2x.png'),
           selected_icon: require('@/assets/tabbar_icon_my_selected@2x.png'),
           title: '我的',
-            path: '/'
+          path: '/my'
         }
       ])
+      onMounted(() => {
+        const router = useRouter();
+        const currentRoute = router.currentRoute.value;
+        const tabbarPaths = tabbar.map(item => item.path);
+        if (tabbarPaths.includes(currentRoute.fullPath)) {
+          console.log(tabbarPaths.indexOf(currentRoute.fullPath));
+          active.value = tabbarPaths.indexOf(currentRoute.fullPath);
+        }
+      })
+      
       const onChange = (index: number) => active.value = index;
+
       return {
           active,
           onChange,
