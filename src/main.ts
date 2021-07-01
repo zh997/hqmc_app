@@ -4,6 +4,7 @@ import { ConfigProvider, Locale } from 'vant';
 import 'lib-flexible/flexible';
 // 引入英文语言包
 import enUS from 'vant/es/locale/lang/en-US';
+import { Toast  } from 'vant';
 import routes from '@/routes/index';
 import App from './App.vue';
 import './styles/reset_vantcss.less';
@@ -21,7 +22,6 @@ const router = createRouter({
 
 /** 路由守卫 */
 router.beforeEach((to, from, next) => {
-  console.log(to)
   const { isShowTabbar, onShowTabbar } = useGlobalHooks();
   const tabbarIndex = exclude_path.indexOf(to.fullPath)
   if(tabbarIndex === -1) {
@@ -29,11 +29,13 @@ router.beforeEach((to, from, next) => {
   } else {
     onShowTabbar(true, tabbarIndex);
   }
+  window.scrollTo({top: 0});
   next();
 })
 
 app.use(ConfigProvider);
 app.use(router)
+app.use(Toast);
 Locale.use('en-US', enUS);
 
 app.mount('#app')

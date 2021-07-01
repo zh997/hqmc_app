@@ -3,43 +3,36 @@
   <div class="tabbar-page">
     <Header/>
     <div class="grid-group">
-      <div class="grid-group-item" v-for="item,index in gridItems" :key="index">
+      <div class="grid-group-item" v-for="item,index in gridItems" :key="index" @click="onRouter(item.path)">
         <img :src="item.icon" alt="">
         <span>{{item.text}}</span>
       </div>
     </div>
-    
-    <div class="block-title">
-      <img :src="require('@/assets/home_icon_9@2x.png')" alt="">
-      <span>资产</span>
-    </div>
+    <BlockTitle />
     <div class="asstes-group">
-      <div class="asstes-group-item">
-        <span>USDT钱包</span>
-        <span class="asstes-value">￥888.88</span>
-      </div>
-      <div class="asstes-group-item">
-        <span>HQC钱包</span>
-        <span class="asstes-value">￥888.88</span>
-      </div>
-      <div class="asstes-group-item">
-        <span>HQMC钱包</span>
-        <span class="asstes-value">￥888.88</span>
+      <div class="asstes-group-item" v-for="item,index in assetsGroupItem" :key="index" @click="onRouter(item.path)">
+        <span>{{item.title}}</span>
+        <span class="asstes-value">{{item.value}}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script lang='ts'>
-import { reactive, ref } from 'vue'
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import Header from '@/components/header/index.vue';
+import BlockTitle from '@/components/block_title/index.vue';
+import * as routesPaths from '@/constant/app_routes_path';
 
 export default {
     name: 'home_page',
     components: {
-      Header
+      Header,
+      BlockTitle
     },
     setup() {
+      const router = useRouter();
       const swiperData = reactive([
         {
           url: require('@/assets/banner_img_1@2x.png')
@@ -57,37 +50,63 @@ export default {
       const gridItems = reactive([
         {
           icon: require('@/assets/home_icon_1@2x.png'),
-          text: 'USDT'
+          text: 'USDT',
+          path: '/'
         },
         {
           icon: require('@/assets/home_icon_2@2x.png'),
-          text: 'HQC'
+          text: 'HQC',
+          path: '/'
         },
         {
           icon: require('@/assets/LOGO@2x.png'),
-          text: 'HQMC'
+          text: 'HQMC',
+          path: '/'
         },
         {
           icon: require('@/assets/home_icon_4@2x.png'),
-          text: '推荐奖励'
+          text: '推荐奖励',
+          path: routesPaths.my_team_page
         },
         {
           icon: require('@/assets/home_icon_5@2x.png'),
-          text: '矿池'
+          text: '矿池',
+          path: routesPaths.team_income_record_page
         },
         {
           icon: require('@/assets/home_icon_6@2x.png'),
-          text: '交易区'
+          text: '交易区',
+          path: routesPaths.team_income_record_page
         },
         {
           icon: require('@/assets/home_icon_7@2x.png'),
-          text: '空投'
+          text: '空投',
+          path: routesPaths.team_income_record_page
         },
         {
           icon: require('@/assets/home_icon_8@2x.png'),
-          text: '生态'
+          text: '生态',
+          path: routesPaths.team_income_record_page
         },
       ])
+
+      const assetsGroupItem  = [
+        {
+          title: 'USDT钱包',
+          value: '￥888.88',
+          path: routesPaths.assets_info_page + '?name=USDT'
+        },
+        {
+          title: 'HQC钱包',
+          value: '￥888.88',
+          path: routesPaths.assets_info_page + '?name=HQC'
+        },
+         {
+          title: 'HQMC钱包',
+          value: '￥888.88',
+          path: routesPaths.assets_info_page + '?name=HQMC'
+        }
+      ]
 
       const option = ref({
             tooltip: {
@@ -166,7 +185,12 @@ export default {
                 }
             ]
       });
-      return { swiperData, gridItems, option }
+      return { 
+        assetsGroupItem,
+        swiperData, gridItems, option, onRouter: (path: string) => {
+          router.push(path)
+        }
+      }
     }
   };
 </script>

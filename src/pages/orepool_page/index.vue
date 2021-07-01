@@ -17,60 +17,9 @@
                 <span class="progrecess-item-value">10%</span>
             </span>
         </div>
-        <div class="card-item">
-            <div class="card-item-head">
-                <span class="head-stage">第20120123期</span>
-                <span class="head-text">HQC预计产出量<span class="head-text-active">5000</span>万</span>
-            </div>
-            <div class="card-item-row">
-                <span class="card-item-row-text"><span>开启日期：</span>2021.08.14</span>
-                <span class="card-item-row-text"><span>结束日期：</span>2021.08.14</span>
-            </div>
-            <div class="card-item-row">
-                <span class="card-item-row-text"><span>锁定HQMC: </span>100</span>
-                <span class="card-item-row-text"><span>本期HQC预估产量: </span>0.2%-0.8%</span>
-            </div>
-            <div class="card-item-row">
-                <span class="card-item-row-text"><span>锁定HQMC: </span>100</span>
-                <span class="card-item-row-btn">开启</span>
-            </div>
-        </div>
-         <div class="card-item">
-            <div class="card-item-head">
-                <span class="head-stage">第20120123期</span>
-                <span class="head-text">HQC预计产出量<span class="head-text-active">5000</span>万</span>
-            </div>
-            <div class="card-item-row">
-                <span class="card-item-row-text"><span>开启日期：</span>2021.08.14</span>
-                <span class="card-item-row-text"><span>结束日期：</span>2021.08.14</span>
-            </div>
-            <div class="card-item-row">
-                <span class="card-item-row-text"><span>锁定HQMC: </span>100</span>
-                <span class="card-item-row-text"><span>本期HQC预估产量: </span>0.2%-0.8%</span>
-            </div>
-            <div class="card-item-row">
-                <span class="card-item-row-text"><span>锁定HQMC: </span>100</span>
-                <span class="card-item-row-btn">开启</span>
-            </div>
-        </div>
-         <div class="card-item">
-            <div class="card-item-head">
-                <span class="head-stage">第20120123期</span>
-                <span class="head-text">HQC预计产出量<span class="head-text-active">5000</span>万</span>
-            </div>
-            <div class="card-item-row">
-                <span class="card-item-row-text"><span>开启日期：</span>2021.08.14</span>
-                <span class="card-item-row-text"><span>结束日期：</span>2021.08.14</span>
-            </div>
-            <div class="card-item-row">
-                <span class="card-item-row-text"><span>锁定HQMC: </span>100</span>
-                <span class="card-item-row-text"><span>本期HQC预估产量: </span>0.2%-0.8%</span>
-            </div>
-            <div class="card-item-row">
-                <span class="card-item-row-text"><span>锁定HQMC: </span>100</span>
-                <span class="card-item-row-btn">开启</span>
-            </div>
-        </div>
+        <CardItem />
+        <CardItem />
+        <CardItem />
     </div>
 </template>
 
@@ -89,6 +38,9 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { NavBar } from 'vant';
+import CardItem from '@/components/card_item/index.vue';
+
+
 use([
   CanvasRenderer,
   LineChart,
@@ -107,7 +59,8 @@ export default {
     },
     components: {
         VChart,
-        NavBar
+        NavBar,
+        CardItem
     },
     setup() {
        const option = ref({
@@ -187,6 +140,7 @@ export default {
                 }
             ]
          });
+         
         return {
             option
         }
