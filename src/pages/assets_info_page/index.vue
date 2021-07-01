@@ -75,11 +75,11 @@ export default {
             },
             {
                 text: '兑换',
-                path: routerPaths.charge_page
+                path: routerPaths.exchange_page
             },
             {
                 text: '销毁',
-                path: routerPaths.charge_page
+                path: routerPaths.destroy_page
             }
         ]
         return {query, btnItems,onRouter: (path: string) => {

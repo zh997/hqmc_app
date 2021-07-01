@@ -3,14 +3,8 @@ import { defineAsyncComponent } from 'vue';
 import Loading from '@/components/loading/index.vue';
 import * as routePath from '@/constant/app_routes_path';
 
-const HomePage = defineAsyncComponent({
-    loader: () => import('@/pages/home_page/index.vue'),
-    loadingComponent: Loading
-});
-const OrepoolPage = defineAsyncComponent({
-    loader: () => import('@/pages/orepool_page/index.vue'),
-    loadingComponent: Loading
-});
+const HomePage = defineAsyncComponent(() => import('@/pages/home_page/index.vue'));
+const OrepoolPage = defineAsyncComponent(() => import('@/pages/orepool_page/index.vue'));
 const DealPage = defineAsyncComponent(() => import('@/pages/deal_page/index.vue'));
 const MyPage = defineAsyncComponent(() => import('@/pages/my_page/index.vue'));
 const TeamIncomePage = defineAsyncComponent(() => import('@/pages/team_income_page/index.vue'));
@@ -22,6 +16,12 @@ const PlateformIntroPage = defineAsyncComponent(() => import('@/pages/plateform_
 const AssetsInfoPage = defineAsyncComponent(() => import('@/pages/assets_info_page/index.vue'));
 const ChargePage = defineAsyncComponent(() => import('@/pages/charge_page/index.vue'));
 const WithdrawPage = defineAsyncComponent(() => import('@/pages/withdraw_page/index.vue'));
+const ExchangePage = defineAsyncComponent(() => import('@/pages/exchange_page/index.vue'));
+const DestroyPage = defineAsyncComponent(() => import('@/pages/destroy_page/index.vue'));
+const FullExtractionPage = defineAsyncComponent(() => import('@/pages/full_extraction_page/index.vue'));
+const HqmcInfoPage = defineAsyncComponent(() => import('@/pages/hqmc_info_page/index.vue'));
+const TransformPage = defineAsyncComponent(() => import('@/pages/transform_page/index.vue'));
+const TransformConfirmPage = defineAsyncComponent(() => import('@/pages/transform_confirm_page/index.vue'));
 
 const routes: RouteRecordRaw[] = [
     {
@@ -82,6 +82,30 @@ const routes: RouteRecordRaw[] = [
     {
         path:  routePath.withdraw_page,
         component: WithdrawPage
+    },
+    {
+        path:  routePath.exchange_page,
+        component: ExchangePage
+    },
+    {
+        path:  routePath.destroy_page,
+        component: DestroyPage
+    },
+    {
+        path:  routePath.full_extraction_page,
+        component: FullExtractionPage
+    },
+    {
+        path:  routePath.hqmc_info_page,
+        component: HqmcInfoPage
+    },
+    {
+        path:  routePath.transform_page,
+        component: TransformPage
+    },
+    {
+        path:  routePath.transform_confirm_page,
+        component: TransformConfirmPage
     },
 ]
 

@@ -51,17 +51,17 @@ export default {
         {
           icon: require('@/assets/home_icon_1@2x.png'),
           text: 'USDT',
-          path: '/'
+          path: routesPaths.full_extraction_page + `?name=USDT`
         },
         {
           icon: require('@/assets/home_icon_2@2x.png'),
           text: 'HQC',
-          path: '/'
+          path: routesPaths.full_extraction_page + `?name=HQC`
         },
         {
           icon: require('@/assets/LOGO@2x.png'),
           text: 'HQMC',
-          path: '/'
+          path: routesPaths.hqmc_info_page
         },
         {
           icon: require('@/assets/home_icon_4@2x.png'),
@@ -71,22 +71,22 @@ export default {
         {
           icon: require('@/assets/home_icon_5@2x.png'),
           text: '矿池',
-          path: routesPaths.team_income_record_page
+          path: routesPaths.orepool_page
         },
         {
           icon: require('@/assets/home_icon_6@2x.png'),
           text: '交易区',
-          path: routesPaths.team_income_record_page
+          path: routesPaths.deal_page
         },
         {
           icon: require('@/assets/home_icon_7@2x.png'),
           text: '空投',
-          path: routesPaths.team_income_record_page
+          path: '/'
         },
         {
           icon: require('@/assets/home_icon_8@2x.png'),
           text: '生态',
-          path: routesPaths.team_income_record_page
+          path: '/'
         },
       ])
 

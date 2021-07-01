@@ -15,7 +15,7 @@
     </div>
     <div class="card-item-row flex-space-between">
         <span class="card-item-row-text"><span>锁定HQMC: </span>100</span>
-        <span class="card-item-row-btn" :class="{'disabeld-btn': disabeld}">{{btnText}}</span>
+        <span class="card-item-row-btn" :class="{'disabeld-btn': disabeld}" @click="onClick">{{btnText}}</span>
     </div>
 </div>
 </template>
@@ -36,6 +36,10 @@ export default {
       disabeld: {
           type: Boolean,
           default: false
+      },
+      onClick: {
+          type: Function,
+          default: null
       }
     },
     setup() {

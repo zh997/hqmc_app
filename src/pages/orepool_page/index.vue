@@ -17,7 +17,7 @@
                 <span class="progrecess-item-value">10%</span>
             </span>
         </div>
-        <CardItem />
+        <CardItem :onClick="onOpen"/>
         <CardItem />
         <CardItem />
     </div>
@@ -25,6 +25,7 @@
 
 <script lang='ts'>
 import { ref } from 'vue';
+import { Toast } from 'vant';
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { LineChart } from "echarts/charts";
@@ -140,9 +141,13 @@ export default {
                 }
             ]
          });
-         
+        
+        const onOpen = () => {
+            Toast.success('开启成功')
+        }
         return {
-            option
+            option,
+            onOpen
         }
 
     }

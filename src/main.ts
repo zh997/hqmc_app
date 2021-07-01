@@ -7,10 +7,11 @@ import enUS from 'vant/es/locale/lang/en-US';
 import { Toast  } from 'vant';
 import routes from '@/routes/index';
 import App from './App.vue';
-import './styles/reset_vantcss.less';
-import './styles/common.less';
 import { exclude_path } from './constant/app_exclude_path';
 import { useGlobalHooks } from './hooks';
+import './styles/reset_vantcss.less';
+import './styles/common.less';
+
 
 
 const app = createApp(App);
