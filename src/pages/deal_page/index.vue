@@ -5,8 +5,8 @@
         <Header :isShowHeader="false"/>
         <div class="switch-bar-head">
             <div class="switch-bar">
-                <span>购买</span>
-                <span class="switch-bar-selected">出售</span>
+                <span :class="{'switch-bar-selected': current === 1}" @click="onSwitch(1)">购买</span>
+                <span :class="{'switch-bar-selected': current === 2}" @click="onSwitch(2)">出售</span>
             </div>
             <img :src="require('@/assets/icon_record@2x.png')" alt="">
         </div>
@@ -29,7 +29,7 @@
                </div>
                <div class="dealcard-item-row">
                    <span class="dealcard-item-row-text">数量：900 HQC</span>
-                   <span class="dealcard-item-row-btn"> 卖出</span>
+                   <span class="dealcard-item-row-btn" @click="onBuy">{{ current === 1 ? '买入' : '卖出'}}</span>
                </div>
            </div>
         </div>
@@ -46,7 +46,7 @@
                </div>
                <div class="dealcard-item-row">
                    <span class="dealcard-item-row-text">数量：900 HQC</span>
-                   <span class="dealcard-item-row-btn"> 卖出</span>
+                   <span class="dealcard-item-row-btn" @click="onBuy">{{ current === 1 ? '买入' : '卖出'}}</span>
                </div>
            </div>
         </div>
@@ -54,9 +54,11 @@
 </template>
 
 <script lang='ts'>
-import { } from 'vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { NavBar } from 'vant';
 import Header from '@/components/header/index.vue';
+import * as routerPaths from '@/constants/app_routes_path';
 export default {
     name: '',
     components: {
@@ -64,7 +66,13 @@ export default {
         NavBar
     },
     setup() {
-        return {}
+        const router = useRouter();
+        const current = ref(1);
+        const onSwitch = (value: number) => current.value = value;
+        const onBuy = () => {
+           router.push(routerPaths.exchange_page);
+        }
+        return {current, onSwitch, onBuy}
     }
   };
 </script>
