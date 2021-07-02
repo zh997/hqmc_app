@@ -51,7 +51,7 @@ import { } from 'vue';
 import { useRouter } from 'vue-router';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import BlockTitle from '@/components/block_title/index.vue';
-import * as routesPaths from '@/constant/app_routes_path';
+import * as routesPaths from '@/constants/app_routes_path';
 
 export default {
     name: 'team_income_page',

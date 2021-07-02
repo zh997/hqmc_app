@@ -55,7 +55,7 @@ import { } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
-import * as routerPaths from '@/constant/app_routes_path';
+import * as routerPaths from '@/constants/app_routes_path';
 export default {
     name: '',
     components: {

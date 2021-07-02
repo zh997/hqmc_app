@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router';
 import { defineAsyncComponent } from 'vue';
 import Loading from '@/components/loading/index.vue';
-import * as routePath from '@/constant/app_routes_path';
+import * as routePath from '@/constants/app_routes_path';
 
 const HomePage = defineAsyncComponent({
     loader: () => import('@/pages/home_page/index.vue'),

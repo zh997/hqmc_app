@@ -1,4 +1,4 @@
-import * as routerPaths from '@/constant/app_routes_path';
+import * as routerPaths from '@/constants/app_routes_path';
 import { IListItem } from '../type';
 
 export const listItemData = (): IListItem[] => {
