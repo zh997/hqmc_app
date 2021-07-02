@@ -1,1 +1,1 @@
-export const baseUrl: string = 'https://www.baidu.com';
+export const baseUrl: string = process.env.APP_BASEURL;
