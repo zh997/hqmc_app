@@ -2,7 +2,7 @@ import { Ref, ref } from 'vue';
 import { IGlobalHooks } from './type';
 
 /** 全局状态 */
-export const isShowTabbar: Ref = ref(true);
+export const isShowTabbar: Ref = ref(false);
 export const tabbarIndex: Ref = ref(0);
 
 

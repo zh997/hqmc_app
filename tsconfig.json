@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "system",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
@@ -34,7 +34,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/tronlink/index.js"  ],
   "exclude": [
     "node_modules"
   ]

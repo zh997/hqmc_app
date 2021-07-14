@@ -5,24 +5,41 @@
       <img :src="require('@/assets/share_img_1@2x.png')" class="share-title" alt="">
       <img :src="require('@/assets/share_code@2x.png')" class="share-code" alt="">
       <span class="share-link-tip">邀请链接</span>
-      <span class="share-link" id="copy">https://www.hqmc.com/dasd/wadawda/131233333333</span>
+      <span class="share-link" id="copy">{{shareInfo?.share_url}}</span>
       <span class="share-copy-btn" data-clipboard-target="#copy">复制链接</span>
       <img :src="require('@/assets/share_img_2@2x.png')" class="share-img" alt="">
   </div>
 </template>
 
 <script lang='ts'>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Toast  } from 'vant';
 import ClipboardJS from 'clipboard'
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
+import * as services from '@/services/index';
+import { IShareInfoResDTO } from '@/services/interface/response.d';
+import * as utils from '@/utils';
+
 export default {
     name: '',
     components:{
         CustomNavBar,
     },
     setup() {
-        onMounted(() => {
+        const shareInfo = ref<IShareInfoResDTO>();
+        const onInitData = async () => {
+            try{
+                utils.loading('加载中');
+                const response = await services.shareInfo();
+                shareInfo.value = response.data;
+                utils.loadingClean();
+            } catch(err){
+                utils.toast(err || err.msg);
+            }
+        }
+
+        onMounted(async () => {
+            await onInitData();
             let ClipboardJSObj=new ClipboardJS('.share-copy-btn')
             ClipboardJSObj.on('success', function(e) {
                 Toast.success('复制成功！')
@@ -32,7 +49,9 @@ export default {
                 e.clearSelection();
             })
         })
-        return {}
+        return {
+            shareInfo
+        }
     }
   };
 </script>

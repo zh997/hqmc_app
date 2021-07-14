@@ -5,6 +5,7 @@ export interface IListItem {
 }
 
 export interface IInitState {
+    userInfo: IUserInfoResDTO,
     listItemData: IListItem[],
     onRouter: (path: string) => void
 }

@@ -12,8 +12,6 @@ import { useGlobalHooks } from './hooks';
 import './styles/reset_vantcss.less';
 import './styles/common.less';
 
-
-
 const app = createApp(App);
 
 const router = createRouter({
@@ -24,7 +22,7 @@ const router = createRouter({
 /** 路由守卫 */
 router.beforeEach((to, from, next) => {
   const { isShowTabbar, onShowTabbar } = useGlobalHooks();
-  const tabbarIndex = exclude_path.indexOf(to.fullPath)
+  const tabbarIndex = exclude_path.indexOf(to.path)
   if(tabbarIndex === -1) {
     if (isShowTabbar.value) onShowTabbar(false, tabbarIndex);
   } else {

@@ -5,19 +5,36 @@
         <img :src="require('@/assets/LOGO@2x.png')" class="logo-img" alt="">
         <div class="both-sides local-btn"><span class="local-btn-active">中文</span> / <span>英文</span></div>
     </div>
+    
     <swipe v-if="isShowSwiper" class="home-swipe" indicator-color="white">
-        <swipe-item v-for="item,index in swiperData" :key="index">
-        <img :src="item.url" alt="">
+        <swipe-item v-for="item,index in banners" :key="index">
+          <img :src="item.banner" alt="">
         </swipe-item>
     </swipe>
 </template>
 
 <script lang='ts'>
-import { reactive } from 'vue'
 import { Swipe, SwipeItem } from 'vant';
 export default {
     name: 'Header',
     props: {
+        banners: {
+          type: Array,
+          default: () => [
+            {
+                banner: require('@/assets/banner_img_1@2x.png')
+            },
+            {
+                banner: require('@/assets/banner_img_1@2x.png')
+            },
+            {
+                banner: require('@/assets/banner_img_1@2x.png')
+            },
+            {
+                banner: require('@/assets/banner_img_1@2x.png')
+            }
+          ]
+        },
         isShowSwiper: {
            type: Boolean,
            default: true,
@@ -32,23 +49,7 @@ export default {
         SwipeItem,
     },
     setup() {
-        const swiperData = reactive([
-            {
-                url: require('@/assets/banner_img_1@2x.png')
-            },
-            {
-                url: require('@/assets/banner_img_1@2x.png')
-            },
-            {
-                url: require('@/assets/banner_img_1@2x.png')
-            },
-            {
-                url: require('@/assets/banner_img_1@2x.png')
-            }
-        ])
-        return {
-            swiperData
-        }
+        return {}
 
     }
   };

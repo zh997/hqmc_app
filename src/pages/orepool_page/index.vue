@@ -17,14 +17,14 @@
                 <span class="progrecess-item-value">10%</span>
             </span>
         </div>
-        <CardItem :onClick="onOpen"/>
+        <CardItem v-for="item,index in minerList" :key="index" :onClick="onOpen"/>
         <CardItem />
         <CardItem />
     </div>
 </template>
 
 <script lang='ts'>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Toast } from 'vant';
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -40,7 +40,9 @@ import {
 import VChart, { THEME_KEY } from "vue-echarts";
 import { NavBar } from 'vant';
 import CardItem from '@/components/card_item/index.vue';
-
+import * as services from '@/services/index';
+import { IMinerListResDTO } from '@/services/interface/response.d';
+import * as utils from '@/utils';
 
 use([
   CanvasRenderer,
@@ -68,21 +70,6 @@ export default {
             tooltip: {
                 trigger: 'axis'
             },
-            // legend: {
-            //     data: ['最高气温', '最低气温']
-            // },
-            // toolbox: {
-            //     show: true,
-            //     feature: {
-            //         dataZoom: {
-            //             yAxisIndex: 'none'
-            //         },
-            //         dataView: {readOnly: false},
-            //         magicType: {type: ['line', 'bar']},
-            //         restore: {},
-            //         saveAsImage: {}
-            //     }
-            // },
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
@@ -142,11 +129,27 @@ export default {
             ]
          });
         
+        const minerList = ref<IMinerListResDTO[]>();
+        
+        const onInitData = async () => {
+            try{
+              const response = await services.minerList();
+              minerList.value = response.data;
+            } catch(err){
+              utils.toast(err || err.msg);
+            }
+        }
+
+        onMounted(() => {
+          onInitData();
+        })
+        
         const onOpen = () => {
             Toast.success('开启成功')
         }
         return {
             option,
+            minerList,
             onOpen
         }
 

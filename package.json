@@ -5,10 +5,10 @@
   "scripts": {
     "serve": "npm run serve:dev",
     "serve:local": "vue-cli-service serve --open --mode local",
-    "serve:dev": "vue-cli-service serve --open --mode dev",
+    "serve:dev": "vue-cli-service serve --open --mode development",
     "build": "npm run build:pro",
-    "build:dev": "vue-cli-service build --open --mode dev",
-    "build:pro": "vue-cli-service build --open --mode pro",
+    "build:dev": "vue-cli-service build --open --mode development",
+    "build:pro": "vue-cli-service build --open --mode production",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -17,6 +17,8 @@
     "core-js": "^3.6.5",
     "echarts": "^5.1.2",
     "lib-flexible": "^0.3.2",
+    "trongrid": "^1.2.6",
+    "tronweb": "^3.2.7",
     "vant": "^3.1.1",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",

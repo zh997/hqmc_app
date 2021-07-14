@@ -4,12 +4,12 @@
     <div class="my-header">
         <div class="my-avatar">
             <div class="avatar-clip">
-                <img :src="require('@/assets/logo.png')" alt="">
+                <img :src="userInfo?.head_img" alt="">
             </div>
             <img :src="require('@/assets/member_grade@2x.png')" class="member-grade" alt="">
         </div>
-        <span class="my-nickname">输入您的名称</span>
-        <span class="my-member-status">会员状态: 有效会员</span>
+        <span class="my-nickname">{{userInfo?.name}}</span>
+        <span class="my-member-status">会员状态: {{userInfo?.activate === 0 ? '无效会员' : '有效会员'}}</span>
         <img :src="require('@/assets/icon_edit@2x.png')" class="icon-edit" alt="">
     </div>
     <div class="list-item-wrap">
@@ -26,12 +26,13 @@
 </template>
 
 <script lang='ts'>
-import { } from 'vue';
-import {  } from 'vant';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { listItemData } from './hooks/useInit';
 import { IInitState } from './type.d';
-
+import * as services from '@/services/index';
+import { IUserInfoResDTO } from '@/services/interface/response.d';
+import * as utils from '@/utils';
 
 
 export default {
@@ -40,7 +41,19 @@ export default {
     },
     setup(): IInitState {
         const router = useRouter();
+        const userInfo = ref<IUserInfoResDTO>();
+        onMounted(async () => {
+           try {
+               utils.loading('加载中');
+               const response = await services.userCenter();
+               userInfo.value = response.data;
+               utils.loadingClean()
+           } catch(err) {
+               utils.toast(err || err.msg);
+           }
+        })
         return {
+            userInfo,
             listItemData: listItemData(),
             onRouter: (path: string) => {
                 router.push(path);

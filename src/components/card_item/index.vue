@@ -40,6 +40,10 @@ export default {
       onClick: {
           type: Function,
           default: null
+      },
+      item: {
+          type: Object,
+          default: ()=> ({})
       }
     },
     setup() {

@@ -1,0 +1,9 @@
+export const authLogin: string = '/api/auth/login';
+export const basic_banner: string = '/api/basic/banner';
+export const index_asset: string = '/api/index/index';
+export const wallet_usdt: string = '/api/index/wallet_usdt';
+export const share_award: string = '/api/index/share_award';
+export const miner_list: string = '/api/miner/list';
+export const user_center: string = '/api/user/user_center';
+export const share_qrcode: string = '/api/user/share_qrcode';
+export const team_benefits: string = '/api/user/team_benefits';
