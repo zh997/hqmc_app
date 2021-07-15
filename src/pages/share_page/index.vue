@@ -3,7 +3,11 @@
   <CustomNavBar :border="false"/>
   <div class="page-wrap share-page">
       <img :src="require('@/assets/share_img_1@2x.png')" class="share-title" alt="">
-      <img :src="require('@/assets/share_code@2x.png')" class="share-code" alt="">
+      <!-- <img :src="require('@/assets/share_code@2x.png')" class="share-code" alt=""> -->
+       <QRCodeVue3
+       class="share-code"
+          :value="shareInfo?.share_url"
+        />
       <span class="share-link-tip">邀请链接</span>
       <span class="share-link" id="copy">{{shareInfo?.share_url}}</span>
       <span class="share-copy-btn" data-clipboard-target="#copy">复制链接</span>
@@ -14,7 +18,8 @@
 <script lang='ts'>
 import { onMounted, ref } from 'vue';
 import { Toast  } from 'vant';
-import ClipboardJS from 'clipboard'
+import ClipboardJS from 'clipboard';
+import QRCodeVue3 from "qrcode-vue3";
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import * as services from '@/services/index';
 import { IShareInfoResDTO } from '@/services/interface/response.d';
@@ -24,6 +29,7 @@ export default {
     name: '',
     components:{
         CustomNavBar,
+        QRCodeVue3
     },
     setup() {
         const shareInfo = ref<IShareInfoResDTO>();

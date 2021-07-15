@@ -37,4 +37,4 @@ app.use(router)
 app.use(Toast);
 Locale.use('en-US', enUS);
 
-app.mount('#app')
+app.mount('#app');
