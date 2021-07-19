@@ -9,7 +9,7 @@
       </div>
     </div>
     <BlockTitle />
-    <div class="asstes-group">
+    <!-- <div class="asstes-group">
       <div class="asstes-group-item" @click="onRouter('/assets_info?name=USDT')">
         <span>USDT钱包</span>
         <span class="asstes-value">￥{{indexAsset?.money}}</span>
@@ -19,6 +19,20 @@
         <span class="asstes-value">￥{{indexAsset?.hqc_money}}</span>
       </div>
       <div class="asstes-group-item" @click="onRouter('/assets_info?name=HQMC')">
+        <span>HQMC钱包</span>
+        <span class="asstes-value">￥{{indexAsset?.hqmc_money}}</span>
+      </div>
+    </div> -->
+    <div class="asstes-group">
+      <div class="asstes-group-item">
+        <span>USDT钱包</span>
+        <span class="asstes-value">￥{{indexAsset?.money}}</span>
+      </div>
+      <div class="asstes-group-item">
+        <span>HQC钱包</span>
+        <span class="asstes-value">￥{{indexAsset?.hqc_money}}</span>
+      </div>
+      <div class="asstes-group-item">
         <span>HQMC钱包</span>
         <span class="asstes-value">￥{{indexAsset?.hqmc_money}}</span>
       </div>

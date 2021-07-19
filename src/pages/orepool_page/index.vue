@@ -10,16 +10,14 @@
             <span class="main-title-text">HQMC矿池</span>
             <span class="main-title-line"></span>
         </div>
-        <div class="hqctotal-header">
+        <!-- <div class="hqctotal-header">
             <span class="hqctotal-header-label">已产出HQC888枚</span>
             <span class="progrecess-item">
                 <span class="progrecess-item-cover"></span>
                 <span class="progrecess-item-value">10%</span>
             </span>
-        </div>
-        <CardItem v-for="item,index in minerList" :key="index" :onClick="onOpen"/>
-        <CardItem />
-        <CardItem />
+        </div> -->
+        <CardItem v-for="item,index in minerList" :item="item" :key="index" :onClick="onButMachine"/>
     </div>
 </template>
 
@@ -66,77 +64,97 @@ export default {
         CardItem
     },
     setup() {
-       const option = ref({
-            tooltip: {
-                trigger: 'axis'
-            },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: ['09:30', '10:30', '11:30', '14:00', '15:00', '16:00', '18:00']
-            },
-            yAxis: {
-                type: 'value',
-                axisLabel: {
-                    formatter: '{value}'
-                }
-            },
-            series: [
-                {
-                    name: '最高气温',
-                    type: 'line',
-                    data: [10, 11, 13, 11, 12, 12, 9],
-                    markPoint: {
-                        data: [
-                            {type: 'max', name: '最大值'},
-                            {type: 'min', name: '最小值'}
-                        ]
-                    },
-                    markLine: {
-                        data: [
-                            {type: 'average', name: '平均值'}
-                        ]
-                    }
-                },
-                {
-                    name: '最低气温',
-                    type: 'line',
-                    data: [1, -2, 2, 5, 3, 2, 0],
-                    markPoint: {
-                        data: [
-                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                        ]
-                    },
-                    markLine: {
-                        data: [
-                            {type: 'average', name: '平均值'},
-                            [{
-                                symbol: 'none',
-                                x: '90%',
-                                yAxis: 'max'
-                            }, {
-                                symbol: 'circle',
-                                label: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                },
-                                type: 'max',
-                                name: '最高点'
-                            }]
-                        ]
-                    }
-                }
-            ]
-         });
+       const option = ref();
         
         const minerList = ref<IMinerListResDTO[]>();
         
         const onInitData = async () => {
             try{
+              utils.loading('加载中');
               const response = await services.minerList();
               minerList.value = response.data;
+              const xAxis = response.data.map(item => '第' + item.no + '期');
+              const series = [
+                {
+                    name: '实际收益',
+                    type: 'line',
+                    smooth:true, 
+                    symbol: "none", //去掉圆点 //让曲线变平滑的  
+                    data: response.data.map(item => item.expected_outpu_actual),
+                },
+                {
+                    name: '预计产出量',
+                    type: 'line',
+                    smooth:true, 
+                    symbol: "none", //去掉圆点 //让曲线变平滑的  
+                    data: response.data.map(item => Number(item.output)),
+                },
+                {
+                    name: '锁定HQMC数量',
+                    type: 'line',
+                    smooth:true, 
+                    symbol: "none", //去掉圆点 //让曲线变平滑的  
+                    data: response.data.map(item => Number(item.price)),
+                },
+                 {
+                    name: '实际消耗',
+                    type: 'line',
+                    smooth:true, 
+                    symbol: "none", //去掉圆点 //让曲线变平滑的  
+                    
+                    data: response.data.map(item => item.expected_consume_actual),
+                }
+              ];
+              option.value = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                grid: {
+                    x: "15%",//x 偏移量
+                    y: "20%", // y 偏移量
+                    width: "87%", // 宽度
+                },
+                legend: {
+                    data: ['实际收益', '预计产出量', '锁定HQMC数量', '实际消耗'],
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: xAxis
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: function(value: number){
+                            if (value > 999) {
+                                return value / 10000 + '万';
+                            }
+                            return value;
+                        }
+                    }
+                },
+                series:series
+             }
+             utils.loadingClean();
             } catch(err){
               utils.toast(err || err.msg);
+            }
+        }
+
+        const onButMachine = async (item: IMinerListResDTO) => {
+            console.log(item);
+            if (item.status_tip === 1) {
+                utils.loading('加载中');
+                await services.buyMachine({id: item.id});
+                Toast.success({message: '开启成功', onClose: () => {
+                     onInitData();
+                }})
             }
         }
 
@@ -144,13 +162,10 @@ export default {
           onInitData();
         })
         
-        const onOpen = () => {
-            Toast.success('开启成功')
-        }
         return {
             option,
             minerList,
-            onOpen
+            onButMachine
         }
 
     }

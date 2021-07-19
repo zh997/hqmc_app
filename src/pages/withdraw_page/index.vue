@@ -13,21 +13,21 @@
               </div>
               <div class="withdraw-select">
                   <span class="withdraw-select-label">提币数量：</span>
-                  <input type="number" class="withdraw-select-value">
+                  <input type="number" v-model="num" class="withdraw-select-value">
               </div>
               <div class="withdraw-select">
                   <span class="withdraw-select-label">提币额度：</span>
                   <div class="withdraw-select-value border-clean">
-                      <span>888.00</span>
+                      <span>{{query?.money}}</span>
                   </div>
               </div>
               <div class="withdraw-select">
                   <span class="withdraw-select-label">提币地址：</span>
                   <div class="withdraw-select-value border-clean">
-                      <span>https://www.baidu.com</span>
+                      <span>{{query?.receive_address}}</span>
                   </div>
               </div>
-              <div class="withdraw-btn">提币</div>
+              <div class="withdraw-btn" @click="onSubmit">提币</div>
           </div>
            <div class="warning-text">
               <p class="warning-text-title">注意事项：</p>
@@ -49,7 +49,10 @@
 <script lang='ts'>
 import { onMounted, ref } from 'vue';
 import ClipboardJS from 'clipboard';
+import { useRoute } from 'vue-router';
 import { Toast, Popup, Picker  } from 'vant';
+import * as services from '@/services/index';
+import * as utils from '@/utils';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 export default {
     name: '',
@@ -59,10 +62,12 @@ export default {
        Picker 
     },
     setup() {
-        const columns = ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华'];
+        const { query } = useRoute();
+        const num = ref<string>('');
+        const columns = ['USDT'];
+        const money_type = ref<string>(columns[0]) ;
         const show = ref(false);
         onMounted(() => {
-          
             let ClipboardJSObj=new ClipboardJS('.team-link-copy,.team-link-copy-img')
             ClipboardJSObj.on('success', function(e) {
                 Toast.success('复制成功！'); 
@@ -72,11 +77,24 @@ export default {
                 e.clearSelection();
             })
         })
+        const onChange = (value: any) => {
+           money_type.value = value;
+        }
         const onShowPopup = () => show.value = true; 
         const onConfirm = () => show.value = false;
         const onCancel = () => show.value = false;
 
-        return {columns, show, onShowPopup, onConfirm, onCancel}
+        const onSubmit = async () => {
+            utils.loading('加载中');
+            await services.usdtWithdraw({
+                receive_address: query.receive_address,
+                money_type: 'money',
+                num: parseInt(num.value, 10) 
+            });
+            Toast.success('提币成功');
+        }
+
+        return {columns, show, query, num, onShowPopup, onConfirm, onCancel, onChange, onSubmit}
     }
   };
 </script>

@@ -10,7 +10,7 @@ tronGrid.setExperimental('9707e954-515c-4bf9-b3b3-e86c0a07dcb6');
 
 var timer = null;
 var pullCount = 1;
-var maxPullCount = 10;
+var maxPullCount = 5;
 
 export async function getTronlinkAddress() {
     return new Promise((resolve,reject) => {

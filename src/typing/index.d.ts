@@ -4,6 +4,11 @@ export interface ResponseDTO<T>{
   data: T
 }
 
-export interface ResponseListDTO{
-    
+export interface ResponseListDTO<T>{
+  code: number
+  msg: string
+  data: {
+    total: number
+    list: T[]
+  }
 }

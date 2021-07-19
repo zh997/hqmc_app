@@ -28,8 +28,9 @@ export default {
           utils.loadingClean()
           isShowRouter.value = true;
         } catch(err) {
-          utils.toast(err || err.msg);
-           isShowRouter.value = true;
+          console.log(err);
+          utils.toast(err);
+          // isShowRouter.value = true;
         }
     })
     return { ...useGlobalHooks(), isShowRouter}
