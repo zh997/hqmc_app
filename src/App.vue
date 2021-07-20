@@ -29,7 +29,7 @@ export default {
           isShowRouter.value = true;
         } catch(err) {
           utils.toast(err || err.msg);
-           isShowRouter.value = true;
+          isShowRouter.value = true;
         }
     })
     return { ...useGlobalHooks(), isShowRouter}
