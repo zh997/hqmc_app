@@ -1,11 +1,10 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHashHistory} from 'vue-router';
-import { ConfigProvider, Locale } from 'vant';
+import { ConfigProvider } from 'vant';
 import 'lib-flexible/flexible';
-// 引入英文语言包
-import enUS from 'vant/es/locale/lang/en-US';
 import { Toast  } from 'vant';
 import routes from '@/routes/index';
+// import i18n from '@/i18n';
 import App from './App.vue';
 import { exclude_path } from './constants/app_exclude_path';
 import { useGlobalHooks } from './hooks';
@@ -31,10 +30,11 @@ router.beforeEach((to, from, next) => {
   window.scrollTo({top: 0});
   next();
 })
-
+// app.use(i18n);
 app.use(ConfigProvider);
 app.use(router)
 app.use(Toast);
-Locale.use('en-US', enUS);
+// Locale.use('en-US', enUS);
+
 
 app.mount('#app');

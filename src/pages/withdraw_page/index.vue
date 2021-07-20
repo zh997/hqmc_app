@@ -13,7 +13,7 @@
               </div>
               <div class="withdraw-select">
                   <span class="withdraw-select-label">提币数量：</span>
-                  <input type="number" v-model="num" class="withdraw-select-value">
+                  <input type="number" v-model="num" placeholder="请输入提币数量" class="withdraw-select-value">
               </div>
               <div class="withdraw-select">
                   <span class="withdraw-select-label">提币额度：</span>

@@ -11,10 +11,10 @@
     </div>
     <div class="card-item-row">
         <span class="card-item-row-text"><span>锁定HQMC: </span>{{item.price}}</span>
-        <span class="card-item-row-text"><span>本期HQC预估产量: </span>{{item.expected_outpu_start}}%-{{item.expected_outpu_end}}%</span>
+             <span class="card-item-row-text"><span>本期HQMC预估消耗: </span>{{item.expected_consume_start}}%-{{item.expected_consume_end}}%</span>
     </div>
     <div class="card-item-row flex-space-between">
-        <span class="card-item-row-text"><span>本期HQMC预估消耗: </span>{{item.expected_consume_start}}%-{{item.expected_consume_end}}%</span>
+         <span class="card-item-row-text"><span>本期HQC预估产量: </span>{{item.expected_outpu_start}}%-{{item.expected_outpu_end}}%</span>
         <span class="card-item-row-btn" :class="{'disabeld-btn': item.status_tip === 2}" @click="onClick(item)">{{btnText}}</span>
     </div>
 </div>

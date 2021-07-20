@@ -10,7 +10,7 @@
           <div class="assets-btn-group">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
           </div>
-          <div class="charge-code-panel">
+          <div class="charge-code-panel" v-if="query.name !== 'USDT'">
               <img :src="require('@/assets/share_code_black@2x.png')" class="share-code" alt="">
               <div class="team-link-group">
                 <span>充币地址：<span id="copy">{{walletUsdt?.usdt_wallet || walletHqc?.hqc_wallet}}</span></span>

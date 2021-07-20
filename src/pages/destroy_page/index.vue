@@ -5,7 +5,7 @@
       <div class="exchange-page">
          <div class="exchange-form-panel">
               <div class="withdraw-select">
-                  <span class="withdraw-select-label">消毁HQMC数量：</span>
+                  <span class="withdraw-select-label">销毁HQMC数量：</span>
                   <input type="number" v-model="num" class="withdraw-select-value" placeholder="请输入销毁数量">
               </div>
               <div class="blance-text">HQMC余额：{{query?.money}}</div>
