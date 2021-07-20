@@ -3,7 +3,7 @@
    <CustomNavBar title="团队收益"/>
    <div class="page-wrap">
      <div class="team-income-page">
-        <BlockTitle :icon="require('@/assets/icon_income@2x.png')" title="总收益：888" value="查看更多" :onClickRight="onCheckMore"/>
+        <BlockTitle :icon="require('@/assets/icon_income@2x.png')" :title="`总收益：${teamBenefits?.profit_info?.total_profit}`" value="查看更多" :onClickRight="onCheckMore"/>
         <div class="income-group-wrap">
           <div class="asstes-group">
             <div class="asstes-group-item">

@@ -5,7 +5,7 @@
       <div class="hqmc_info_page">
           <div class="assets-head">
               <span class="assets-head-label">HQMC 当前余额</span>
-              <span class="assets-head-value">888.00</span>
+              <span class="assets-head-value">{{hqmcMoney?.hqmc_money}}</span>
           </div>
           <div class="assets-btn-group">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
@@ -21,11 +21,14 @@
 </template>
 
 <script lang='ts'>
-import { } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import * as routerPaths from '@/constants/app_routes_path';
+import * as services from '@/services/index';
+import * as utils from '@/utils';
+import { IHomeHqmcMoneyResDTO } from '@/services/interface/response';
 export default {
     name: '',
     components: {
@@ -34,21 +37,29 @@ export default {
     setup() {
         const { query } = useRoute();
         const router = useRouter();
+        const hqmcMoney = ref<IHomeHqmcMoneyResDTO>();
         const btnItems = [
             {
                 text: '兑换',
-                path: routerPaths.exchange_page
+                path: routerPaths.exchange_page + '?'
             },
             {
                 text: '转让',
-                path: routerPaths.transform_page
+                path: routerPaths.transform_confirm_page + "?type=HQMC&"
             },
             {
                 text: '销毁',
-                path: routerPaths.destroy_page
+                path: routerPaths.destroy_page + '?'
             }
         ]
-        return {query, btnItems,onRouter: (path: string) => {
+        onMounted(async () => {
+            utils.loading('加载中');
+            const res = await services.hqcMoney();
+            hqmcMoney.value = res.data;
+            utils.loadingClean();
+        })
+        return {query, btnItems, hqmcMoney, onRouter: (path: string) => {
+                path = path + `money=${hqmcMoney.value?.hqmc_money}`
                 router.push(path);
             }}
     }

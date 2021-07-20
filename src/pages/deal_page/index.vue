@@ -2,77 +2,159 @@
 <template>
     <NavBar title="交易" fixed/>
     <div class="page-wrap tabbar-page">
-        <Header :isShowHeader="false"/>
+        <Header :isShowHeader="false" :banners="banners"/>
         <div class="switch-bar-head">
             <div class="switch-bar">
                 <span :class="{'switch-bar-selected': current === 1}" @click="onSwitch(1)">购买</span>
                 <span :class="{'switch-bar-selected': current === 2}" @click="onSwitch(2)">出售</span>
             </div>
-            <img :src="require('@/assets/icon_record@2x.png')" alt="">
+            <img :src="require('@/assets/icon_record@2x.png')" @click="onShowPopup" alt="">
         </div>
         <div class="selector-bar-wrap">
             <div class="selector-bar">
                <span class="selector-bar-item">HQC</span>
             </div>
-            <span>降序<img :src="require('@/assets/icon_down_arrow@2x.png')" alt=""></span> 
+            <span @click="onSort">{{sort === 'asc' ? '降序' : '升序'}}<img :src="require('@/assets/icon_down_arrow@2x.png')" alt=""></span> 
         </div>
-        <div class="dealcard-item-wrap">
-           <div class="dealcard-item">
-               <div class="dealcard-item-head">
-                   <img :src="require('@/assets/logo.png')" alt="">
-                   <span class="head-title">昵称/账号</span>
-                   <span class="head-subtitle">月销量：0单</span>
-               </div>
-               <div class="dealcard-item-row">
-                   <span class="dealcard-item-row-text">限额：100</span>
-                   <span class="dealcard-item-row-value">$ 880</span>
-               </div>
-               <div class="dealcard-item-row">
-                   <span class="dealcard-item-row-text">数量：900 HQC</span>
-                   <span class="dealcard-item-row-btn" @click="onBuy">{{ current === 1 ? '买入' : '卖出'}}</span>
-               </div>
-           </div>
-        </div>
-        <div class="dealcard-item-wrap">
-           <div class="dealcard-item">
-               <div class="dealcard-item-head">
-                   <img :src="require('@/assets/logo.png')" alt="">
-                   <span class="head-title">昵称/账号</span>
-                   <span class="head-subtitle">月销量：0单</span>
-               </div>
-               <div class="dealcard-item-row">
-                   <span class="dealcard-item-row-text">限额：100</span>
-                   <span class="dealcard-item-row-value">$ 880</span>
-               </div>
-               <div class="dealcard-item-row">
-                   <span class="dealcard-item-row-text">数量：900 HQC</span>
-                   <span class="dealcard-item-row-btn" @click="onBuy">{{ current === 1 ? '买入' : '卖出'}}</span>
-               </div>
-           </div>
-        </div>
+        <List
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+            :offset="0"
+        >
+          <div class="dealcard-item-wrap" v-for="item in tradList" :key="item.id">
+            <div class="dealcard-item">
+                <div class="dealcard-item-head">
+                    <img :src="item.head_img" alt="">
+                    <span class="head-title">{{item.username}}</span>
+                    <span class="head-subtitle"></span>
+                </div>
+                <div class="dealcard-item-row">
+                    <span class="dealcard-item-row-text">数量：{{item?.num}} HQC</span>
+                    <span class="dealcard-item-row-value">$ {{item?.total}}</span>
+                </div>
+                <div class="dealcard-item-row">
+                    <span class="dealcard-item-row-text"></span>
+                    <span class="dealcard-item-row-btn" @click="onBuyIn(item.id)">{{ current === 1 ? '买入' : '卖出'}}</span>
+                </div>
+            </div>
+            </div>
+        </List>
+        
+        <Popup  v-model:show="show" round position="bottom">
+         <Picker title="排序"
+            :columns="columns"
+            @confirm="onConfirm"
+            @cancel="onCancel"
+            confirm-button-text="确认" cancel-button-text="取消"
+            />
+      </Popup>
     </div>
 </template>
 
 <script lang='ts'>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { NavBar } from 'vant';
+import { ref, onMounted } from 'vue';
+import { NavBar, Toast,  Popup, Picker, List } from 'vant';
 import Header from '@/components/header/index.vue';
-import * as routerPaths from '@/constants/app_routes_path';
+import * as services from '@/services/index';
+import { IHomeBannerResDTO, ITradeListResDTO } from '@/services/interface/response.d';
+import * as utils from '@/utils';
 export default {
     name: '',
     components: {
         Header,
-        NavBar
+        NavBar,
+        Popup,
+        Picker,
+        List
     },
     setup() {
-        const router = useRouter();
-        const current = ref(1);
+        const pageSize: number = 10;
+        const show = ref<boolean>(false);
+        const current = ref<number>(1);
+        const page = ref<number>(0);
+        const pageTotal = ref<number>(1);
+        const type = ref<number>(1);
+        const sort = ref<string>('asc');
+        const order = ref<string>('price');
+        const loading = ref<Boolean>(false);
+        const finished = ref<Boolean>(false);
+        const columns = [{text: '创建时间', value: 'created_at'}, {text: '价格', value: 'price'}];
+        const tradList = ref<ITradeListResDTO[]>();
+        const banners = ref<IHomeBannerResDTO[]>([]);
         const onSwitch = (value: number) => current.value = value;
-        const onBuy = () => {
-           router.push(routerPaths.exchange_page);
+        const onShowPopup = () => show.value = true; 
+
+        const onInitData = async () => {
+            utils.loading('加载中');
+            const [bannerRes] = await Promise.all([services.homeBanner({lang: 'zh_CN'})]) ;
+            banners.value = bannerRes.data;
+            utils.loadingClean();
         }
-        return {current, onSwitch, onBuy}
+
+        const onGetTradeList = async () => {
+            // utils.loading('加载中');
+            loading.value = true;
+            const res = await services.tradeList({
+                page: page.value,
+                size: pageSize,
+                type: type.value,
+                sort: sort.value,
+                order: order.value
+            });
+            utils.loadingClean();
+            const pageNum = Math.ceil(res.data.total / pageSize);
+            if (page.value !== 1) {
+              tradList.value = tradList.value?.concat(res.data.list);
+            } else {
+              tradList.value = res.data.list
+            }
+            pageTotal.value = pageNum;
+            finished.value = page.value >= pageNum;
+            loading.value = false;
+            return res;
+        }
+
+        const onBuyIn = async (id: number) => {
+             utils.loading('加载中');
+            if (current.value === 1) {
+                await services.buyIn({id: id});
+                Toast.success({message: '买入成功', onClose: () => {
+                    onInitData()
+                }});
+            }
+             if (current.value === 2) {
+                await services.sellOut({id: id});
+                Toast.success({message: '卖出成功', onClose: () => {
+                    onInitData()
+                }});
+            }
+        }
+
+        const onLoad = () => {
+           page.value = page.value + 1;
+           if ( page.value <= pageTotal.value)   onGetTradeList();
+        }
+
+        const onSort = () => {
+            sort.value = sort.value === 'asc' ? 'desc' : 'asc';
+            onGetTradeList();
+        }
+        
+        onMounted(()=> {
+            onInitData()
+        })
+        
+        const onConfirm = (item: {value: string, text: string}) => {
+           show.value = false;
+           order.value = item.value;
+           page.value = 1;
+           onGetTradeList();
+        };
+        const onCancel = () => show.value = false;
+
+        return {current, banners, tradList, sort, columns, show,loading, finished, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
     }
   };
 </script>
