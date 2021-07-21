@@ -62,6 +62,12 @@ export default {
         })
 
         const onSubmit = async () => {
+            if (!address.value) {
+                return utils.toast('请输入转让地址');
+            }
+            if (!num.value) {
+                return utils.toast('请输入转让数量');
+            }
             if (query.type === 'HQC') {
                 utils.loading('加载中');
                 await services.hqcTransfer({

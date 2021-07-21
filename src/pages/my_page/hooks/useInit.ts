@@ -18,11 +18,11 @@ export const listItemData = (): IListItem[] => {
             title: '产币记录',
             path: routerPaths.produce_page
         },
-        {
-            icon: require('@/assets/my_icon_3@2x.png'),
-            title: '账号安全',
-            path: routerPaths.my_page
-        },
+        // {
+        //     icon: require('@/assets/my_icon_3@2x.png'),
+        //     title: '账号安全',
+        //     path: routerPaths.my_page
+        // },
         {
             icon: require('@/assets/my_icon_5@2x.png'),
             title: '语言设置',

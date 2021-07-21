@@ -11,7 +11,7 @@
                 <div class="publish-order-formitem">
                     <div class="publish-order-formitem-label">价格：</div>
                     <div class="publish-order-formitem-value">
-                        <input type="text" v-model="price" placeholder="请输入价格">
+                        <input type="number" v-model="price" placeholder="请输入价格">
                         <div class="publish-order-formitem-sufix">USDT</div>
                     </div>
                 </div>
@@ -48,12 +48,17 @@ export default {
        const onSwitchTab = (value: number) => type.value = value;
        const onSubmit = async () => {
             utils.loading('加载中');
-            await services.releaeOrder({
-                type: type.value,
-                price: price.value,
-                num: Number(num.value)
-            });
-            Toast.success('发布成功');
+            if (price.value && num.value) {
+                await services.releaeOrder({
+                    type: type.value,
+                    price: price.value,
+                    num: Number(num.value)
+                });
+                Toast.success('发布成功');
+            } else {
+                Toast('请输入价格和交易数量');
+            }
+            
        }
        return {type, price, num,  onSwitchTab, onSubmit}
     }

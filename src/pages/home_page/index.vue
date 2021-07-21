@@ -95,8 +95,8 @@ export default {
         },
         {
           icon: require('@/assets/home_icon_4@2x.png'),
-          text: '推荐奖励',
-          path: routesPaths.my_team_page
+          text: '分享',
+          path: routesPaths.share_page
         },
         {
           icon: require('@/assets/home_icon_5@2x.png'),

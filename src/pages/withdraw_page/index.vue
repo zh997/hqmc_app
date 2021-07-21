@@ -13,7 +13,7 @@
               </div>
               <div class="withdraw-select">
                   <span class="withdraw-select-label">提币数量：</span>
-                  <input type="number" v-model="num" class="withdraw-select-value">
+                  <input type="number" v-model="num" placeholder="请输入提币数量" class="withdraw-select-value">
               </div>
               <div class="withdraw-select">
                   <span class="withdraw-select-label">提币额度：</span>
@@ -85,13 +85,17 @@ export default {
         const onCancel = () => show.value = false;
 
         const onSubmit = async () => {
-            utils.loading('加载中');
-            await services.usdtWithdraw({
-                receive_address: query.receive_address,
-                money_type: 'money',
-                num: Number(num.value) 
-            });
-            Toast.success('提币成功');
+            if (num.value) {
+                utils.loading('加载中');
+                await services.usdtWithdraw({
+                    receive_address: query.receive_address,
+                    money_type: 'money',
+                    num: Number(num.value) 
+                });
+                Toast.success('提币成功');
+            } else {
+                utils.toast('请输入提币数量')
+            }
         }
 
         return {columns, show, query, num, onShowPopup, onConfirm, onCancel, onChange, onSubmit}

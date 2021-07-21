@@ -41,11 +41,15 @@ export default {
         const { query } = useRoute();
         const num = ref<string>('');
         const onSubmit = async () => {
-            utils.loading('加载中');
-            await services.hqmcChange({
-                num: parseInt(num.value, 10) 
-            });
-            Toast.success('兑换成功');
+            if (num.value) {
+                utils.loading('加载中');
+                await services.hqmcChange({
+                    num: parseInt(num.value, 10) 
+                });
+                Toast.success('兑换成功');
+            } else {
+                utils.toast('请输入兑换数量');
+            }
         }
 
         return { query, num, onSubmit}
