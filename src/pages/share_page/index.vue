@@ -3,11 +3,8 @@
   <CustomNavBar :border="false"/>
   <div class="page-wrap share-page">
       <img :src="require('@/assets/share_img_1@2x.png')" class="share-title" alt="">
+      <div id="qrcode" class="share-code"></div>
       <!-- <img :src="require('@/assets/share_code@2x.png')" class="share-code" alt=""> -->
-       <QRCodeVue3
-       class="share-code"
-          :value="shareInfo?.share_url"
-        />
       <span class="share-link-tip">邀请链接</span>
       <span class="share-link" id="copy">{{shareInfo?.share_url}}</span>
       <span class="share-copy-btn" data-clipboard-target="#copy">复制链接</span>
@@ -19,7 +16,7 @@
 import { onMounted, ref } from 'vue';
 import { Toast  } from 'vant';
 import ClipboardJS from 'clipboard';
-import QRCodeVue3 from "qrcode-vue3";
+import { qrcanvas } from 'qrcanvas';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import * as services from '@/services/index';
 import { IShareInfoResDTO } from '@/services/interface/response.d';
@@ -29,7 +26,6 @@ export default {
     name: '',
     components:{
         CustomNavBar,
-        QRCodeVue3
     },
     setup() {
         const shareInfo = ref<IShareInfoResDTO>();
@@ -39,9 +35,19 @@ export default {
                 const response = await services.shareInfo();
                 shareInfo.value = response.data;
                 utils.loadingClean();
+                onRenderQrcode(response.data.share_url)
             } catch(err){
                 utils.toast(err || err.msg);
             }
+        }
+
+        const onRenderQrcode = (url: any) => {
+            var canvas = qrcanvas({
+                data: url,
+                size: 4234,
+            })
+
+            document.getElementById('qrcode')?.appendChild(canvas);
         }
 
         onMounted(async () => {
@@ -54,6 +60,7 @@ export default {
             ClipboardJSObj.on('error', function(e) {
                 e.clearSelection();
             })
+
         })
         return {
             shareInfo

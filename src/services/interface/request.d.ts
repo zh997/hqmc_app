@@ -26,3 +26,10 @@ export interface ITradeListReqDTO {
     sort?: string
     type: number
 }
+
+/** 订单发布 */
+export interface IReleaeOrderReqDTO {
+    num: number
+    price: string
+    type: number
+}

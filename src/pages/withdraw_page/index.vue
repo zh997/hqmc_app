@@ -89,7 +89,7 @@ export default {
             await services.usdtWithdraw({
                 receive_address: query.receive_address,
                 money_type: 'money',
-                num: parseInt(num.value, 10) 
+                num: Number(num.value) 
             });
             Toast.success('提币成功');
         }

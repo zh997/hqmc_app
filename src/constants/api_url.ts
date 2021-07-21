@@ -18,3 +18,4 @@ export const buy_machine: string = '/api/miner/buy_machine';
 export const tradeList: string = '/api/trade/tradeList';
 export const buyIn: string = '/api/trade/buyIn';
 export const sellOut: string = '/api/trade/sellOut';
+export const releaeOrder: string = '/api/trade/releaeOrder';

@@ -11,9 +11,10 @@
                       <img :src="require('@/assets/icon_down_arrow@2x.png')" alt="">
                   </div>
               </div>
-              <img :src="require('@/assets/share_code_black@2x.png')" class="share-code" alt="">
+              <div id="qrcode" class="share-code"></div>
+              <!-- <img :src="require('@/assets/share_code_black@2x.png')" class="share-code" alt=""> -->
               <div class="team-link-group">
-                <span>充币地址：<span id="copy">https://www.hqmc.com/dasd/wadawda/131233333333</span></span>
+                <span>充币地址：<span id="copy">{{query?.receive_address}}</span></span>
                 <img :src="require('@/assets/icon_copy@2x.png')" alt="" class="team-link-copy-img" data-clipboard-target="#copy">
             </div>
           </div>
@@ -37,6 +38,8 @@
 <script lang='ts'>
 import { onMounted, ref } from 'vue';
 import ClipboardJS from 'clipboard';
+import { useRoute } from 'vue-router';
+import { qrcanvas } from 'qrcanvas';
 import { Toast, Popup, Picker  } from 'vant';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 export default {
@@ -47,6 +50,7 @@ export default {
        Picker 
     },
     setup() {
+        const { query } = useRoute();
         const columns = ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华'];
         const show = ref(false);
         onMounted(() => {
@@ -59,12 +63,23 @@ export default {
             ClipboardJSObj.on('error', function(e) {
                 e.clearSelection();
             })
+
+            onRenderQrcode(query.receive_address);
         })
         const onShowPopup = () => show.value = true; 
         const onConfirm = () => show.value = false;
         const onCancel = () => show.value = false;
 
-        return {columns, show, onShowPopup, onConfirm, onCancel}
+        const onRenderQrcode = (url: any) => {
+            var canvas = qrcanvas({
+                data: url,
+                size: 4234,
+            })
+
+            document.getElementById('qrcode')?.appendChild(canvas);
+        }
+
+        return {columns, show, query, onShowPopup, onConfirm, onCancel}
     }
   };
 </script>

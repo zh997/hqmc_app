@@ -22,6 +22,8 @@ const FullExtractionPage = defineAsyncComponent(() => import('@/pages/full_extra
 const HqmcInfoPage = defineAsyncComponent(() => import('@/pages/hqmc_info_page/index.vue'));
 const TransformPage = defineAsyncComponent(() => import('@/pages/transform_page/index.vue'));
 const TransformConfirmPage = defineAsyncComponent(() => import('@/pages/transform_confirm_page/index.vue'));
+const PublishOrderPage = defineAsyncComponent(() => import('@/pages/publish_order_page/index.vue'));
+
 
 const routes: RouteRecordRaw[] = [
     {
@@ -106,6 +108,10 @@ const routes: RouteRecordRaw[] = [
     {
         path:  routePath.transform_confirm_page,
         component: TransformConfirmPage
+    },
+    {
+        path:  routePath.publish_order_page,
+        component: PublishOrderPage
     },
 ]
 

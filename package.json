@@ -18,6 +18,7 @@
     "echarts": "^5.1.2",
     "lib-flexible": "^0.3.2",
     "qrcode-vue3": "^1.4.17",
+    "qrcodejs2": "^0.0.2",
     "trongrid": "^1.2.6",
     "tronweb": "^3.2.7",
     "vant": "^3.1.1",

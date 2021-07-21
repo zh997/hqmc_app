@@ -67,7 +67,7 @@ export default {
                 await services.hqcTransfer({
                     address: address.value,
                     money_type: 'hqc_money',
-                    num: parseInt(num.value, 10) 
+                    num:  Number(num.value) 
                 });
                 Toast.success('转让成功');
             }
@@ -76,7 +76,7 @@ export default {
                 await services.hqmcTransfer({
                     address: address.value,
                     money_type: 'hqmc_money',
-                    num: parseInt(num.value, 10) 
+                    num:  Number(num.value) 
                 });
                 Toast.success('转让成功');
             }

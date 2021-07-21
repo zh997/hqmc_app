@@ -1,5 +1,5 @@
 import request from "@/request";
-import { IAuthLoginReqDTO, IUsdtWithdrawReqDTO, IHqcTransferReqDTO, ITradeListReqDTO } from "./interface/request.d";
+import { IAuthLoginReqDTO, IUsdtWithdrawReqDTO, IHqcTransferReqDTO, ITradeListReqDTO,IReleaeOrderReqDTO } from "./interface/request.d";
 import * as api from '@/constants/api_url';
 import { IAuthLoginResDTO, 
     IHomeBannerResDTO, 
@@ -116,4 +116,7 @@ export async function sellOut(params: {id: number}): Promise<ResponseListDTO<[]>
     return await request({url: api.sellOut, method: 'POST', data: params});
 }
 
-
+/** 发布订单 */
+export async function releaeOrder(params: IReleaeOrderReqDTO): Promise<ResponseListDTO<[]>> {
+    return await request({url: api.releaeOrder, method: 'POST', data: params});
+}

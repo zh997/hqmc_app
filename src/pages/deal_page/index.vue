@@ -19,7 +19,6 @@
         <List
             v-model="loading"
             :finished="finished"
-            finished-text="没有更多了"
             @load="onLoad"
             :offset="0"
         >
@@ -50,11 +49,15 @@
             confirm-button-text="确认" cancel-button-text="取消"
             />
       </Popup>
+      <div class="publish-btn" @click="onRouter('/publish_order_page')">
+          <img :src="require('@/assets/icon_add@2x.png')" alt="">
+      </div>
     </div>
 </template>
 
 <script lang='ts'>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { NavBar, Toast,  Popup, Picker, List } from 'vant';
 import Header from '@/components/header/index.vue';
 import * as services from '@/services/index';
@@ -70,12 +73,12 @@ export default {
         List
     },
     setup() {
+        const router = useRouter();
         const pageSize: number = 10;
         const show = ref<boolean>(false);
         const current = ref<number>(1);
         const page = ref<number>(0);
         const pageTotal = ref<number>(1);
-        const type = ref<number>(1);
         const sort = ref<string>('asc');
         const order = ref<string>('price');
         const loading = ref<Boolean>(false);
@@ -83,7 +86,11 @@ export default {
         const columns = [{text: '创建时间', value: 'created_at'}, {text: '价格', value: 'price'}];
         const tradList = ref<ITradeListResDTO[]>();
         const banners = ref<IHomeBannerResDTO[]>([]);
-        const onSwitch = (value: number) => current.value = value;
+        const onSwitch = (value: number) => {
+            page.value = 1;
+            current.value = value;
+            onGetTradeList();
+        }
         const onShowPopup = () => show.value = true; 
 
         const onInitData = async () => {
@@ -99,7 +106,7 @@ export default {
             const res = await services.tradeList({
                 page: page.value,
                 size: pageSize,
-                type: type.value,
+                type: current.value,
                 sort: sort.value,
                 order: order.value
             });
@@ -138,6 +145,7 @@ export default {
         }
 
         const onSort = () => {
+            page.value = 1;
             sort.value = sort.value === 'asc' ? 'desc' : 'asc';
             onGetTradeList();
         }
@@ -154,7 +162,11 @@ export default {
         };
         const onCancel = () => show.value = false;
 
-        return {current, banners, tradList, sort, columns, show,loading, finished, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
+        const onRouter = (path: string) => {
+            router.push(path);
+        }
+
+        return {current, banners, tradList, sort, columns, show,loading, finished, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
     }
   };
 </script>
