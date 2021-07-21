@@ -101,7 +101,7 @@ export default {
         }
 
         const onGetTradeList = async () => {
-            // utils.loading('加载中');
+            utils.loading('加载中');
             loading.value = true;
             const res = await services.tradeList({
                 page: page.value,
