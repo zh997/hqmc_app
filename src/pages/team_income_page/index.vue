@@ -3,40 +3,40 @@
    <CustomNavBar title="团队收益"/>
    <div class="page-wrap">
      <div class="team-income-page">
-        <BlockTitle :icon="require('@/assets/icon_income@2x.png')" :title="`总收益：${teamBenefits?.profit_info?.total_profit}`" value="查看更多" :onClickRight="onCheckMore"/>
+        <BlockTitle :icon="require('@/assets/icon_income@2x.png')" :title="`总收益：${teamBenefits?.profit_info?.total_profit || '0.00'}`" value="查看更多" :onClickRight="onCheckMore"/>
         <div class="income-group-wrap">
           <div class="asstes-group">
             <div class="asstes-group-item">
               <span>USDT钱包</span>
-              <span class="asstes-value">￥{{teamBenefits?.store_info?.money}}</span>
+              <span class="asstes-value">￥{{teamBenefits?.store_info?.money || '0.00'}}</span>
             </div>
             <div class="asstes-group-item">
               <span>HQC钱包</span>
-              <span class="asstes-value">￥{{teamBenefits?.store_info?.hqc_money}}</span>
+              <span class="asstes-value">￥{{teamBenefits?.store_info?.hqc_money || '0.00'}}</span>
             </div>
             
             <div class="asstes-group-item">
               <span>HQMC钱包</span>
-              <span class="asstes-value">￥{{teamBenefits?.store_info?.hqmc_money}}</span>
+              <span class="asstes-value">￥{{teamBenefits?.store_info?.hqmc_money || '0.00'}}</span>
             </div>
           </div>
           <div class="team-income-type">
-            <div class="team-income-type-item">
+            <div class="team-income-type-item" @click="onRouter('矿池收益', 1)">
               <img :src="require('@/assets/team_income_icon_1@2x.png')" alt="">
               <span class="team-income-type-item-label">矿池收益</span>
-              <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.mining_profit}}</span>
+              <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.mining_profit || '0.00'}}</span>
             </div>
             <div class="line"></div>
-            <div class="team-income-type-item">
+            <div class="team-income-type-item" @click="onRouter('分享收益', 2)">
               <img :src="require('@/assets/team_income_icon_2@2x.png')" alt="">
               <span class="team-income-type-item-label">分享收益</span>
-              <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.share_profit}}</span>
+              <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.share_profit || '0.00'}}</span>
             </div>
             <div class="line"></div>
-            <div class="team-income-type-item">
+            <div class="team-income-type-item" @click="onRouter('团队收益', 3)">
               <img :src="require('@/assets/team_income_icon_3@2x.png')" alt="">
               <span class="team-income-type-item-label">团队收益</span>
-              <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.team_profit}}</span>
+              <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.team_profit || '0.00'}}</span>
             </div>
           </div>
         </div>
@@ -78,8 +78,10 @@ export default {
        return {
          teamBenefits,
          onCheckMore: () => {
-           console.log('dasda');
-           router.push(routesPaths.team_income_record_page);
+           router.push(routesPaths.team_income_record_page + `?name=团队收益&type=0`);
+         },
+         onRouter(name: string, type: number){
+           router.push(routesPaths.team_income_record_page + `?name=${name}&type=${type}`);
          }
        }
     }

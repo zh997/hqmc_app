@@ -23,6 +23,8 @@ const HqmcInfoPage = defineAsyncComponent(() => import('@/pages/hqmc_info_page/i
 const TransformPage = defineAsyncComponent(() => import('@/pages/transform_page/index.vue'));
 const TransformConfirmPage = defineAsyncComponent(() => import('@/pages/transform_confirm_page/index.vue'));
 const PublishOrderPage = defineAsyncComponent(() => import('@/pages/publish_order_page/index.vue'));
+const PlateformIntroDetail = defineAsyncComponent(() => import('@/pages/plateform_intro_detail_page/index.vue'));
+const EditProfile = defineAsyncComponent(() => import('@/pages/edit_profile_paege/index.vue'));
 
 
 const routes: RouteRecordRaw[] = [
@@ -112,6 +114,14 @@ const routes: RouteRecordRaw[] = [
     {
         path:  routePath.publish_order_page,
         component: PublishOrderPage
+    },
+    {
+        path:  routePath.plateform_intro_detail_page,
+        component: PlateformIntroDetail
+    },
+    {
+        path:  routePath.edit_profile_page,
+        component: EditProfile
     },
 ]
 

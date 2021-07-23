@@ -12,7 +12,11 @@ import { IAuthLoginResDTO,
     ITeamBenefitsResDTO,
     IHomeWalletHqcResDTO,
     IHomeHqmcMoneyResDTO,
-    ITradeListResDTO
+    ITradeListResDTO,
+    ICoinProfitResDTO,
+    IPlatFormResDTO,
+    IMoneyConfigResDTO,
+    IIncomeListResDTO
  } from "./interface/response.d";
 import { ResponseDTO, ResponseListDTO } from "@/typing";
 
@@ -117,6 +121,37 @@ export async function sellOut(params: {id: number}): Promise<ResponseListDTO<[]>
 }
 
 /** 发布订单 */
-export async function releaeOrder(params: IReleaeOrderReqDTO): Promise<ResponseListDTO<[]>> {
+export async function releaeOrder(params: IReleaeOrderReqDTO): Promise<ResponseDTO<[]>> {
     return await request({url: api.releaeOrder, method: 'POST', data: params});
+}
+
+/** 产币记录 */
+export async function coinProfit(): Promise<ResponseDTO<ICoinProfitResDTO[]>> {
+    return await request({url: api.coin_profit, method: 'POST'});
+}
+
+/** 平台介绍 */
+export async function plat_form(): Promise<ResponseDTO<IPlatFormResDTO[]>> {
+    return await request({url: api.plat_form, method: 'POST'});
+}
+
+/** 团队收益记录 */
+export async function income_list(params: {type: number | null}): Promise<ResponseDTO<IIncomeListResDTO[]>> {
+    return await request({url: api.income_list, method: 'POST', data: params});
+}
+
+/** 资金设置 */
+export async function money_config(): Promise<ResponseDTO<IMoneyConfigResDTO>> {
+    return await request({url: api.money_config, method: 'POST'});
+}
+
+/** 上传头像 */
+export async function upload_img(data: FormData): Promise<ResponseDTO<{pathUrl: string, path: string}>> {
+    return await request({url: api.upload_img, method: 'POST', headers: {
+        'Content-Type': 'multipart/form-data'
+    }, data: data});
+}
+
+export async function change_head_img(params: { avatar: string}): Promise<ResponseDTO<IMoneyConfigResDTO>> {
+    return await request({url: api.change_head_img, method: 'POST', data: params});
 }

@@ -33,6 +33,10 @@ export default {
           type: Boolean,
           default: true
       },
+      showBtn: {
+        type: Boolean,
+          default: true
+      },
       onClick: {
           type: Function,
           default: null

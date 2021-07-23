@@ -1,3 +1,22 @@
 export default  {
-    'share': 'share'
+    loading: 'loading',
+    home: 'home',
+    mining: 'mining',
+    trading: 'trading',
+    mine: 'mine',
+    share: 'share',
+    ore_pool: 'ore pool',
+    trading_area: 'trading area',
+    airdrop: 'airdrop',
+    ecology: 'ecology',
+    usdt_wallet: 'USDT wallet',
+    hqc_wallet: 'HQC wallet',
+    hqmc_wallet: 'HQMC wallet',
+    assets: 'assets',
+    chart: 'chart',
+    real_income: 'Real income',
+    Locking_hqmc_quantity: 'Locking HQMC quantity',
+    actual_consumption: 'Actual consumption',
+    open_successfully: 'Open successfully',
+    thousand: 'thousand',
 }

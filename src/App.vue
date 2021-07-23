@@ -1,10 +1,15 @@
 <template>
+   
    <router-view v-if="isShowRouter"></router-view>
+   <div class="center-button">
+     <Button v-if="!isShowRouter && isShowButton" type="primary" @click="doLogin">点我自动登陆</Button>
+   </div>
    <TabbarPage v-if="isShowTabbar"/>
 </template>
 
 <script lang="ts">
 import { onMounted, ref } from 'vue';
+import { Button } from 'vant';
 import { useGlobalHooks } from '@/hooks';
 import TabbarPage from '@/pages/tabbar_page/index.vue';
 import { getTronlinkAddress } from '@/tronlink/index';
@@ -14,10 +19,12 @@ import * as utils from '@/utils/index';
 export default {
    components: {
     TabbarPage,
+    Button
   },
   setup(){
     const isShowRouter = ref<boolean>(false);
-    onMounted(async () => {
+    const isShowButton = ref<boolean>(false);
+    const doLogin = async () => {
         /** 获取钱包地址登录 */
         try {
           utils.loading('登录中');
@@ -26,17 +33,28 @@ export default {
           const response = await services.authLogin({name: address, code: query.code});
           localStorage.setItem('token', response.data.token);
           utils.loadingClean()
+          isShowButton.value = false;
           isShowRouter.value = true;
         } catch(err) {
           console.log(err);
+          isShowButton.value = true;
+          isShowRouter.value = false;
           utils.toast(err);
-          // isShowRouter.value = true;
         }
+      }
+    onMounted(async () => {
+        doLogin()
     })
-    return { ...useGlobalHooks(), isShowRouter}
+    return { ...useGlobalHooks(), isShowRouter, isShowButton, doLogin}
   }
 }
 </script>
 
 <style>
+.center-button{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -160%);
+}
 </style>

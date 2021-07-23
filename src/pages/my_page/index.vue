@@ -4,13 +4,17 @@
     <div class="my-header">
         <div class="my-avatar">
             <div class="avatar-clip">
-                <img :src="userInfo?.head_img" alt="">
+                <van-image
+                    round
+                    fit="cover"
+                    :src="userInfo?.head_img"
+                />
             </div>
             <img :src="require('@/assets/member_grade@2x.png')" class="member-grade" alt="">
         </div>
-        <span class="my-nickname">{{userInfo?.name}}</span>
+        <span class="my-nickname">{{userInfo?.name || '--'}}</span>
         <span class="my-member-status">会员状态: {{userInfo?.activate === 0 ? '无效会员' : '有效会员'}}</span>
-        <img :src="require('@/assets/icon_edit@2x.png')" class="icon-edit" alt="">
+        <img :src="require('@/assets/icon_edit@2x.png')" class="icon-edit" @click="onRouter('/edit_profile')" alt="">
     </div>
     <div class="list-item-wrap">
         <div class="list-item" v-for="item,index in listItemData" :key="index" @click="onRouter(item.path)">
@@ -28,6 +32,7 @@
 <script lang='ts'>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { Image as VanImage } from 'vant';
 import { listItemData } from './hooks/useInit';
 import { IInitState } from './type.d';
 import * as services from '@/services/index';
@@ -38,6 +43,7 @@ import * as utils from '@/utils';
 export default {
     name: 'my_page',
     components:{
+        VanImage
     },
     setup(): IInitState {
         const router = useRouter();

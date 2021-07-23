@@ -3,7 +3,9 @@
     <div class="top-bar" v-if="isShowHeader">
         <div class="both-sides"></div>
         <img :src="require('@/assets/LOGO@2x.png')" class="logo-img" alt="">
-        <div class="both-sides local-btn"><span class="local-btn-active">中文</span> / <span>英文</span></div>
+        <div class="both-sides local-btn">
+            <span :class="language === 'zh-CN' && 'local-btn-active'" @click="change('zh-CN')">中文</span> / 
+            <span :class="language === 'en-US' && 'local-btn-active'" @click="change('en-US')">英文</span></div>
     </div>
     
     <swipe v-if="isShowSwiper" class="home-swipe" indicator-color="white">
@@ -35,6 +37,10 @@ export default {
             }
           ]
         },
+        change: {
+           type: Function,
+           default: () => {},
+        },
         isShowSwiper: {
            type: Boolean,
            default: true,
@@ -49,7 +55,8 @@ export default {
         SwipeItem,
     },
     setup() {
-        return {}
+        const language = localStorage.getItem('language');
+        return {language}
 
     }
   };

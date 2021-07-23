@@ -18,3 +18,5 @@ export const hqmc_info_page: string = '/hqmc_info';
 export const transform_page: string = '/transform';
 export const transform_confirm_page: string = '/transform_confirm';
 export const publish_order_page: string = '/publish_order_page';
+export const plateform_intro_detail_page: string = '/plateform_intro_detail_page';
+export const edit_profile_page: string = '/edit_profile';

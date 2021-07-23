@@ -1,13 +1,14 @@
 <!-- 矿池 -->
 <template>
-    <NavBar title="挖矿" fixed/>
+    <NavBar :title="t('mining')" fixed/>
     <div class="page-wrap tabbar-page">
         <div class="v-chart-wrap">
+            <div class="v-chart-title">HQC {{t('chart')}}</div>
             <v-chart class="v-chart" :option="option" />
         </div>
         <div class="main-title">
             <span class="main-title-bgtext">HQMC Ore Pit</span>
-            <span class="main-title-text">HQMC矿池</span>
+            <span class="main-title-text">HQMC {{t('mining')}}</span>
             <span class="main-title-line"></span>
         </div>
         <!-- <div class="hqctotal-header">
@@ -37,6 +38,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { NavBar } from 'vant';
+import { useI18n } from "vue-i18n";
 import CardItem from '@/components/card_item/index.vue';
 import * as services from '@/services/index';
 import { IMinerListResDTO } from '@/services/interface/response.d';
@@ -64,40 +66,41 @@ export default {
         CardItem
     },
     setup() {
-       const option = ref();
-        
+        const option = ref();
+        const { t } = useI18n();
         const minerList = ref<IMinerListResDTO[]>();
         
         const onInitData = async () => {
             try{
-              utils.loading('加载中');
+              utils.loading(t('loading'));
               const response = await services.minerList();
               minerList.value = response.data;
-              const xAxis = response.data.map(item => '第' + item.no + '期');
+              const language = localStorage.getItem('language')
+              const xAxis = response.data.map(item => language === 'zh-CN' ? '第' + item.no + '期' : 'Issue' + item.no);
               const series = [
                 {
-                    name: '实际收益',
+                    name: t('real_income'),
                     type: 'line',
                     smooth:true, 
                     symbol: "none", //去掉圆点 //让曲线变平滑的  
                     data: response.data.map(item => item.expected_outpu_actual),
                 },
                 {
-                    name: '预计产出量',
+                    name: t('estimated_output'),
                     type: 'line',
                     smooth:true, 
                     symbol: "none", //去掉圆点 //让曲线变平滑的  
                     data: response.data.map(item => Number(item.output)),
                 },
                 {
-                    name: '锁定HQMC数量',
+                    name: t('Locking_hqmc_quantity'),
                     type: 'line',
                     smooth:true, 
                     symbol: "none", //去掉圆点 //让曲线变平滑的  
                     data: response.data.map(item => Number(item.price)),
                 },
                  {
-                    name: '实际消耗',
+                    name: t('actual_consumption'),
                     type: 'line',
                     smooth:true, 
                     symbol: "none", //去掉圆点 //让曲线变平滑的  
@@ -121,7 +124,7 @@ export default {
                     width: "87%", // 宽度
                 },
                 legend: {
-                    data: ['实际收益', '预计产出量', '锁定HQMC数量', '实际消耗'],
+                    data: [t('real_income'), t('estimated_output'), t('Locking_hqmc_quantity'), t('actual_consumption')],
                 },
                 xAxis: {
                     type: 'category',
@@ -133,7 +136,7 @@ export default {
                     axisLabel: {
                         formatter: function(value: number){
                             if (value > 999) {
-                                return value / 10000 + '万';
+                                return value / 10000 + t('thousand');
                             }
                             return value;
                         }
@@ -150,9 +153,9 @@ export default {
         const onButMachine = async (item: IMinerListResDTO) => {
             console.log(item);
             if (item.status_tip === 1) {
-                utils.loading('加载中');
+                utils.loading(t('loading'));
                 await services.buyMachine({id: item.id});
-                Toast.success({message: '开启成功', onClose: () => {
+                Toast.success({message: t('open_successfully'), onClose: () => {
                      onInitData();
                 }})
             }
@@ -165,7 +168,8 @@ export default {
         return {
             option,
             minerList,
-            onButMachine
+            onButMachine,
+            t
         }
 
     }

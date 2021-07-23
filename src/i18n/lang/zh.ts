@@ -1,3 +1,22 @@
-export default  {
-    'share': '分享'
+export default {
+    loading: '加载中',
+    home: '首页',
+    mining: '挖矿',
+    trading: '交易',
+    mine: '我的',
+    share: '分享',
+    ore_pool: '矿池',
+    trading_area: '交易区',
+    airdrop: '空投',
+    ecology: '生态',
+    usdt_wallet: 'USDT钱包',
+    hqc_wallet: 'HQC钱包',
+    hqmc_wallet: 'HQMC钱包',
+    assets: '资产',
+    chart: '走势图',
+    real_income: '实际收益',
+    estimated_output: '预计产出量',
+    Locking_hqmc_quantity: '锁定HQMC数量',
+    actual_consumption: '实际消耗',
+    thousand: '万'
 }

@@ -47,7 +47,11 @@ export default {
                 size: 4234,
             })
 
-            document.getElementById('qrcode')?.appendChild(canvas);
+            const qrcodeNode = document.getElementById('qrcode');
+            if (qrcodeNode) {
+                qrcodeNode.innerHTML = '';
+                qrcodeNode.appendChild(canvas);
+            }
         }
 
         onMounted(async () => {

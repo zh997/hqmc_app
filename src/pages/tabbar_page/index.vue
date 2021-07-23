@@ -13,6 +13,7 @@
 <script lang='ts'>
 import { reactive } from 'vue'
 import { Tabbar, TabbarItem } from 'vant';
+import { useI18n } from "vue-i18n";
 import { ITabbarItem } from './type';
 import { useGlobalHooks } from '@/hooks';
 export default {
@@ -22,29 +23,30 @@ export default {
         TabbarItem
     },
     setup() {
+      const { t } = useI18n();
       const tabbar = reactive<ITabbarItem[]>([
         {
           icon: require('@/assets/tabbar_icon_home@2x.png'),
           selected_icon: require('@/assets/tabbar_icon_home_selected@2x.png'),
-          title: '首页',
+          title: t('home'),
           path: '/home'
         },
         {
           icon: require('@/assets/tabbar_icon_orepool@2x.png'),
           selected_icon: require('@/assets/tabbar_icon_orepool_selected@2x.png'),
-          title: '挖矿',
+          title: t('mining'),
           path: '/orepool'
         },
         {
           icon: require('@/assets/tabbar_icon_deal@2x.png'),
           selected_icon: require('@/assets/tabbar_icon_deal_selected@2x.png'),
-          title: '交易',
+          title: t('trading'),
           path: '/deal'
         },
         {
           icon: require('@/assets/tabbar_icon_my@2x.png'),
           selected_icon: require('@/assets/tabbar_icon_my_selected@2x.png'),
-          title: '我的',
+          title: t('mine'),
           path: '/my'
         }
       ])

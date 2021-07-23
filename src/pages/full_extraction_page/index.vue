@@ -10,14 +10,14 @@
           <div class="assets-btn-group">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
           </div>
-          <div class="charge-code-panel" v-if="query.name !== 'USDT'">
+          <!-- <div class="charge-code-panel" v-if="query.name !== 'USDT'">
               <div id="qrcode" class="share-code"></div>
-              <!-- <img :src="require('@/assets/share_code_black@2x.png')" class="share-code" alt=""> -->
+              <img :src="require('@/assets/share_code_black@2x.png')" class="share-code" alt="">
               <div class="team-link-group">
                 <span>充币地址：<span id="copy">{{walletUsdt?.usdt_wallet || walletHqc?.hqc_wallet}}</span></span>
                 <img :src="require('@/assets/icon_copy@2x.png')" alt="" class="team-link-copy-img" data-clipboard-target="#copy">
             </div>
-          </div>
+          </div> -->
       </div>
   </div>
 </template>
@@ -25,7 +25,7 @@
 <script lang='ts'>
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { qrcanvas } from 'qrcanvas';
+// import { qrcanvas } from 'qrcanvas';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import * as routerPaths from '@/constants/app_routes_path';
 import * as services from '@/services/index';
@@ -61,7 +61,7 @@ export default {
                         path: routerPaths.withdraw_page
                     },
                 ]
-                onRenderQrcode(walletUsdt.value.usdt_wallet);
+                // onRenderQrcode(walletUsdt.value.usdt_wallet);
             }
             if (query.name === 'HQC') {
                 const res = await services.homeWalletHqc();
@@ -73,19 +73,23 @@ export default {
                         path: routerPaths.transform_confirm_page
                     }
                 ]
-                onRenderQrcode(walletHqc.value.hqc_wallet);
+                // onRenderQrcode(walletHqc.value.hqc_wallet);
             }
             
         })
 
-        const onRenderQrcode = (url: string) => {
-            var canvas = qrcanvas({
-                data: url,
-                size: 4234,
-            })
+        // const onRenderQrcode = (url: string) => {
+        //     var canvas = qrcanvas({
+        //         data: url,
+        //         size: 4234,
+        //     })
 
-            document.getElementById('qrcode')?.appendChild(canvas);
-        }
+        //     const qrcodeNode = document.getElementById('qrcode');
+        //     if (qrcodeNode) {
+        //         qrcodeNode.innerHTML = '';
+        //         qrcodeNode.appendChild(canvas);
+        //     }
+        // }
 
         return {query, btnItems,walletUsdt, walletHqc, qrcodeDom,  onRouter: (path: string) => {
                 if (query.name === 'USDT'){

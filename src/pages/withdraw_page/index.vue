@@ -4,13 +4,13 @@
   <div class='page-wrap'>
       <div class="withdraw-page">
           <div class="withdraw-code-panel">
-              <div class="withdraw-select" @click="onShowPopup">
+              <!-- <div class="withdraw-select" @click="onShowPopup">
                   <span class="withdraw-select-label">币种选择：</span>
                   <div class="withdraw-select-value">
                       <span>USDT</span>
                       <img :src="require('@/assets/icon_down_arrow@2x.png')" alt="">
                   </div>
-              </div>
+              </div> -->
               <div class="withdraw-select">
                   <span class="withdraw-select-label">提币数量：</span>
                   <input type="number" v-model="num" placeholder="请输入提币数量" class="withdraw-select-value">
@@ -21,12 +21,12 @@
                       <span>{{query?.money}}</span>
                   </div>
               </div>
-              <div class="withdraw-select">
+              <!-- <div class="withdraw-select">
                   <span class="withdraw-select-label">提币地址：</span>
                   <div class="withdraw-select-value border-clean">
                       <span>{{query?.receive_address}}</span>
                   </div>
-              </div>
+              </div> -->
               <div class="withdraw-btn" @click="onSubmit">提币</div>
           </div>
            <div class="warning-text">

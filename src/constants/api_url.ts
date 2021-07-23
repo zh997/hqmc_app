@@ -19,3 +19,10 @@ export const tradeList: string = '/api/trade/tradeList';
 export const buyIn: string = '/api/trade/buyIn';
 export const sellOut: string = '/api/trade/sellOut';
 export const releaeOrder: string = '/api/trade/releaeOrder';
+export const coin_profit: string = '/api/user/coin_profit';
+export const plat_form: string = '/api/user/plat_form';
+export const income_list: string = '/api/user/income_list';
+export const money_config: string = '/api/basic/money_config';
+export const upload_img: string = '/api/user/upload_img';
+export const change_head_img: string = '/api/user/change_head_img';
+

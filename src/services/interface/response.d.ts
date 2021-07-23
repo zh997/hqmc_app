@@ -106,3 +106,62 @@ export interface ITradeListResDTO {
     username: string
     head_img:string
 }
+
+/** 产币记录 */
+export interface ICoinProfitResDTO {
+    id: number
+    user_id: number
+    no: string
+    machine_price: string
+    expected_consume_start: number
+    expected_consume_end: number
+    expected_outpu_start: number
+    expected_outpu_end: number
+    created_at: string
+    end_time: string
+}
+
+/** 平台介绍 */
+export interface IPlatFormResDTO {
+    id: number
+    type: number
+    title: string
+    content: string
+    created_at: number
+    updated_at: number
+}
+
+/** 收益记录 */
+export interface IIncomeListResDTO {
+    id: number
+    user_id: number
+    total: string
+    money_name: string
+    type: number
+    created_at: string
+}
+
+/** 资金设置 */
+export interface IMoneyConfigResDTO {
+    change_config:{
+        change_dec_usdt: string
+        change_dec_hqc: string
+        change_dec_multipe: string
+    }
+    destory_config: {
+        destory_dec_usdt: string
+        destory_dec_hqc: string
+        destory_dec_multipe: string
+    }
+    hqc_config: {
+        hqmc_transfer_fee: string
+    }
+    price_config: {
+        hqc_hqmc_price: string
+        hqmc_usdt_price: string
+    }
+    withdraw_config: {
+        withdraw_rate: string
+        withdraw_min: string
+    }
+}
