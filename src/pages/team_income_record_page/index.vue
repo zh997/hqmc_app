@@ -1,8 +1,8 @@
 <!-- 团队收益记录 -->
 <template>
-  <CustomNavBar :title="`${query.name} ${t('record')}`"/>
+  <CustomNavBar :title="`${query.name}`"/>
   <div class="page-wrap">
-      <div class="team-income-record-page">
+      <div class="team-income-record-page" v-if="list && list.length > 0">
           <table class="table-wrap">
               <tr class="table-header">
                   <td class="table-header-cell">{{t('currency')}}</td>
@@ -22,6 +22,7 @@
               </tr>
           </table>
       </div>
+      <Empty v-else/>
   </div>
 </template>
 
@@ -29,6 +30,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from "vue-i18n";
+import { Empty } from 'vant';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import * as services from '@/services/index';
 import * as utils from '@/utils';
@@ -38,6 +40,7 @@ export default {
     name: '',
     components: {
         CustomNavBar,
+        Empty
     },
     setup() {
         const { t } = useI18n();

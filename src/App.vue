@@ -1,6 +1,7 @@
 <template>
-   
-   <router-view v-if="isShowRouter"></router-view>
+   <div class="safe-area">
+     <router-view v-if="isShowRouter"></router-view>
+   </div>
    <div class="center-button">
      <Button v-if="!isShowRouter && isShowButton" type="primary" @click="doLogin">点我自动登陆</Button>
    </div>
@@ -56,5 +57,9 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -160%);
+}
+.safe-area{
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: border-box;
 }
 </style>

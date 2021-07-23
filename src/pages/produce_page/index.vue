@@ -2,17 +2,19 @@
 <template>
     <CustomNavBar :title="t('currency_production_record')"/>
     <div class="page-wrap">
-        <div class="produce-page">
+        <div class="produce-page" v-if="list && list.length > 0">
             <CardItem :showBtn="false" v-for="item in list" :key="item.id" :item="item" :showHead="false"/>
             <!-- <CardItem btnText="已加入" :disabeld="true" :showHead="false"/>
             <CardItem btnText="已加入" :disabeld="true" :showHead="false"/> -->
         </div>
+        <Empty v-else/>
     </div>
 </template>
 
 <script lang='ts'>
 import { ref, onMounted } from 'vue';
 import { useI18n } from "vue-i18n";
+import { Empty } from 'vant';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import CardItem from '@/components/card_item/index.vue';
 import * as services from '@/services/index';
@@ -23,7 +25,8 @@ export default {
     name: 'produce-page',
     components:{
         CustomNavBar,
-        CardItem
+        CardItem,
+        Empty
     },
     setup() {
         const { t } = useI18n();

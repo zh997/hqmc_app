@@ -45,8 +45,7 @@ export default {
 
         const onRenderQrcode = (url: any) => {
             var canvas = qrcanvas({
-                data: url,
-                size: 4234,
+                data: url
             })
 
             const qrcodeNode = document.getElementById('qrcode');

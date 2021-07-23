@@ -2,43 +2,51 @@
 <template>
     <NavBar :title="t('trading')" fixed/>
     <div class="page-wrap tabbar-page">
-        <Header :isShowHeader="false" :banners="banners"/>
-        <div class="switch-bar-head">
-            <div class="switch-bar">
-                <span :class="{'switch-bar-selected': current === 1}" @click="onSwitch(1)">{{t('buy')}}</span>
-                <span :class="{'switch-bar-selected': current === 2}" @click="onSwitch(2)">{{t('sell')}}</span>
-            </div>
-            <img :src="require('@/assets/icon_record@2x.png')" @click="onShowPopup" alt="">
-        </div>
-        <div class="selector-bar-wrap">
-            <div class="selector-bar">
-               <span class="selector-bar-item">HQC</span>
-            </div>
-            <span @click="onSort">{{sort === 'asc' ? t('asc') :  t('desc')}}<img :src="require('@/assets/icon_down_arrow@2x.png')" alt=""></span> 
-        </div>
+        
         <List
             v-model="loading"
             :finished="finished"
             @load="onLoad"
             :offset="0"
         >
-          <div class="dealcard-item-wrap" v-for="item in tradList" :key="item.id">
-            <div class="dealcard-item">
-                <div class="dealcard-item-head">
-                    <img :src="item.head_img" alt="">
-                    <span class="head-title">{{item.username}}</span>
-                    <span class="head-subtitle"></span>
+            <div>
+                <Header :isShowHeader="false" :banners="banners"/>
+                <div class="switch-bar-head">
+                    <div class="switch-bar">
+                        <span :class="{'switch-bar-selected': current === 1}" @click="onSwitch(1)">{{t('buy')}}</span>
+                        <span :class="{'switch-bar-selected': current === 2}" @click="onSwitch(2)">{{t('sell')}}</span>
+                    </div>
+                    <img :src="require('@/assets/icon_record@2x.png')" @click="onShowPopup" alt="">
                 </div>
-                <div class="dealcard-item-row">
-                    <span class="dealcard-item-row-text">{{t('quantity')}}：{{item?.num}} HQC</span>
-                    <span class="dealcard-item-row-value">$ {{item?.total}}</span>
+                <div class="selector-bar-wrap">
+                    <div class="selector-bar">
+                    <span class="selector-bar-item">HQC</span>
+                    </div>
+                    <span @click="onSort">{{sort === 'asc' ? t('asc') :  t('desc')}}<img :src="require('@/assets/icon_down_arrow@2x.png')" alt=""></span> 
                 </div>
-                <div class="dealcard-item-row">
-                    <span class="dealcard-item-row-text"></span>
-                    <span class="dealcard-item-row-btn" @click="onBuyIn(item.id)">{{ current === 1 ? t('purchase') : t('sell_out')}}</span>
+                <div v-if="tradList && tradList.length > 0">
+                    <div class="dealcard-item-wrap" v-for="item in tradList" :key="item.id">
+                        <div class="dealcard-item">
+                            <div class="dealcard-item-head">
+                                <img :src="item.head_img" alt="">
+                                <span class="head-title">{{item.username}}</span>
+                                <span class="head-subtitle"></span>
+                            </div>
+                            <div class="dealcard-item-row">
+                                <span class="dealcard-item-row-text">{{t('quantity')}}：{{item?.num}} HQC</span>
+                                <span class="dealcard-item-row-value">$ {{item?.total}}</span>
+                            </div>
+                            <div class="dealcard-item-row">
+                                <span class="dealcard-item-row-text"></span>
+                                <span class="dealcard-item-row-btn" @click="onBuyIn(item.id)">{{ current === 1 ? t('purchase') : t('sell_out')}}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <Empty v-else/>
             </div>
-            </div>
+            
+            
         </List>
         
         <Popup  v-model:show="show" round position="bottom">
@@ -59,7 +67,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from "vue-i18n";
-import { NavBar, Toast,  Popup, Picker, List } from 'vant';
+import { NavBar, Toast,  Popup, Picker, List, Empty } from 'vant';
 import Header from '@/components/header/index.vue';
 import * as services from '@/services/index';
 import { IHomeBannerResDTO, ITradeListResDTO } from '@/services/interface/response.d';
@@ -71,7 +79,8 @@ export default {
         NavBar,
         Popup,
         Picker,
-        List
+        List,
+        Empty
     },
     setup() {
         const router = useRouter();

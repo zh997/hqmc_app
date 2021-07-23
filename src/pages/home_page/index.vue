@@ -70,7 +70,7 @@ export default {
       /** 中英文切换 */
       const change = (type: any) => {
         localStorage.setItem('language', type);
-        router.go(0);
+        window.location.reload();
       }
 
       const onInitData = async () => {
