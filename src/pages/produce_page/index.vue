@@ -1,6 +1,6 @@
 <!-- 产币记录 -->
 <template>
-    <CustomNavBar title="产币记录"/>
+    <CustomNavBar :title="t('currency_production_record')"/>
     <div class="page-wrap">
         <div class="produce-page">
             <CardItem :showBtn="false" v-for="item in list" :key="item.id" :item="item" :showHead="false"/>
@@ -12,6 +12,7 @@
 
 <script lang='ts'>
 import { ref, onMounted } from 'vue';
+import { useI18n } from "vue-i18n";
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import CardItem from '@/components/card_item/index.vue';
 import * as services from '@/services/index';
@@ -25,9 +26,10 @@ export default {
         CardItem
     },
     setup() {
+        const { t } = useI18n();
         const list = ref<ICoinProfitResDTO[]>();
         const onGetCoinProfit = async () => {
-            utils.loading('加载中');
+            utils.loading(t('loading'));
             const res = await services.coinProfit();
             list.value = res.data;
             utils.loadingClean()
@@ -35,7 +37,7 @@ export default {
         onMounted(() =>{
             onGetCoinProfit();
         })
-        return { list }
+        return { list, t }
     }
   };
 </script>

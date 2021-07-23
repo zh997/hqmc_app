@@ -28,7 +28,7 @@
                 border-radius: 10px;
                 width: 368px;
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-start;
                 align-items: center;
                 height: 48px;
                 padding: 0 20px;
@@ -38,7 +38,14 @@
                 }
             }
             .border-clean{
-                border: none
+                border: none;
+                padding: 0;
+                > span{ 
+                    flex: 1;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
             }
         }
         .blance-text{

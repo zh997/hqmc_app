@@ -13,7 +13,7 @@
             <img :src="require('@/assets/member_grade@2x.png')" class="member-grade" alt="">
         </div>
         <span class="my-nickname">{{userInfo?.name || '--'}}</span>
-        <span class="my-member-status">会员状态: {{userInfo?.activate === 0 ? '无效会员' : '有效会员'}}</span>
+        <span class="my-member-status">{{t('member_status')}}: {{userInfo?.activate === 0 ? t('invalid_member') : t('effective_member')}}</span>
         <img :src="require('@/assets/icon_edit@2x.png')" class="icon-edit" @click="onRouter('/edit_profile')" alt="">
     </div>
     <div class="list-item-wrap">
@@ -33,6 +33,7 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Image as VanImage } from 'vant';
+import { useI18n } from "vue-i18n";
 import { listItemData } from './hooks/useInit';
 import { IInitState } from './type.d';
 import * as services from '@/services/index';
@@ -47,6 +48,7 @@ export default {
     },
     setup(): IInitState {
         const router = useRouter();
+        const { t } = useI18n();
         const userInfo = ref<IUserInfoResDTO>();
         onMounted(async () => {
            try {
@@ -61,6 +63,7 @@ export default {
         return {
             userInfo,
             listItemData: listItemData(),
+            t,
             onRouter: (path: string) => {
                 router.push(path);
             }

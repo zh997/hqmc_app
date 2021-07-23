@@ -1,21 +1,23 @@
+import { useI18n } from "vue-i18n";
 import * as routerPaths from '@/constants/app_routes_path';
 import { IListItem } from '../type';
 
 export const listItemData = (): IListItem[] => {
+    const { t } = useI18n();
     return [
         {
           icon: require('@/assets/my_icon_1@2x.png'),
-          title: '邀请好友',
+          title: t('invite_riends'),
           path: routerPaths.share_page
         },
         {
             icon: require('@/assets/my_icon_2@2x.png'),
-            title: '团队收益',
+            title: t('team_benefits'),
             path: routerPaths.team_income_page
         },
         {
             icon: require('@/assets/my_icon_6@2x.png'),
-            title: '产币记录',
+            title: t('currency_production_record'),
             path: routerPaths.produce_page
         },
         // {
@@ -25,12 +27,12 @@ export const listItemData = (): IListItem[] => {
         // },
         {
             icon: require('@/assets/my_icon_5@2x.png'),
-            title: '语言设置',
-            path: routerPaths.my_page
+            title: t('language_settings'),
+            path: routerPaths.lang_switch
         },
         {
             icon: require('@/assets/my_icon_4@2x.png'),
-            title: '平台介绍',
+            title: t('platform_introduction'),
             path: routerPaths.plateform_intro_page
         }
     ]

@@ -1,6 +1,6 @@
 <!-- 充币 -->
 <template>
-  <CustomNavBar title="充币"/>
+  <CustomNavBar :title="t('recharge')"/>
   <div class='page-wrap'>
       <div class="charge-page">
           <div class="charge-code-panel">
@@ -12,8 +12,8 @@
                   </div>
               </div> -->
               <div class="charge-select">
-                  <span class="charge-select-label">充值数量：</span>
-                  <input type="number" v-model="num" placeholder="请输入充值数量" class="charge-select-value">
+                  <span class="charge-select-label">{{t('recharge_quantity')}}：</span>
+                  <input type="number" v-model="num" :placeholder="t('recharge_quantity_placeholder')" class="charge-select-value">
               </div>
               <!-- <div id="qrcode" class="share-code"></div>
               <img :src="require('@/assets/share_code_black@2x.png')" class="share-code" alt="">
@@ -21,7 +21,7 @@
                 <span>充币地址：<span id="copy">{{query?.receive_address}}</span></span>
                 <img :src="require('@/assets/icon_copy@2x.png')" alt="" class="team-link-copy-img" data-clipboard-target="#copy">
             </div> -->
-            <div class="charge-btn" @click="onRecharge">充值</div>
+            <div class="charge-btn" @click="onRecharge">{{t('recharge')}}</div>
           </div>
           <!-- <div class="warning-text">
               <p class="warning-text-title">注意事项：</p>
@@ -43,6 +43,7 @@
 <script lang='ts'>
 import { onMounted, ref } from 'vue';
 import ClipboardJS from 'clipboard';
+import { useI18n } from "vue-i18n";
 import { useRoute } from 'vue-router';
 // import { qrcanvas } from 'qrcanvas';
 import { Toast, Popup, Picker, Dialog  } from 'vant';
@@ -57,6 +58,7 @@ export default {
        Picker 
     },
     setup() {
+        const { t } = useI18n();
         const { query } = useRoute();
         const num = ref<string>('');
         const columns = ['USDT'];
@@ -65,7 +67,7 @@ export default {
         onMounted(() => {
             let ClipboardJSObj=new ClipboardJS('.team-link-copy,.team-link-copy-img')
             ClipboardJSObj.on('success', function(e) {
-                Toast.success('复制成功！'); 
+                Toast.success(t('copy_succeeded')); 
                 e.clearSelection();
             });
             ClipboardJSObj.on('error', function(e) {
@@ -92,16 +94,16 @@ export default {
 
         const onRecharge = async () => {
             if (num.value) {
-                utils.loading('正在充值');
+                utils.loading(t('recharging'));
                 try {
                     const amount = (Number(num.value) * Math.pow(10, 18)).toString();
                     const res = await transaction(amount, query.receive_address);
                     console.log(res);
                     utils.loadingClean();
                     Dialog.alert({
-                        title: '提示',
-                        message: '充值申请已提交，正在处理中，请五分钟后点击首页刷新页面',
-                        confirmButtonText: '确定',
+                        title: t('tips'),
+                        message: t('recharged_tips'),
+                        confirmButtonText: t('confirm'),
                     }).then(() => {
                         console.log('on close');
                     })
@@ -110,44 +112,12 @@ export default {
                     utils.toast(err.msg || err);
                 }
             } else {
-                 utils.toast('请输入充值数量');
+                 utils.toast(t('recharge_quantity_placeholder'));
             }
         }
 
-        return {columns, show, query, num, onShowPopup, onConfirm, onCancel, onRecharge}
-    },
-    // methods: {
-    //     async onBuy(item) {
-    //     const walletAddress = window.tronWeb.defaultAddress.base58 ? window.tronWeb.defaultAddress.base58 : ''
-    //     checkWalletAddress(this, getStorage('walletAddress'), walletAddress)
-    //     if ((item && item.price) || (this.currentMiner && this.currentMiner.id)) {
-    //         let num = item.price ? parseFloat(item.price) : parseInt(this.currentMiner.price)
-    //         let amount = num * parseFloat(this.rate) * Math.pow(10, 18).toString()
-    //         let contract = await this.tronWeb.contract().at(this.contractLionAddress)
-    //         let result = await contract
-    //         .transfer(this.userInfo.address, this.tronWeb.toHex(amount))
-    //         .send({
-    //             feeLimit: 10000000
-    //             // feeLimit: 30000000
-    //         })
-    //         .then(output => {
-    //             Dialog.alert({
-    //             title: this.$t('提示'),
-    //             message: this.$t('充值申请已提交，正在处理中，请五分钟后点击首页刷新页面'),
-    //             confirmButtonText: this.$t('确定')
-    //             }).then(() => {
-    //             recharge({ num: this.currentMiner && this.currentMiner.id }).then(res => {
-    //                 this.currentMiner = {}
-    //                 this.$store.dispatch('getUserInfo')
-    //             })
-    //             })
-    //             console.log('- Output:', output, '\n')
-    //         })
-
-    //         console.log('result: ', result)
-    //     }
-    //     },
-    // }
+        return {columns, show, query, num, t , onShowPopup, onConfirm, onCancel, onRecharge}
+    }
   };
 </script>
 <style lang="less">

@@ -1,41 +1,41 @@
 <!-- 团队收益 -->
 <template>
-   <CustomNavBar title="团队收益"/>
+   <CustomNavBar :title="t('team_benefits')"/>
    <div class="page-wrap">
      <div class="team-income-page">
-        <BlockTitle :icon="require('@/assets/icon_income@2x.png')" :title="`总收益：${teamBenefits?.profit_info?.total_profit || '0.00'}`" value="查看更多" :onClickRight="onCheckMore"/>
+        <BlockTitle :icon="require('@/assets/icon_income@2x.png')" :title="`${t('total_revenue')}：${teamBenefits?.profit_info?.total_profit || '0.00'}`" :value="t('check_more')" :onClickRight="onCheckMore"/>
         <div class="income-group-wrap">
           <div class="asstes-group">
             <div class="asstes-group-item">
-              <span>USDT钱包</span>
+              <span>{{t('usdt_wallet')}}</span>
               <span class="asstes-value">￥{{teamBenefits?.store_info?.money || '0.00'}}</span>
             </div>
             <div class="asstes-group-item">
-              <span>HQC钱包</span>
+              <span>{{t('hqc_wallet')}}</span>
               <span class="asstes-value">￥{{teamBenefits?.store_info?.hqc_money || '0.00'}}</span>
             </div>
             
             <div class="asstes-group-item">
-              <span>HQMC钱包</span>
+              <span>{{t('hqmc_wallet')}}</span>
               <span class="asstes-value">￥{{teamBenefits?.store_info?.hqmc_money || '0.00'}}</span>
             </div>
           </div>
           <div class="team-income-type">
-            <div class="team-income-type-item" @click="onRouter('矿池收益', 1)">
+            <div class="team-income-type-item" @click="onRouter(t('pool_income'), 1)">
               <img :src="require('@/assets/team_income_icon_1@2x.png')" alt="">
-              <span class="team-income-type-item-label">矿池收益</span>
+              <span class="team-income-type-item-label">{{t('pool_income')}}</span>
               <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.mining_profit || '0.00'}}</span>
             </div>
             <div class="line"></div>
-            <div class="team-income-type-item" @click="onRouter('分享收益', 2)">
+            <div class="team-income-type-item" @click="onRouter(t('share_income'), 2)">
               <img :src="require('@/assets/team_income_icon_2@2x.png')" alt="">
-              <span class="team-income-type-item-label">分享收益</span>
+              <span class="team-income-type-item-label">{{t('share_income')}}</span>
               <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.share_profit || '0.00'}}</span>
             </div>
             <div class="line"></div>
-            <div class="team-income-type-item" @click="onRouter('团队收益', 3)">
+            <div class="team-income-type-item" @click="onRouter(t('team_benefits'), 3)">
               <img :src="require('@/assets/team_income_icon_3@2x.png')" alt="">
-              <span class="team-income-type-item-label">团队收益</span>
+              <span class="team-income-type-item-label">{{t('team_benefits')}}</span>
               <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.team_profit || '0.00'}}</span>
             </div>
           </div>
@@ -49,6 +49,7 @@
 <script lang='ts'>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from "vue-i18n";
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import BlockTitle from '@/components/block_title/index.vue';
 import * as routesPaths from '@/constants/app_routes_path';
@@ -63,11 +64,12 @@ export default {
       BlockTitle
     },
     setup() {
+      const { t } = useI18n();
       const router = useRouter();
         const teamBenefits = ref<ITeamBenefitsResDTO>();
         onMounted(async () => {
            try {
-               utils.loading('加载中');
+               utils.loading(t('loading'));
                const response = await services.teamBenefits();
                teamBenefits.value = response.data;
                utils.loadingClean()
@@ -77,8 +79,9 @@ export default {
         })
        return {
          teamBenefits,
+         t,
          onCheckMore: () => {
-           router.push(routesPaths.team_income_record_page + `?name=团队收益&type=0`);
+           router.push(routesPaths.team_income_record_page + `?name=${t('team_benefits')}&type=0`);
          },
          onRouter(name: string, type: number){
            router.push(routesPaths.team_income_record_page + `?name=${name}&type=${type}`);

@@ -1,6 +1,6 @@
 <!-- 充币 -->
 <template>
-  <CustomNavBar title="提币"/>
+  <CustomNavBar :title="t('extract')"/>
   <div class='page-wrap'>
       <div class="withdraw-page">
           <div class="withdraw-code-panel">
@@ -12,11 +12,11 @@
                   </div>
               </div> -->
               <div class="withdraw-select">
-                  <span class="withdraw-select-label">提币数量：</span>
-                  <input type="number" v-model="num" placeholder="请输入提币数量" class="withdraw-select-value">
+                  <span class="withdraw-select-label">{{t('extraction_quantity')}}：</span>
+                  <input type="number" v-model="num" :placeholder="t('extraction_quantity_placeholder')" class="withdraw-select-value">
               </div>
               <div class="withdraw-select">
-                  <span class="withdraw-select-label">提币额度：</span>
+                  <span class="withdraw-select-label">{{t('withdrawal_limit')}}：</span>
                   <div class="withdraw-select-value border-clean">
                       <span>{{query?.money}}</span>
                   </div>
@@ -27,12 +27,12 @@
                       <span>{{query?.receive_address}}</span>
                   </div>
               </div> -->
-              <div class="withdraw-btn" @click="onSubmit">提币</div>
+              <div class="withdraw-btn" @click="onSubmit">{{t('extract')}}</div>
           </div>
-           <div class="warning-text">
+           <!-- <div class="warning-text">
               <p class="warning-text-title">注意事项：</p>
               <p>此地址只接受TRC20模式的USDT转入充值，请勿充值任何非USDT资产，否则资产不可找回，区块链得到确认后，平台即自动入账，请务必保证您的波场钱包有充足的USDT资产，以及确认电脑及浏览器安全，防止信息被篡改或泄露。</p>
-          </div>
+          </div> -->
       </div>
       <Popup  v-model:show="show" round position="bottom">
          <Picker title="标题"
@@ -50,6 +50,7 @@
 import { onMounted, ref } from 'vue';
 import ClipboardJS from 'clipboard';
 import { useRoute } from 'vue-router';
+import { useI18n } from "vue-i18n";
 import { Toast, Popup, Picker  } from 'vant';
 import * as services from '@/services/index';
 import * as utils from '@/utils';
@@ -62,6 +63,7 @@ export default {
        Picker 
     },
     setup() {
+        const { t } = useI18n();
         const { query } = useRoute();
         const num = ref<string>('');
         const columns = ['USDT'];
@@ -70,7 +72,7 @@ export default {
         onMounted(() => {
             let ClipboardJSObj=new ClipboardJS('.team-link-copy,.team-link-copy-img')
             ClipboardJSObj.on('success', function(e) {
-                Toast.success('复制成功！'); 
+                Toast.success(t('copy_succeeded')); 
                 e.clearSelection();
             });
             ClipboardJSObj.on('error', function(e) {
@@ -86,19 +88,19 @@ export default {
 
         const onSubmit = async () => {
             if (num.value) {
-                utils.loading('加载中');
+                utils.loading(t('loading'));
                 await services.usdtWithdraw({
                     receive_address: query.receive_address,
                     money_type: 'money',
                     num: Number(num.value) 
                 });
-                Toast.success('提币成功');
+                Toast.success(t('extraction_successful'));
             } else {
-                utils.toast('请输入提币数量')
+                utils.toast(t('extraction_quantity_placeholder'))
             }
         }
 
-        return {columns, show, query, num, onShowPopup, onConfirm, onCancel, onChange, onSubmit}
+        return {columns, show, query, num, t,  onShowPopup, onConfirm, onCancel, onChange, onSubmit}
     }
   };
 </script>

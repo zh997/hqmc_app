@@ -5,9 +5,9 @@
       <img :src="require('@/assets/share_img_1@2x.png')" class="share-title" alt="">
       <div id="qrcode" class="share-code"></div>
       <!-- <img :src="require('@/assets/share_code@2x.png')" class="share-code" alt=""> -->
-      <span class="share-link-tip">邀请链接</span>
+      <span class="share-link-tip">{{t('invitation_link')}}</span>
       <span class="share-link" id="copy">{{shareInfo?.share_url}}</span>
-      <span class="share-copy-btn" data-clipboard-target="#copy">复制链接</span>
+      <span class="share-copy-btn" data-clipboard-target="#copy">{{t('copy_link')}}</span>
       <img :src="require('@/assets/share_img_2@2x.png')" class="share-img" alt="">
   </div>
 </template>
@@ -17,6 +17,7 @@ import { onMounted, ref } from 'vue';
 import { Toast  } from 'vant';
 import ClipboardJS from 'clipboard';
 import { qrcanvas } from 'qrcanvas';
+import { useI18n } from "vue-i18n";
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import * as services from '@/services/index';
 import { IShareInfoResDTO } from '@/services/interface/response.d';
@@ -28,10 +29,11 @@ export default {
         CustomNavBar,
     },
     setup() {
+        const { t } = useI18n();
         const shareInfo = ref<IShareInfoResDTO>();
         const onInitData = async () => {
             try{
-                utils.loading('加载中');
+                utils.loading(t('loading'));
                 const response = await services.shareInfo();
                 shareInfo.value = response.data;
                 utils.loadingClean();
@@ -58,7 +60,7 @@ export default {
             await onInitData();
             let ClipboardJSObj=new ClipboardJS('.share-copy-btn')
             ClipboardJSObj.on('success', function(e) {
-                Toast.success('复制成功！')
+                Toast.success(t('copy_succeeded'))
                 e.clearSelection();
             });
             ClipboardJSObj.on('error', function(e) {
@@ -67,7 +69,8 @@ export default {
 
         })
         return {
-            shareInfo
+            shareInfo,
+            t
         }
     }
   };

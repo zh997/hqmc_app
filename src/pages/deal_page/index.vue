@@ -1,12 +1,12 @@
 <!-- 交易 -->
 <template>
-    <NavBar title="交易" fixed/>
+    <NavBar :title="t('trading')" fixed/>
     <div class="page-wrap tabbar-page">
         <Header :isShowHeader="false" :banners="banners"/>
         <div class="switch-bar-head">
             <div class="switch-bar">
-                <span :class="{'switch-bar-selected': current === 1}" @click="onSwitch(1)">购买</span>
-                <span :class="{'switch-bar-selected': current === 2}" @click="onSwitch(2)">出售</span>
+                <span :class="{'switch-bar-selected': current === 1}" @click="onSwitch(1)">{{t('buy')}}</span>
+                <span :class="{'switch-bar-selected': current === 2}" @click="onSwitch(2)">{{t('sell')}}</span>
             </div>
             <img :src="require('@/assets/icon_record@2x.png')" @click="onShowPopup" alt="">
         </div>
@@ -14,7 +14,7 @@
             <div class="selector-bar">
                <span class="selector-bar-item">HQC</span>
             </div>
-            <span @click="onSort">{{sort === 'asc' ? '降序' : '升序'}}<img :src="require('@/assets/icon_down_arrow@2x.png')" alt=""></span> 
+            <span @click="onSort">{{sort === 'asc' ? t('asc') :  t('desc')}}<img :src="require('@/assets/icon_down_arrow@2x.png')" alt=""></span> 
         </div>
         <List
             v-model="loading"
@@ -30,23 +30,23 @@
                     <span class="head-subtitle"></span>
                 </div>
                 <div class="dealcard-item-row">
-                    <span class="dealcard-item-row-text">数量：{{item?.num}} HQC</span>
+                    <span class="dealcard-item-row-text">{{t('quantity')}}：{{item?.num}} HQC</span>
                     <span class="dealcard-item-row-value">$ {{item?.total}}</span>
                 </div>
                 <div class="dealcard-item-row">
                     <span class="dealcard-item-row-text"></span>
-                    <span class="dealcard-item-row-btn" @click="onBuyIn(item.id)">{{ current === 1 ? '买入' : '卖出'}}</span>
+                    <span class="dealcard-item-row-btn" @click="onBuyIn(item.id)">{{ current === 1 ? t('purchase') : t('sell_out')}}</span>
                 </div>
             </div>
             </div>
         </List>
         
         <Popup  v-model:show="show" round position="bottom">
-         <Picker title="排序"
+         <Picker :title="t('sort')"
             :columns="columns"
             @confirm="onConfirm"
             @cancel="onCancel"
-            confirm-button-text="确认" cancel-button-text="取消"
+            :confirm-button-text="t('confirm')" :cancel-button-text="t('cancel')"
             />
       </Popup>
       <div class="publish-btn" @click="onRouter('/publish_order_page')">
@@ -58,6 +58,7 @@
 <script lang='ts'>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from "vue-i18n";
 import { NavBar, Toast,  Popup, Picker, List } from 'vant';
 import Header from '@/components/header/index.vue';
 import * as services from '@/services/index';
@@ -74,6 +75,7 @@ export default {
     },
     setup() {
         const router = useRouter();
+        const { t } = useI18n();
         const pageSize: number = 10;
         const show = ref<boolean>(false);
         const current = ref<number>(1);
@@ -83,7 +85,7 @@ export default {
         const order = ref<string>('price');
         const loading = ref<Boolean>(false);
         const finished = ref<Boolean>(false);
-        const columns = [{text: '创建时间', value: 'created_at'}, {text: '价格', value: 'price'}];
+        const columns = [{text: t('create_time'), value: 'created_at'}, {text:  t('price'), value: 'price'}];
         const tradList = ref<ITradeListResDTO[]>();
         const banners = ref<IHomeBannerResDTO[]>([]);
         const onSwitch = (value: number) => {
@@ -94,14 +96,14 @@ export default {
         const onShowPopup = () => show.value = true; 
 
         const onInitData = async () => {
-            utils.loading('加载中');
+            utils.loading(t('loading'));
             const [bannerRes] = await Promise.all([services.homeBanner({lang: 'zh_CN'})]) ;
             banners.value = bannerRes.data;
             utils.loadingClean();
         }
 
         const onGetTradeList = async () => {
-            utils.loading('加载中');
+            utils.loading(t('loading'));
             loading.value = true;
             const res = await services.tradeList({
                 page: page.value,
@@ -124,16 +126,16 @@ export default {
         }
 
         const onBuyIn = async (id: number) => {
-             utils.loading('加载中');
+             utils.loading(t('loading'));
             if (current.value === 1) {
                 await services.buyIn({id: id});
-                Toast.success({message: '买入成功', onClose: () => {
+                Toast.success({message: t('successful_purchase'), onClose: () => {
                     onInitData()
                 }});
             }
              if (current.value === 2) {
                 await services.sellOut({id: id});
-                Toast.success({message: '卖出成功', onClose: () => {
+                Toast.success({message: t('sold_successfully'), onClose: () => {
                     onInitData()
                 }});
             }
@@ -166,7 +168,7 @@ export default {
             router.push(path);
         }
 
-        return {current, banners, tradList, sort, columns, show,loading, finished, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
+        return {current, banners, tradList, sort, columns, show,loading, finished, t, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
     }
   };
 </script>

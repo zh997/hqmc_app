@@ -5,7 +5,7 @@
         <img :src="require('@/assets/LOGO@2x.png')" class="logo-img" alt="">
         <div class="both-sides local-btn">
             <span :class="language === 'zh-CN' && 'local-btn-active'" @click="change('zh-CN')">中文</span> / 
-            <span :class="language === 'en-US' && 'local-btn-active'" @click="change('en-US')">英文</span></div>
+            <span :class="language === 'en-US' && 'local-btn-active'" @click="change('en-US')">Eglish</span></div>
     </div>
     
     <swipe v-if="isShowSwiper" class="home-swipe" indicator-color="white">
@@ -55,7 +55,7 @@ export default {
         SwipeItem,
     },
     setup() {
-        const language = localStorage.getItem('language');
+        const language = localStorage.getItem('language') || 'zh-CN';
         return {language}
 
     }

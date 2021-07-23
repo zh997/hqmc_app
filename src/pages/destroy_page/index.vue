@@ -1,27 +1,27 @@
 <!-- 销毁 -->
 <template>
-  <CustomNavBar title="销毁"/>
+  <CustomNavBar :title="t('destroy')"/>
   <div class='page-wrap'>
       <div class="exchange-page">
          <div class="exchange-form-panel">
               <div class="withdraw-select">
-                  <span class="withdraw-select-label">销毁HQMC数量：</span>
-                  <input type="number" v-model="num" class="withdraw-select-value" placeholder="请输入销毁数量">
+                  <span class="withdraw-select-label">{{t('destroy')}} HQMC {{t('quantity')}}</span>
+                  <input type="number" v-model="num" class="withdraw-select-value" :placeholder="t('destroy_quantity_placeholder')">
               </div>
-              <div class="blance-text">HQMC余额：{{query?.money}}</div>
+              <div class="blance-text">HQMC {{t('balance')}}：{{query?.money}}</div>
                <div class="withdraw-select">
-                  <span class="withdraw-select-label">获得USDT数量：</span>
+                  <span class="withdraw-select-label">{{t('get')}} USDT {{t('quantity')}}：</span>
                   <span class="withdraw-select-text">{{dec_usdt || '0'}}</span>
                   <!-- <input type="number" class="withdraw-select-value" placeholder="888.88"> -->
               </div>
               <div class="blance-text"></div>
                <div class="withdraw-select">
-                  <span class="withdraw-select-label">消耗HQC数量：</span>
+                  <span class="withdraw-select-label">{{t('consume')}} HQC {{t('quantity')}}：</span>
                   <span class="withdraw-select-text">{{dec_hqc || '0'}}</span>
                   <!-- <input type="number" class="withdraw-select-value" placeholder="888.88"> -->
               </div>
                <!-- <div class="blance-text">HQMC余额：888</div> -->
-              <div class="withdraw-btn" @click="onSubmit">销毁</div>
+              <div class="withdraw-btn" @click="onSubmit">{{t('destroy')}}</div>
          </div>
       </div>
   </div>
@@ -31,6 +31,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { Toast  } from 'vant';
 import { useRoute } from 'vue-router';
+import { useI18n } from "vue-i18n";
 import Decimal from 'decimal.js';
 import * as utils from '@/utils';
 import * as services from '@/services/index';
@@ -43,13 +44,14 @@ export default {
        CustomNavBar,
     },
     setup() {
+        const { t } = useI18n();
         const { query } = useRoute();
         const num = ref<string>('');
         const moneyConfig = ref<IMoneyConfigResDTO>();
         const indexAsset = ref<IHomeAssetResDTO>();
 
         onMounted(async () => {
-            utils.loading('加载中');
+            utils.loading(t('loading'));
             const [moneyConfigRes, indexAssetRes] = await Promise.all([services.money_config(), services.homeWalletAsset()]) ;
             moneyConfig.value = moneyConfigRes.data;
             indexAsset.value = indexAssetRes.data;
@@ -84,16 +86,16 @@ export default {
 
         const onSubmit = async () => {
             if (!num.value) {
-                return utils.toast('请输入销毁数量');
+                return utils.toast(t('destroy_quantity_placeholder'));
             }
-            utils.loading('加载中');
+            utils.loading(t('loading'));
             await services.hqmcDestory({
                 num: parseInt(num.value, 10) 
             });
-            Toast.success('销毁成功');
+            Toast.success(t('destroyed_successfully'));
         }
 
-        return { query, num, dec_usdt, dec_hqc, onSubmit}
+        return { query, num, dec_usdt, dec_hqc, t , onSubmit}
     }
   };
 </script>

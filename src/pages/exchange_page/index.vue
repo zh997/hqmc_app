@@ -1,27 +1,27 @@
 <!-- 兑换 -->
 <template>
-  <CustomNavBar title="兑换"/>
+  <CustomNavBar :title="t('exchange')"/>
   <div class='page-wrap'>
       <div class="exchange-page">
          <div class="exchange-form-panel">
               <div class="withdraw-select">
-                  <span class="withdraw-select-label">兑换HQMC数量：</span>
-                  <input type="number" v-model="num" class="withdraw-select-value" placeholder="请输入兑换数量">
+                  <span class="withdraw-select-label">{{t('exchange')}} HQMC {{t('quantity')}}：</span>
+                  <input type="number" v-model="num" class="withdraw-select-value" :placeholder="t('exchange_quantity_placeholder')">
               </div>
-              <div class="blance-text">HQMC余额：{{query?.money}}</div>
+              <div class="blance-text">HQMC {{t('balance')}}：{{query?.money}}</div>
                <div class="withdraw-select">
-                  <span class="withdraw-select-label">消耗USDT数量：</span>
+                  <span class="withdraw-select-label">{{t('consume')}} USDT {{t('quantity')}}：</span>
                   <span class="withdraw-select-text">{{dec_usdt || '0'}}</span>
                   <!-- <input type="number" class="withdraw-select-value" placeholder="888.88"> -->
               </div>
               <div class="blance-text"></div>
                <div class="withdraw-select">
-                  <span class="withdraw-select-label">消耗HQC数量：</span>
+                  <span class="withdraw-select-label">{{t('consume')}} HQC {{t('quantity')}}：</span>
                   <span class="withdraw-select-text">{{dec_hqc || '0'}}</span>
                   <!-- <input type="number" class="withdraw-select-value" placeholder="888.88"> -->
               </div>
                <!-- <div class="blance-text">HQMC余额：888</div> -->
-              <div class="withdraw-btn" @click="onSubmit">兑换</div>
+              <div class="withdraw-btn" @click="onSubmit">{{t('exchange')}}</div>
          </div>
       </div>
   </div>
@@ -32,6 +32,7 @@ import { ref, onMounted, computed } from 'vue';
 import { Toast  } from 'vant';
 import { useRoute } from 'vue-router';
 import Decimal from 'decimal.js';
+import { useI18n } from "vue-i18n";
 import * as utils from '@/utils';
 import * as services from '@/services/index';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
@@ -43,19 +44,20 @@ export default {
        CustomNavBar,
     },
     setup() {
+        const { t } = useI18n();
         const { query } = useRoute();
         const num = ref<string>('');
         const moneyConfig = ref<IMoneyConfigResDTO>();
         const indexAsset = ref<IHomeAssetResDTO>();
         const onSubmit = async () => {
             if (num.value) {
-                utils.loading('加载中');
+                utils.loading(t('loading'));
                 await services.hqmcChange({
                     num: parseInt(num.value, 10) 
                 });
-                Toast.success('兑换成功');
+                Toast.success(t('exchange_succeeded'));
             } else {
-                utils.toast('请输入兑换数量');
+                utils.toast(t('exchange_quantity_placeholder'));
             }
         }
 
@@ -86,14 +88,14 @@ export default {
         })
 
         onMounted(async () => {
-            utils.loading('加载中');
+            utils.loading(t('loading'));
             const [moneyConfigRes, indexAssetRes] = await Promise.all([services.money_config(), services.homeWalletAsset()]) ;
             moneyConfig.value = moneyConfigRes.data;
             indexAsset.value = indexAssetRes.data;
             utils.loadingClean();
         })
 
-        return { query, num, moneyConfig, onSubmit, dec_usdt, dec_hqc}
+        return { query, num, moneyConfig,t, onSubmit, dec_usdt, dec_hqc}
     }
   };
 </script>

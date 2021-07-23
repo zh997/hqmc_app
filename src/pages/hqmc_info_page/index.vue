@@ -4,7 +4,7 @@
   <div class="page-wrap">
       <div class="hqmc_info_page">
           <div class="assets-head">
-              <span class="assets-head-label">HQMC 当前余额</span>
+              <span class="assets-head-label">HQMC {{t('current_balance')}}</span>
               <span class="assets-head-value">{{hqmcMoney?.hqmc_money}}</span>
           </div>
           <div class="assets-btn-group">
@@ -24,6 +24,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
+import { useI18n } from "vue-i18n";
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import * as routerPaths from '@/constants/app_routes_path';
 import * as services from '@/services/index';
@@ -35,30 +36,31 @@ export default {
        CustomNavBar
     },
     setup() {
+        const { t } = useI18n();
         const { query } = useRoute();
         const router = useRouter();
         const hqmcMoney = ref<IHomeHqmcMoneyResDTO>();
         const btnItems = [
             {
-                text: '兑换',
+                text: t('exchange'),
                 path: routerPaths.exchange_page + '?'
             },
             {
-                text: '转让',
+                text: t('make_over'),
                 path: routerPaths.transform_confirm_page + "?type=HQMC&"
             },
             {
-                text: '销毁',
+                text: t('destroy'),
                 path: routerPaths.destroy_page + '?'
             }
         ]
         onMounted(async () => {
-            utils.loading('加载中');
+            utils.loading(t('loading'));
             const res = await services.hqcMoney();
             hqmcMoney.value = res.data;
             utils.loadingClean();
         })
-        return {query, btnItems, hqmcMoney, onRouter: (path: string) => {
+        return {query, btnItems, hqmcMoney, t,  onRouter: (path: string) => {
                 path = path + `money=${hqmcMoney.value?.hqmc_money}`
                 router.push(path);
             }}

@@ -4,7 +4,7 @@
   <div class="page-wrap">
       <div class="full-extraction-page">
           <div class="assets-head">
-              <span class="assets-head-label">{{query.name}} 当前余额</span>
+              <span class="assets-head-label">{{query.name}} {{t('current_balance')}}</span>
               <span class="assets-head-value">{{walletUsdt?.money || walletHqc?.hqc_money}}</span>
           </div>
           <div class="assets-btn-group">
@@ -26,6 +26,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 // import { qrcanvas } from 'qrcanvas';
+import { useI18n } from "vue-i18n";
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import * as routerPaths from '@/constants/app_routes_path';
 import * as services from '@/services/index';
@@ -38,6 +39,7 @@ export default {
        CustomNavBar
     },
     setup() {
+        const { t } = useI18n();
         const { query } = useRoute();
         const router = useRouter();
         const qrcodeDom = ref<HTMLElement>();
@@ -53,11 +55,11 @@ export default {
                 utils.loadingClean();
                 btnItems.value = [
                     {
-                        text: '充币',
+                        text: t('recharge'),
                         path: routerPaths.charge_page
                     },
                     {
-                        text: '提币',
+                        text:  t('extract'),
                         path: routerPaths.withdraw_page
                     },
                 ]
@@ -69,7 +71,7 @@ export default {
                 utils.loadingClean();
                 btnItems.value = [
                     {
-                        text: '转让',
+                        text: t('make_over'),
                         path: routerPaths.transform_confirm_page
                     }
                 ]
@@ -91,7 +93,7 @@ export default {
         //     }
         // }
 
-        return {query, btnItems,walletUsdt, walletHqc, qrcodeDom,  onRouter: (path: string) => {
+        return {query, btnItems,walletUsdt, walletHqc, qrcodeDom, t,  onRouter: (path: string) => {
                 if (query.name === 'USDT'){
                     path = path + `?receive_address=${walletUsdt.value?.usdt_wallet}&money=${walletUsdt.value?.money}&type=USDT`
                 } else {

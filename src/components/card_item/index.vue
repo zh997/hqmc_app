@@ -2,26 +2,27 @@
 <template>
   <div class="card-item">
     <div class="card-item-head">
-        <span class="head-stage">第{{item.no}}期</span>
-        <span class="head-text" v-if="showHead">HQC预计产出量<span class="head-text-active">{{item.output}}</span>万</span>
+        <span class="head-stage">{{ language === 'zh-CN' ? `第${item.no}期` : `Issue ${item.no}` }}</span>
+        <span class="head-text" v-if="showHead">HQC {{t('estimated_output')}} <span class="head-text-active">{{item.output}}</span> {{t('thousand')}}</span>
     </div>
     <div class="card-item-row">
-        <span class="card-item-row-text"><span>开启日期：</span>{{item.start_time}}</span>
-        <span class="card-item-row-text"><span>结束日期：</span>{{item.end_time}}</span>
+        <span class="card-item-row-text"><span>{{t('opening_date')}}：</span>{{item.start_time}}</span>
+        <span class="card-item-row-text"><span>{{t('end_date')}}：</span>{{item.end_time}}</span>
     </div>
     <div class="card-item-row">
-        <span class="card-item-row-text"><span>锁定HQMC: </span>{{item.price}}</span>
-             <span class="card-item-row-text"><span>本期HQMC预估消耗: </span>{{item.expected_consume_start}}%-{{item.expected_consume_end}}%</span>
+        <span class="card-item-row-text"><span>{{t('locking')}}HQMC: </span>{{item.price}}</span>
+             <span class="card-item-row-text"><span>{{ language === 'zh-CN' ? '本期' :'' }}HQMC{{t('estimated_consumption')}}: </span>{{item.expected_consume_start}}%-{{item.expected_consume_end}}%</span>
     </div>
     <div class="card-item-row flex-space-between">
-         <span class="card-item-row-text"><span>本期HQC预估产量: </span>{{item.expected_outpu_start}}%-{{item.expected_outpu_end}}%</span>
+         <span class="card-item-row-text"><span>{{ language === 'zh-CN' ? '本期' :''}}HQC{{t('estimated_production')}}: </span>{{item.expected_outpu_start}}%-{{item.expected_outpu_end}}%</span>
         <span class="card-item-row-btn" v-if="showBtn" :class="{'disabeld-btn': item.status_tip === 2}" @click="onClick(item)">{{btnText}}</span>
     </div>
 </div>
 </template>
 
 <script lang='ts'>
-import { } from 'vue'
+import { } from 'vue';
+import { useI18n } from "vue-i18n";
 export default {
     name: 'card-item',
     props: {
@@ -47,7 +48,9 @@ export default {
       }
     },
     setup() {
-       return {}
+        const { t } = useI18n();
+        const language = localStorage.getItem('language') || 'zh-CN';
+       return { t, language }
     }
   };
 </script>

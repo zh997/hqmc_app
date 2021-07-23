@@ -68,7 +68,7 @@ export default {
       const indexAsset = ref<IHomeAssetResDTO>();
 
       /** 中英文切换 */
-      function change(type: any) {
+      const change = (type: any) => {
         localStorage.setItem('language', type);
         router.go(0);
       }

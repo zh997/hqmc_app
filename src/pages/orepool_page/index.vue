@@ -18,7 +18,7 @@
                 <span class="progrecess-item-value">10%</span>
             </span>
         </div> -->
-        <CardItem v-for="item,index in minerList" :item="item" :key="index" :onClick="onButMachine"/>
+        <CardItem v-for="item,index in minerList" :item="item" :btnText="t('open')" :key="index" :onClick="onButMachine"/>
     </div>
 </template>
 

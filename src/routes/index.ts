@@ -25,6 +25,7 @@ const TransformConfirmPage = defineAsyncComponent(() => import('@/pages/transfor
 const PublishOrderPage = defineAsyncComponent(() => import('@/pages/publish_order_page/index.vue'));
 const PlateformIntroDetail = defineAsyncComponent(() => import('@/pages/plateform_intro_detail_page/index.vue'));
 const EditProfile = defineAsyncComponent(() => import('@/pages/edit_profile_paege/index.vue'));
+const LangSwitch = defineAsyncComponent(() => import('@/pages/lang_switch_page/index.vue'));
 
 
 const routes: RouteRecordRaw[] = [
@@ -122,6 +123,10 @@ const routes: RouteRecordRaw[] = [
     {
         path:  routePath.edit_profile_page,
         component: EditProfile
+    },
+    {
+        path:  routePath.lang_switch,
+        component: LangSwitch
     },
 ]
 

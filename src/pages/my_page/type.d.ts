@@ -8,4 +8,5 @@ export interface IInitState {
     userInfo: IUserInfoResDTO,
     listItemData: IListItem[],
     onRouter: (path: string) => void
+    t: (name: string) => string
 }

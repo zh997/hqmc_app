@@ -1,6 +1,6 @@
 <!-- 兑换 -->
 <template>
-  <CustomNavBar title="修改资料"/>
+  <CustomNavBar :title="t('edit_profile')"/>
   <div class="page-wrap">
       <div class="edit-profile-page">
           <van-image
@@ -11,7 +11,7 @@
             :src="avatar"
         />
         <Uploader :max-size="500 * 1024" :after-read="afterRead" :max-count="1" accept="image/png, image/jpeg">
-            <Button type="primary" style="margin-top: 50px" >更换头像</Button>
+            <Button type="primary" style="margin-top: 50px" >{{t('change_the_avatar')}}</Button>
         </Uploader>
       </div>
   </div>
@@ -19,6 +19,7 @@
 
 <script lang='ts'>
 import { onMounted, ref } from 'vue';
+import { useI18n } from "vue-i18n";
 import { Image as VanImage, Button, Uploader, Toast  } from 'vant';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import * as services from '@/services/index';
@@ -34,6 +35,7 @@ export default {
        Uploader
     },
     setup() {
+        const { t } = useI18n();
         const avatar = ref<string>();
         const userInfo = ref<IUserInfoResDTO>();
         onMounted(async () => {
@@ -60,7 +62,8 @@ export default {
         return {
             userInfo,
             avatar,
-            afterRead
+            afterRead,
+            t
         }
     }
   };
