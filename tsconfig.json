@@ -34,7 +34,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-, "src/tronlink/index.js"  ],
+, "src/tronlink/index.js", "src/i18n/lang/zh.js", "src/i18n/lang/en.js"  ],
   "exclude": [
     "node_modules"
   ]
