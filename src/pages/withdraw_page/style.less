@@ -21,11 +21,13 @@
                 color: @color-282828;
                 font-weight: bold;
                 margin-right: 20px;
+                min-width: 180px;
             }
             &-value{
                 border: 2px solid @color-282828;
                 border-radius: 10px;
                 width: 368px;
+                flex: 1;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -37,7 +39,8 @@
                 }
             }
             .border-clean{
-                border: none
+                border: none;
+                padding: 0;
             }
         }
         .withdraw-btn{

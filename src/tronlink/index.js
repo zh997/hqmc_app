@@ -1,14 +1,5 @@
-const TronGrid = require('trongrid');
-const TronWeb = require('tronweb');
-
-const tronWeb = new TronWeb({
-    fullHost: 'https://api.trongrid.io'
-});
-
 /** 代币地址 */
-const atAddress = 'TPzuUuPUZhdf1sPLU46jxYrciFb4BqC6Yq';
-const tronGrid = new TronGrid(tronWeb);
-tronGrid.setExperimental('9707e954-515c-4bf9-b3b3-e86c0a07dcb6');
+const atAddress = 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t';
 
 var timer = null;
 var pullCount = 1;
@@ -38,12 +29,13 @@ export async function getTronlinkAddress() {
 
 // 充值
 export async function transaction(amount, address) {
+
     console.log(address, amount);
-    let contract = await tronWeb.contract().at(atAddress);
+    let contract = await window.tronWeb.contract().at(atAddress);
     // awaiting
     return contract.transfer(
         address,
-        tronWeb.toHex(amount)
+        window.tronWeb.toHex(amount)
     ).send({
         feeLimit: 10000000
     })

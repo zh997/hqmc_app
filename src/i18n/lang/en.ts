@@ -1,7 +1,7 @@
 export default  {
     loading: 'loading',
     home: 'home',
-    mining: 'mining',
+    mining: 'ore pool',
     trading: 'trading',
     mine: 'mine',
     share: 'share',
@@ -107,5 +107,8 @@ export default  {
     service_agreement: 'Service agreement',
     privacy_clause: 'Privacy clause',
     version_diary: 'Version diary',
-    current_version: 'Current version'
+    current_version: 'Current version',
+    extract_charges_fee: 'service charges/fee',
+    make_over_charges_fee: 'service charges/fee',
+    transfer_consumption: 'Transfer consumption'
 }

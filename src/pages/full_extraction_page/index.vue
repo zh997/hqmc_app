@@ -10,6 +10,9 @@
           <div class="assets-btn-group">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
           </div>
+          <RecordItem />
+          <RecordItem />
+          <RecordItem />
           <!-- <div class="charge-code-panel" v-if="query.name !== 'USDT'">
               <div id="qrcode" class="share-code"></div>
               <img :src="require('@/assets/share_code_black@2x.png')" class="share-code" alt="">
@@ -28,6 +31,7 @@ import { useRoute, useRouter } from 'vue-router';
 // import { qrcanvas } from 'qrcanvas';
 import { useI18n } from "vue-i18n";
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
+import RecordItem from '@/components/record_item/index.vue';
 import * as routerPaths from '@/constants/app_routes_path';
 import * as services from '@/services/index';
 import * as utils from '@/utils';
@@ -36,7 +40,8 @@ import { IHomeWalletUsdtResDTO, IHomeWalletHqcResDTO } from '@/services/interfac
 export default {
     name: '',
     components: {
-       CustomNavBar
+       CustomNavBar,
+       RecordItem
     },
     setup() {
         const { t } = useI18n();

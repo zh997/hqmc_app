@@ -21,6 +21,18 @@
                   <input type="number" v-model="num" class="withdraw-select-value" :placeholder="t('transfer_quantity_placeholder')">
               </div>
                <div class="blance-text">{{query?.type}} {{t('balance')}}：{{query?.money}}</div>
+               <div class="withdraw-select" v-if="query?.type === 'HQC'">
+                  <span class="withdraw-select-label">{{t('transfer_consumption')}}：</span>
+                  <div class="withdraw-select-value border-clean">
+                      <span>{{money_config?.hqc_config.hqc_transfer_fee}}% HQC</span>
+                  </div>
+              </div>
+              <div class="withdraw-select" v-if="query?.type === 'HQMC'">
+                  <span class="withdraw-select-label">{{t('consume')}} HQC {{t('quantity')}}：</span>
+                  <div class="withdraw-select-value border-clean">
+                      <span>{{dec_hqc}}</span>
+                  </div>
+              </div>
               <!-- <div class="withdraw-select">
                   <span class="withdraw-select-label">消耗HQC数量：</span>
                   <div class="withdraw-select-value border-clean">
@@ -34,11 +46,13 @@
 </template>
 
 <script lang='ts'>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import ClipboardJS from 'clipboard';
 import { Toast  } from 'vant';
 import { useI18n } from "vue-i18n";
 import { useRoute } from 'vue-router';
+import Decimal from 'decimal.js';
+import { useGlobalHooks } from '@/hooks';
 import * as utils from '@/utils';
 import * as services from '@/services/index';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
@@ -49,6 +63,7 @@ export default {
     },
     setup() {
         const { t } = useI18n();
+        const { money_config } = useGlobalHooks();
         const { query } = useRoute();
         const address = ref<string>('');
         const num = ref<string>('');
@@ -90,7 +105,20 @@ export default {
             }
         }
 
-        return { query, num, address, t , onSubmit}
+        const dec_hqc = computed({
+            get: () => {
+                const change_dec_hqc = money_config.value?.change_config.change_dec_hqc;
+                const hqc_hqmc_price =  money_config.value?.price_config.hqc_hqmc_price;
+                const z = new Decimal(Number(change_dec_hqc));
+                const rate = z.dividedBy(100).mul(Number(num.value)).dividedBy(Number(hqc_hqmc_price));
+                return Number(rate);
+            },
+            set: () => {
+
+            }
+        })
+
+        return { query, num, address,dec_hqc, money_config, t , onSubmit}
     }
   };
 </script>

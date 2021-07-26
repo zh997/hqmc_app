@@ -23,30 +23,32 @@ export default {
     Button
   },
   setup(){
+    const { isShowTabbar, onGetMoneyConfig } = useGlobalHooks();
     const isShowRouter = ref<boolean>(false);
     const isShowButton = ref<boolean>(false);
     const doLogin = async () => {
-        /** 获取钱包地址登录 */
-        try {
-          utils.loading('登录中');
-          const query = utils.getUrlQuery(window.location.hash)
-          const address = await getTronlinkAddress();
-          const response = await services.authLogin({name: address, code: query.code});
-          localStorage.setItem('token', response.data.token);
-          utils.loadingClean()
-          isShowButton.value = false;
-          isShowRouter.value = true;
-        } catch(err) {
-          console.log(err);
-          isShowButton.value = true;
-          isShowRouter.value = false;
-          utils.toast(err);
-        }
+      /** 获取钱包地址登录 */
+      try {
+        utils.loading('登录中');
+        const query = utils.getUrlQuery(window.location.hash)
+        const address = await getTronlinkAddress();
+        const response = await services.authLogin({name: address, code: query.code});
+        localStorage.setItem('token', response.data.token);
+        utils.loadingClean()
+        isShowButton.value = false;
+        isShowRouter.value = true;
+        onGetMoneyConfig();
+      } catch(err) {
+        console.log(err);
+        isShowButton.value = true;
+        isShowRouter.value = false;
+        utils.toast(err);
       }
+    }
     onMounted(async () => {
         doLogin()
     })
-    return { ...useGlobalHooks(), isShowRouter, isShowButton, doLogin}
+    return {isShowTabbar, isShowRouter, isShowButton, doLogin}
   }
 }
 </script>

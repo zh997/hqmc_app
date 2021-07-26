@@ -2,7 +2,6 @@
 <template>
     <NavBar :title="t('trading')" fixed/>
     <div class="page-wrap tabbar-page">
-        
         <List
             v-model="loading"
             :finished="finished"
@@ -10,17 +9,27 @@
             :offset="0"
         >
             <div>
-                <Header :isShowHeader="false" :banners="banners"/>
-                <div class="switch-bar-head">
-                    <div class="switch-bar">
-                        <span :class="{'switch-bar-selected': current === 1}" @click="onSwitch(1)">{{t('buy')}}</span>
-                        <span :class="{'switch-bar-selected': current === 2}" @click="onSwitch(2)">{{t('sell')}}</span>
+                <div class="v-chart-wrap">
+                    <div class="v-chart-title">HQC {{t('chart')}}</div>
+                    <v-chart class="v-chart" :option="option" />
+                    <div class="v-chart-time-quantum">
+                        <div class="time-quantum-item" :class="selectedDateIndex === 1 ? 'time-quantum-active' : ''" @click="onSwitchData(1)">近1个月</div>
+                        <div class="time-quantum-item" :class="selectedDateIndex === 2 ? 'time-quantum-active' : ''" @click="onSwitchData(2)">近3个月</div>
+                        <div class="time-quantum-item" :class="selectedDateIndex === 3 ? 'time-quantum-active' : ''" @click="onSwitchData(3)">近6个月</div>
+                        <div class="time-quantum-item" :class="selectedDateIndex === 4 ? 'time-quantum-active' : ''" @click="onSwitchData(4)">近1年</div>
+                        <div class="time-quantum-item" :class="selectedDateIndex === 5 ? 'time-quantum-active' : ''" @click="onSwitchData(5)">近3年</div>
                     </div>
-                    <img :src="require('@/assets/icon_record@2x.png')" @click="onShowPopup" alt="">
                 </div>
                 <div class="selector-bar-wrap">
-                    <div class="selector-bar">
-                    <span class="selector-bar-item">HQC</span>
+                    <!-- <div class="selector-bar">
+                         <span class="selector-bar-item">HQC</span>
+                    </div> -->
+                    <div class="switch-bar-head">
+                        <div class="switch-bar">
+                            <span :class="{'switch-bar-selected': current === 1}" @click="onSwitch(1)">{{t('buy')}}</span>
+                            <span :class="{'switch-bar-selected': current === 2}" @click="onSwitch(2)">{{t('sell')}}</span>
+                        </div>
+                        <!-- <img :src="require('@/assets/icon_record@2x.png')" @click="onShowPopup" alt=""> -->
                     </div>
                     <span @click="onSort">{{sort === 'asc' ? t('asc') :  t('desc')}}<img :src="require('@/assets/icon_down_arrow@2x.png')" alt=""></span> 
                 </div>
@@ -68,14 +77,47 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from "vue-i18n";
 import { NavBar, Toast,  Popup, Picker, List, Empty } from 'vant';
-import Header from '@/components/header/index.vue';
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { LineChart } from "echarts/charts";
+import {
+  TitleComponent,
+  LegendComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  SingleAxisComponent,
+  GridComponent
+} from "echarts/components";
+import VChart, { THEME_KEY } from "vue-echarts";
+import moment from 'moment';
+import * as echarts from "echarts"
+// import Header from '@/components/header/index.vue';
 import * as services from '@/services/index';
-import { IHomeBannerResDTO, ITradeListResDTO } from '@/services/interface/response.d';
+import { IHomeBannerResDTO, ITradeListResDTO, IMinerListResDTO } from '@/services/interface/response.d';
 import * as utils from '@/utils';
+use([
+  CanvasRenderer,
+  LineChart,
+  TitleComponent,
+  TooltipComponent,
+  ToolboxComponent,
+  LegendComponent,
+  SingleAxisComponent,
+  GridComponent
+]);
+
+interface ISwitchDateTpe  {
+  startDate: string
+  endDate: string
+}
 export default {
     name: '',
+      provide: {
+      [THEME_KEY]: "light"
+    },
     components: {
-        Header,
+        // Header,
+        VChart,
         NavBar,
         Popup,
         Picker,
@@ -83,9 +125,11 @@ export default {
         Empty
     },
     setup() {
+        const option = ref();
         const router = useRouter();
         const { t } = useI18n();
         const pageSize: number = 10;
+        const selectedDateIndex = ref<number>(4);
         const show = ref<boolean>(false);
         const current = ref<number>(1);
         const page = ref<number>(0);
@@ -94,6 +138,8 @@ export default {
         const order = ref<string>('price');
         const loading = ref<Boolean>(false);
         const finished = ref<Boolean>(false);
+        const onShowPopup = () => show.value = true; 
+        const minerList = ref<IMinerListResDTO[]>();
         const columns = [{text: t('create_time'), value: 'created_at'}, {text:  t('price'), value: 'price'}];
         const tradList = ref<ITradeListResDTO[]>();
         const banners = ref<IHomeBannerResDTO[]>([]);
@@ -102,13 +148,119 @@ export default {
             current.value = value;
             onGetTradeList();
         }
-        const onShowPopup = () => show.value = true; 
 
+        const onSwitchData = (index: number) => {
+            const today = moment().format('YYYY-MM-DD HH:mm:ss');
+            const switchDate: {[key: number]: ISwitchDateTpe} = {
+                1: {
+                    startDate: moment().subtract(30, 'days').format('YYYY-MM-DD HH:mm:ss'),
+                    endDate: today
+                },
+                2: {
+                    startDate: moment().subtract(90, 'days').format('YYYY-MM-DD HH:mm:ss'),
+                    endDate: today
+                },
+                3: {
+                    startDate: moment().subtract(180, 'days').format('YYYY-MM-DD HH:mm:ss'),
+                    endDate: today
+                },
+                4: {
+                    startDate: moment().subtract(365, 'days').format('YYYY-MM-DD HH:mm:ss'),
+                    endDate: today
+                },
+                5: {
+                    startDate: moment().subtract(1095, 'days').format('YYYY-MM-DD HH:mm:ss'),
+                    endDate: today
+                }
+            }
+            console.log(switchDate[index]);
+            selectedDateIndex.value = index;
+        }
+        
         const onInitData = async () => {
-            utils.loading(t('loading'));
-            const [bannerRes] = await Promise.all([services.homeBanner({lang: 'zh_CN'})]) ;
-            banners.value = bannerRes.data;
-            utils.loadingClean();
+            try{
+              utils.loading(t('loading'));
+              const response = await services.minerList();
+              minerList.value = response.data;
+              const language = localStorage.getItem('language')
+              const xAxis = response.data.map(() => language === 'zh-CN' ? '2021-07-24' : '2021-07-24');
+              const series = [
+                {
+                    name: t('real_income'),
+                    type: 'line',
+                    smooth:true, 
+                    symbol: "none", //去掉圆点 //让曲线变平滑的  
+                    lineStyle: {
+                        width: 1,
+                        color: '#1678FF',
+                    },
+                    areaStyle: {
+                        opacity: 0.8,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: 'rgba(22, 120, 255)'
+                        }, {
+                            offset: 1,
+                            color: 'rgba(255, 255, 255)'
+                        }])
+                    },
+                    data: response.data.map(() => Math.random()),
+                },
+              ];
+              option.value = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                grid: {
+                    left: '5%',
+                    right: '5%',
+                    top: '6%',
+                    bottom: '6%',
+                    containLabel: true
+                    // height: "100%"
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    triggerEvent: true,
+                    axisLabel: {
+                        textStyle: {
+                            color: '#b6b6b6'
+                        },
+                        showMaxLabel:true, // 展示最大值
+                        showMinLabel:true, // 展示最小值
+                        formatter: function(value: string, index: number){
+                            if(index === 0) {
+                                return '                 ' + value;
+                            }
+                            if(index === xAxis.length -1) {
+                                return value + '                 ';
+                            }
+                            return value;
+                        }
+                    },
+                    data: xAxis
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        textStyle: {
+                            color: '#b6b6b6'
+                        }
+                    }
+                },
+                series:series
+             }
+             utils.loadingClean();
+            } catch(err){
+              utils.toast(err || err.msg);
+            }
         }
 
         const onGetTradeList = async () => {
@@ -177,7 +329,7 @@ export default {
             router.push(path);
         }
 
-        return {current, banners, tradList, sort, columns, show,loading, finished, t, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
+        return {current, banners, tradList, sort, columns, show,loading, finished, option,selectedDateIndex, t, onSwitchData, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
     }
   };
 </script>

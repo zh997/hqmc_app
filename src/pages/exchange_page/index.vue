@@ -8,7 +8,7 @@
                   <span class="withdraw-select-label">{{t('exchange')}} HQMC {{t('quantity')}}：</span>
                   <input type="number" v-model="num" class="withdraw-select-value" :placeholder="t('exchange_quantity_placeholder')">
               </div>
-              <div class="blance-text">HQMC {{t('balance')}}：{{query?.money}}</div>
+              <div class="blance-text">HQMC {{t('balance')}}：{{indexAsset?.hqmc_money}}</div>
                <div class="withdraw-select">
                   <span class="withdraw-select-label">{{t('consume')}} USDT {{t('quantity')}}：</span>
                   <span class="withdraw-select-text">{{dec_usdt || '0'}}</span>
@@ -34,9 +34,10 @@ import { useRoute } from 'vue-router';
 import Decimal from 'decimal.js';
 import { useI18n } from "vue-i18n";
 import * as utils from '@/utils';
+import { useGlobalHooks } from '@/hooks';
 import * as services from '@/services/index';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
-import { IMoneyConfigResDTO, IHomeAssetResDTO } from '@/services/interface/response';
+import { IHomeAssetResDTO } from '@/services/interface/response';
 
 export default {
     name: '',
@@ -45,9 +46,9 @@ export default {
     },
     setup() {
         const { t } = useI18n();
+        const { money_config } = useGlobalHooks();
         const { query } = useRoute();
         const num = ref<string>('');
-        const moneyConfig = ref<IMoneyConfigResDTO>();
         const indexAsset = ref<IHomeAssetResDTO>();
         const onSubmit = async () => {
             if (num.value) {
@@ -63,10 +64,10 @@ export default {
 
         const dec_usdt = computed({
             get: () => {
-                const change_dec_usdt = moneyConfig.value?.change_config.change_dec_usdt;
-                const hqmc_usdt_price =  moneyConfig.value?.price_config.hqmc_usdt_price;
+                const change_dec_usdt = money_config.value?.change_config.change_dec_usdt;
+                const hqmc_usdt_price =  money_config.value?.price_config.hqmc_usdt_price;
                 const z = new Decimal(Number(change_dec_usdt));
-                const rate = z.dividedBy(100).mul(Number(num.value)).dividedBy(Number(hqmc_usdt_price));
+                const rate = z.dividedBy(100).mul(Number(num.value)).mul(Number(hqmc_usdt_price));
                 return Number(rate);
             },
             set: () => {
@@ -76,8 +77,8 @@ export default {
 
         const dec_hqc = computed({
             get: () => {
-                const change_dec_hqc = moneyConfig.value?.change_config.change_dec_hqc;
-                 const hqc_hqmc_price =  moneyConfig.value?.price_config.hqc_hqmc_price;
+                const change_dec_hqc = money_config.value?.change_config.change_dec_hqc;
+                const hqc_hqmc_price =  money_config.value?.price_config.hqc_hqmc_price;
                 const z = new Decimal(Number(change_dec_hqc));
                 const rate = z.dividedBy(100).mul(Number(num.value)).dividedBy(Number(hqc_hqmc_price));
                 return Number(rate);
@@ -89,13 +90,12 @@ export default {
 
         onMounted(async () => {
             utils.loading(t('loading'));
-            const [moneyConfigRes, indexAssetRes] = await Promise.all([services.money_config(), services.homeWalletAsset()]) ;
-            moneyConfig.value = moneyConfigRes.data;
+            const [indexAssetRes] = await Promise.all([services.homeWalletAsset()]) ;
             indexAsset.value = indexAssetRes.data;
             utils.loadingClean();
         })
 
-        return { query, num, moneyConfig,t, onSubmit, dec_usdt, dec_hqc}
+        return { query, num,t, onSubmit,indexAsset, dec_usdt, dec_hqc}
     }
   };
 </script>

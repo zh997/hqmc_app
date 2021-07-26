@@ -15,10 +15,16 @@
                   <span class="withdraw-select-label">{{t('extraction_quantity')}}：</span>
                   <input type="number" v-model="num" :placeholder="t('extraction_quantity_placeholder')" class="withdraw-select-value">
               </div>
-              <div class="withdraw-select">
+              <!-- <div class="withdraw-select">
                   <span class="withdraw-select-label">{{t('withdrawal_limit')}}：</span>
                   <div class="withdraw-select-value border-clean">
                       <span>{{query?.money}}</span>
+                  </div>
+              </div> -->
+              <div class="withdraw-select">
+                  <span class="withdraw-select-label">{{t('extract_charges_fee')}}：</span>
+                  <div class="withdraw-select-value border-clean">
+                      <span>{{money_config?.withdraw_config.withdraw_rate}}% USDT</span>
                   </div>
               </div>
               <!-- <div class="withdraw-select">
@@ -52,6 +58,7 @@ import ClipboardJS from 'clipboard';
 import { useRoute } from 'vue-router';
 import { useI18n } from "vue-i18n";
 import { Toast, Popup, Picker  } from 'vant';
+import { useGlobalHooks } from '@/hooks';
 import * as services from '@/services/index';
 import * as utils from '@/utils';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
@@ -64,6 +71,7 @@ export default {
     },
     setup() {
         const { t } = useI18n();
+        const { money_config } = useGlobalHooks();
         const { query } = useRoute();
         const num = ref<string>('');
         const columns = ['USDT'];
@@ -100,7 +108,7 @@ export default {
             }
         }
 
-        return {columns, show, query, num, t,  onShowPopup, onConfirm, onCancel, onChange, onSubmit}
+        return {columns, show, query, num, money_config, t,  onShowPopup, onConfirm, onCancel, onChange, onSubmit}
     }
   };
 </script>

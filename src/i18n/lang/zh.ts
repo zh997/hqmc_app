@@ -1,7 +1,7 @@
 export default {
     loading: '加载中',
     home: '首页',
-    mining: '挖矿',
+    mining: '矿池',
     trading: '交易',
     mine: '我的',
     share: '分享',
@@ -105,6 +105,8 @@ export default {
     service_agreement: '服务协议',
     privacy_clause: '隐私条款',
     version_diary: '版本日记',
-    current_version: '当前版本'
-    
+    current_version: '当前版本',
+    extract_charges_fee: '提币手续费',
+    make_over_charges_fee: '转让手续费',
+    transfer_consumption: '转让消耗'
 }

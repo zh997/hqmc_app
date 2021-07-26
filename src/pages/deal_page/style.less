@@ -1,17 +1,61 @@
 @import url('@/styles/theme_vars.less');
 
+
+
+.v-chart-wrap{
+    overflow: hidden;
+    margin: 25px;
+    padding: 30px 0;
+    background-color: #fff;
+    border-radius: 10px;
+    // box-sizing: border-box;
+    .v-chart-title{
+        font-size: 24px;
+        padding: 0 20px 20px 20px;
+    }
+   .v-chart{
+       height:  400px !important;
+    //    > div{
+    //        height: 100% !important;
+    //    }
+       width: 100%;
+   } 
+}
+
+.v-chart-time-quantum{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    .time-quantum-item{
+        font-size: 24px;
+        color: #808080;
+        width: 20%;
+        height: 50px;
+        border-radius: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .time-quantum-active{
+        background-color: fade(#008AEF, 10);
+        color: #008AEF;
+    }
+}
+
 .switch-bar-head{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 58px 30px 41px 0;
+    // margin-right: 150px;
     .switch-bar{
         > span{
             font-size: 32px;
             color: @color-282828;
             font-weight: bold;
             display: inline-block;
-            padding: 0 30px;
+            // padding: 0 30px;
+            margin-right: 40px;
         }
         &-selected{
             color: @primary-color !important;
@@ -26,10 +70,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px;
+    padding: 30px 20px;
     background-color: #fff;
     border-radius: 10px;
-    margin: 0 25px;
+    margin: 25px 25px 0 25px;
     > span{
         font-size: 18p;
         color: @color-282828;
@@ -119,8 +163,10 @@
     bottom: var(--van-tabbar-height);
     margin-bottom: env(safe-area-inset-bottom);
     right: 33px;
-    // background-color: #fff;
-    padding-bottom: 30px;
+    z-index: 10000;
+    background-color: #fff;
+    // padding-bottom: 30px;
+    transform: translateY(-30px);
     > img{
         width: 100%;
         height: 100%;

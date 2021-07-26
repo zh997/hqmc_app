@@ -108,7 +108,6 @@ export default {
                         console.log('on close');
                     })
                 } catch(err) {
-                    console.log(err);
                     utils.toast(err.msg || err);
                 }
             } else {

@@ -117,7 +117,7 @@ export default {
         },
         {
           icon: require('@/assets/home_icon_6@2x.png'),
-          text: t('trading_area'),
+          text: t('trading'),
           path: routesPaths.deal_page
         },
         {
