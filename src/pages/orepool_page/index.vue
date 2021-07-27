@@ -7,6 +7,7 @@
             <span class="main-title-text">HQMC {{t('mining')}}</span>
             <span class="main-title-line"></span>
         </div>
+        <div class="link-btn" @click="onRouter(routerPaths.produce_page)">{{t('currency_production_record')}}</div>
         <!-- <div class="hqctotal-header">
             <span class="hqctotal-header-label">已产出HQC888枚</span>
             <span class="progrecess-item">
@@ -23,6 +24,8 @@ import { onMounted, ref } from 'vue';
 import { Toast } from 'vant';
 import { NavBar } from 'vant';
 import { useI18n } from "vue-i18n";
+import { useRouter } from 'vue-router';
+import * as routerPaths from '@/constants/app_routes_path';
 import CardItem from '@/components/card_item/index.vue';
 import * as services from '@/services/index';
 import { IMinerListResDTO } from '@/services/interface/response.d';
@@ -36,6 +39,7 @@ export default {
     },
     setup() {
         const { t } = useI18n();
+        const router = useRouter();
         const minerList = ref<IMinerListResDTO[]>();
         
         const onInitData = async () => {
@@ -67,7 +71,11 @@ export default {
         return {
             minerList,
             onButMachine,
-            t
+            t,
+            routerPaths,
+            onRouter: (path: string) => {
+                router.push(path);
+            }
         }
 
     }

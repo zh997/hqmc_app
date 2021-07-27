@@ -10,9 +10,10 @@
           <div class="assets-btn-group">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
           </div>
-          <RecordItem />
-          <RecordItem />
-          <RecordItem />
+          <div v-if="record_list && record_list.length > 0">
+                <RecordItem v-for="item in record_list" :key="item.user_id" :item="item"/>
+          </div>
+          <Empty v-else/>
           <!-- <div class="charge-code-panel" v-if="query.name !== 'USDT'">
               <div id="qrcode" class="share-code"></div>
               <img :src="require('@/assets/share_code_black@2x.png')" class="share-code" alt="">
@@ -30,18 +31,20 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 // import { qrcanvas } from 'qrcanvas';
 import { useI18n } from "vue-i18n";
+import { Empty } from 'vant';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import RecordItem from '@/components/record_item/index.vue';
 import * as routerPaths from '@/constants/app_routes_path';
 import * as services from '@/services/index';
 import * as utils from '@/utils';
-import { IHomeWalletUsdtResDTO, IHomeWalletHqcResDTO } from '@/services/interface/response';
+import { IHomeWalletUsdtResDTO, IHomeWalletHqcResDTO, IRecordItemResDTO } from '@/services/interface/response';
 
 export default {
     name: '',
     components: {
        CustomNavBar,
-       RecordItem
+       RecordItem,
+       Empty
     },
     setup() {
         const { t } = useI18n();
@@ -49,14 +52,16 @@ export default {
         const router = useRouter();
         const qrcodeDom = ref<HTMLElement>();
         const walletUsdt = ref<IHomeWalletUsdtResDTO>();
+        const record_list = ref<IRecordItemResDTO[]>();
         const walletHqc = ref<IHomeWalletHqcResDTO>();
         let btnItems = ref();
         
         onMounted(async () => {
             utils.loading('加载中');
             if (query.name === 'USDT') {
-                const res = await services.homeWalletUsdt();
-                walletUsdt.value = res.data;
+                const [resWalletUsdt, list] = await Promise.all([services.homeWalletUsdt(), services.moneyope_usdt_list()]);
+                walletUsdt.value = resWalletUsdt.data;
+                record_list.value = list.data;
                 utils.loadingClean();
                 btnItems.value = [
                     {
@@ -71,8 +76,9 @@ export default {
                 // onRenderQrcode(walletUsdt.value.usdt_wallet);
             }
             if (query.name === 'HQC') {
-                const res = await services.homeWalletHqc();
-                walletHqc.value = res.data;
+                const [resWalletHqc, list] = await Promise.all([services.homeWalletHqc(), services.moneyope_hqc_list()]);
+                walletHqc.value = resWalletHqc.data;
+                record_list.value = list.data;
                 utils.loadingClean();
                 btnItems.value = [
                     {
@@ -98,7 +104,7 @@ export default {
         //     }
         // }
 
-        return {query, btnItems,walletUsdt, walletHqc, qrcodeDom, t,  onRouter: (path: string) => {
+        return {query, btnItems,walletUsdt, walletHqc, qrcodeDom, t, record_list, onRouter: (path: string) => {
                 if (query.name === 'USDT'){
                     path = path + `?receive_address=${walletUsdt.value?.usdt_wallet}&money=${walletUsdt.value?.money}&type=USDT`
                 } else {

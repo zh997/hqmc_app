@@ -25,4 +25,8 @@ export const income_list: string = '/api/user/income_list';
 export const money_config: string = '/api/basic/money_config';
 export const upload_img: string = '/api/user/upload_img';
 export const change_head_img: string = '/api/user/change_head_img';
+export const moneyope_hqmc_list: string = '/api/moneyope/hqmc_list';
+export const moneyope_usdt_list: string = '/api/moneyope/usdt_record';
+export const moneyope_hqc_list: string = '/api/moneyope/hqc_record';
+export const hqc_pirce_list: string = '/api/index/hqc_pirce_list';
 

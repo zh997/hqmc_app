@@ -110,5 +110,10 @@ export default  {
     current_version: 'Current version',
     extract_charges_fee: 'service charges/fee',
     make_over_charges_fee: 'service charges/fee',
-    transfer_consumption: 'Transfer consumption'
+    transfer_consumption: 'Transfer consumption',
+    nearly_one_months: 'Nearly 1 month', 
+    nearly_three_months: 'Nearly 3 month', 
+    nearly_six_months: 'Nearly 6 month',
+    nearly_one_years: 'Nearly 1 years',
+    nearly_three_years: 'Nearly 3 years'
 }

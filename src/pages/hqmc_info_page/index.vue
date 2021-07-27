@@ -10,9 +10,10 @@
           <div class="assets-btn-group">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
           </div>
-          <RecordItem />
-          <RecordItem />
-          <RecordItem />
+          <div v-if="record_list && record_list.length > 0">
+                <RecordItem v-for="item in record_list" :key="item.user_id" :item="item"/>
+          </div>
+          <Empty v-else/>
           <!-- <div class="warning-text">
               <p class="warning-text-title">充值注意事项：</p>
               <p>此地址只接受TRC20模式的USDT转入充值，请勿充值任何非USDT资产，否则资产不可找回，区块链得到确认后，平台即自动入账，请务必保证您的波场钱包有充足的USDT资产，以及确认电脑及浏览器安全，防止信息被篡改或泄露。</p>
@@ -28,22 +29,25 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useI18n } from "vue-i18n";
+import { Empty } from 'vant';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
 import RecordItem from '@/components/record_item/index.vue';
 import * as routerPaths from '@/constants/app_routes_path';
 import * as services from '@/services/index';
 import * as utils from '@/utils';
-import { IHomeHqmcMoneyResDTO } from '@/services/interface/response';
+import { IHomeHqmcMoneyResDTO, IRecordItemResDTO } from '@/services/interface/response';
 export default {
     name: '',
     components: {
        CustomNavBar,
-       RecordItem
+       RecordItem,
+       Empty
     },
     setup() {
         const { t } = useI18n();
         const { query } = useRoute();
         const router = useRouter();
+        const record_list = ref<IRecordItemResDTO[]>();
         const hqmcMoney = ref<IHomeHqmcMoneyResDTO>();
         const btnItems = [
             {
@@ -61,11 +65,12 @@ export default {
         ]
         onMounted(async () => {
             utils.loading(t('loading'));
-            const res = await services.hqcMoney();
-            hqmcMoney.value = res.data;
+            const [resHqcMoney, list] = await Promise.all([services.hqcMoney(), services.moneyope_hqmc_list()]);
+            hqmcMoney.value = resHqcMoney.data;
+            record_list.value = list.data;
             utils.loadingClean();
         })
-        return {query, btnItems, hqmcMoney, t,  onRouter: (path: string) => {
+        return {query, btnItems, hqmcMoney, t, record_list, onRouter: (path: string) => {
                 router.push(path);
             }}
     }

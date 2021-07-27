@@ -165,3 +165,18 @@ export interface IMoneyConfigResDTO {
         withdraw_min: string
     }
 }
+
+/** HQC价格走势 */
+export interface IHqcPriceListResDTO {
+    [key: string]: string
+}
+
+/** 记录 */
+export interface IRecordItemResDTO {
+    user_id: number
+    total: string
+    money_name: string
+    type: number
+    content: string
+    created_at: string
+}

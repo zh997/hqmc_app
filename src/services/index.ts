@@ -16,7 +16,9 @@ import { IAuthLoginResDTO,
     ICoinProfitResDTO,
     IPlatFormResDTO,
     IMoneyConfigResDTO,
-    IIncomeListResDTO
+    IIncomeListResDTO,
+    IHqcPriceListResDTO,
+    IRecordItemResDTO
  } from "./interface/response.d";
 import { ResponseDTO, ResponseListDTO } from "@/typing";
 
@@ -145,13 +147,35 @@ export async function money_config(): Promise<ResponseDTO<IMoneyConfigResDTO>> {
     return await request({url: api.money_config, method: 'POST'});
 }
 
-/** 上传头像 */
+/** 上传图片 */
 export async function upload_img(data: FormData): Promise<ResponseDTO<{pathUrl: string, path: string}>> {
     return await request({url: api.upload_img, method: 'POST', headers: {
         'Content-Type': 'multipart/form-data'
     }, data: data});
 }
 
+/** 修改头像 */
 export async function change_head_img(params: { avatar: string}): Promise<ResponseDTO<IMoneyConfigResDTO>> {
     return await request({url: api.change_head_img, method: 'POST', data: params});
 }
+
+/** HQMC资金记录 */
+export async function moneyope_hqmc_list(): Promise<ResponseDTO<IRecordItemResDTO[]>> {
+    return await request({url: api.moneyope_hqmc_list, method: 'POST'});
+}
+
+/** USDT资金记录 */
+export async function moneyope_usdt_list(): Promise<ResponseDTO<IRecordItemResDTO[]>> {
+    return await request({url: api.moneyope_usdt_list, method: 'POST'});
+}
+
+/** HQC资金记录 */
+export async function moneyope_hqc_list(): Promise<ResponseDTO<IRecordItemResDTO[]>> {
+    return await request({url: api.moneyope_hqc_list, method: 'POST'});
+}
+
+/** HQC价格走势 */
+export async function hqc_pirce_list(params: {stardate: string, enddate: string}): Promise<ResponseDTO<IHqcPriceListResDTO>> {
+    return await request({url: api.hqc_pirce_list, method: 'POST', data: params});
+}
+

@@ -108,5 +108,10 @@ export default {
     current_version: '当前版本',
     extract_charges_fee: '提币手续费',
     make_over_charges_fee: '转让手续费',
-    transfer_consumption: '转让消耗'
+    transfer_consumption: '转让消耗',
+    nearly_one_months: '近1个月',
+    nearly_three_months: '近3个月', 
+    nearly_six_months: '近6个月',
+    nearly_one_years: '近1年',
+    nearly_three_years: '近3年'
 }

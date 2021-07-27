@@ -13,11 +13,11 @@
                     <div class="v-chart-title">HQC {{t('chart')}}</div>
                     <v-chart class="v-chart" :option="option" />
                     <div class="v-chart-time-quantum">
-                        <div class="time-quantum-item" :class="selectedDateIndex === 1 ? 'time-quantum-active' : ''" @click="onSwitchData(1)">近1个月</div>
-                        <div class="time-quantum-item" :class="selectedDateIndex === 2 ? 'time-quantum-active' : ''" @click="onSwitchData(2)">近3个月</div>
-                        <div class="time-quantum-item" :class="selectedDateIndex === 3 ? 'time-quantum-active' : ''" @click="onSwitchData(3)">近6个月</div>
-                        <div class="time-quantum-item" :class="selectedDateIndex === 4 ? 'time-quantum-active' : ''" @click="onSwitchData(4)">近1年</div>
-                        <div class="time-quantum-item" :class="selectedDateIndex === 5 ? 'time-quantum-active' : ''" @click="onSwitchData(5)">近3年</div>
+                        <div class="time-quantum-item" :class="selectedDateIndex === 1 ? 'time-quantum-active' : ''" @click="onChangeDate(1)">{{t('nearly_one_months')}}</div>
+                        <div class="time-quantum-item" :class="selectedDateIndex === 2 ? 'time-quantum-active' : ''" @click="onChangeDate(2)">{{t('nearly_three_months')}}</div>
+                        <div class="time-quantum-item" :class="selectedDateIndex === 3 ? 'time-quantum-active' : ''" @click="onChangeDate(3)">{{t('nearly_six_months')}}</div>
+                        <div class="time-quantum-item" :class="selectedDateIndex === 4 ? 'time-quantum-active' : ''" @click="onChangeDate(4)">{{t('nearly_one_years')}}</div>
+                        <div class="time-quantum-item" :class="selectedDateIndex === 5 ? 'time-quantum-active' : ''" @click="onChangeDate(5)">{{t('nearly_three_years')}}</div>
                     </div>
                 </div>
                 <div class="selector-bar-wrap">
@@ -93,7 +93,7 @@ import moment from 'moment';
 import * as echarts from "echarts"
 // import Header from '@/components/header/index.vue';
 import * as services from '@/services/index';
-import { IHomeBannerResDTO, ITradeListResDTO, IMinerListResDTO } from '@/services/interface/response.d';
+import { IHomeBannerResDTO, ITradeListResDTO,IHqcPriceListResDTO } from '@/services/interface/response.d';
 import * as utils from '@/utils';
 use([
   CanvasRenderer,
@@ -139,17 +139,15 @@ export default {
         const loading = ref<Boolean>(false);
         const finished = ref<Boolean>(false);
         const onShowPopup = () => show.value = true; 
-        const minerList = ref<IMinerListResDTO[]>();
         const columns = [{text: t('create_time'), value: 'created_at'}, {text:  t('price'), value: 'price'}];
         const tradList = ref<ITradeListResDTO[]>();
         const banners = ref<IHomeBannerResDTO[]>([]);
         const onSwitch = (value: number) => {
-            page.value = 1;
             current.value = value;
-            onGetTradeList();
+            onGetTradeList(1);
         }
 
-        const onSwitchData = (index: number) => {
+        const onGetDateParams = (index: number) => {
             const today = moment().format('YYYY-MM-DD HH:mm:ss');
             const switchDate: {[key: number]: ISwitchDateTpe} = {
                 1: {
@@ -173,20 +171,27 @@ export default {
                     endDate: today
                 }
             }
-            console.log(switchDate[index]);
-            selectedDateIndex.value = index;
+            
+            return switchDate[index];
         }
-        
-        const onInitData = async () => {
-            try{
-              utils.loading(t('loading'));
-              const response = await services.minerList();
-              minerList.value = response.data;
-              const language = localStorage.getItem('language')
-              const xAxis = response.data.map(() => language === 'zh-CN' ? '2021-07-24' : '2021-07-24');
-              const series = [
+
+        const onChangeDate = async (index: number) => {
+            utils.loading(t('loading'));
+            selectedDateIndex.value = index;
+            const fetchParams = onGetDateParams(index);
+            const res = await services.hqc_pirce_list({
+                stardate: fetchParams.startDate,
+                enddate: fetchParams.endDate
+            })
+            utils.loadingClean();
+            onSetChartOptions(res.data);
+        }
+
+        const onSetChartOptions = (price_list: IHqcPriceListResDTO) => {
+            const xAxis = Object.keys(price_list);
+            const series = [
                 {
-                    name: t('real_income'),
+                    name: t('price'),
                     type: 'line',
                     smooth:true, 
                     symbol: "none", //去掉圆点 //让曲线变平滑的  
@@ -204,7 +209,7 @@ export default {
                             color: 'rgba(255, 255, 255)'
                         }])
                     },
-                    data: response.data.map(() => Math.random()),
+                    data: Object.values(price_list),
                 },
               ];
               option.value = {
@@ -257,71 +262,68 @@ export default {
                 },
                 series:series
              }
-             utils.loadingClean();
-            } catch(err){
-              utils.toast(err || err.msg);
-            }
         }
 
-        const onGetTradeList = async () => {
-            utils.loading(t('loading'));
-            loading.value = true;
-            const res = await services.tradeList({
-                page: page.value,
-                size: pageSize,
-                type: current.value,
-                sort: sort.value,
-                order: order.value
-            });
-            utils.loadingClean();
-            const pageNum = Math.ceil(res.data.total / pageSize);
-            if (page.value !== 1) {
-              tradList.value = tradList.value?.concat(res.data.list);
-            } else {
-              tradList.value = res.data.list
+        const onGetTradeList = async (pageIndex: number) => {
+            if (loading.value) return false;
+            try {
+                utils.loading(t('loading'));
+                loading.value = true;
+                const res = await services.tradeList({
+                    page: pageIndex,
+                    size: pageSize,
+                    type: current.value,
+                    sort: sort.value,
+                    order: order.value
+                });
+                utils.loadingClean();
+                const pageNum = Math.ceil(res.data.total / pageSize);
+                if (pageIndex > 1) {
+                  tradList.value = tradList.value?.concat(res.data.list);
+                } else {
+                  tradList.value = res.data.list
+                }
+                pageTotal.value = pageNum;
+                finished.value = pageIndex >= pageNum;
+                page.value = pageIndex;
+                loading.value = false;
+                return res;
+            } catch(err) {
+                loading.value = false;
             }
-            pageTotal.value = pageNum;
-            finished.value = page.value >= pageNum;
-            loading.value = false;
-            return res;
         }
 
         const onBuyIn = async (id: number) => {
              utils.loading(t('loading'));
             if (current.value === 1) {
                 await services.buyIn({id: id});
-                Toast.success({message: t('successful_purchase'), onClose: () => {
-                    onInitData()
-                }});
+                Toast.success({message: t('successful_purchase')});
             }
              if (current.value === 2) {
                 await services.sellOut({id: id});
                 Toast.success({message: t('sold_successfully'), onClose: () => {
-                    onInitData()
+                    onGetTradeList(1);
                 }});
             }
         }
 
         const onLoad = () => {
-           page.value = page.value + 1;
-           if ( page.value <= pageTotal.value)   onGetTradeList();
+           if ( page.value < pageTotal.value) onGetTradeList(page.value + 1);
         }
 
         const onSort = () => {
-            page.value = 1;
             sort.value = sort.value === 'asc' ? 'desc' : 'asc';
-            onGetTradeList();
+            onGetTradeList(1);
         }
         
         onMounted(()=> {
-            onInitData()
+            onChangeDate(selectedDateIndex.value);
         })
         
         const onConfirm = (item: {value: string, text: string}) => {
            show.value = false;
            order.value = item.value;
-           page.value = 1;
-           onGetTradeList();
+           onGetTradeList(1);
         };
         const onCancel = () => show.value = false;
 
@@ -329,7 +331,7 @@ export default {
             router.push(path);
         }
 
-        return {current, banners, tradList, sort, columns, show,loading, finished, option,selectedDateIndex, t, onSwitchData, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
+        return {current, banners, tradList, sort, columns, show,loading, finished, option,selectedDateIndex, t, onChangeDate, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
     }
   };
 </script>
