@@ -193,7 +193,7 @@ export default {
                 {
                     name: t('price'),
                     type: 'line',
-                    smooth:true, 
+                    // smooth:true, 
                     symbol: "none", //去掉圆点 //让曲线变平滑的  
                     lineStyle: {
                         width: 1,
