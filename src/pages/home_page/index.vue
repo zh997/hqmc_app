@@ -8,17 +8,17 @@
         <span>{{item.text}}</span>
       </div>
     </div>
-    <BlockTitle :title="t('assets')"/>
+    <BlockTitle :title="t('assets')" :showIcon="true"/>
     <div class="asstes-group">
-      <div class="asstes-group-item" @click="onRouter('/full_extraction?name=USDT')">
+      <div class="asstes-group-item">
         <span>{{t('usdt_wallet')}}</span>
         <span class="asstes-value">￥{{indexAsset?.money || '0.00'}}</span>
       </div>
-      <div class="asstes-group-item" @click="onRouter('/full_extraction?name=HQC')">
+      <div class="asstes-group-item">
         <span>{{t('hqc_wallet')}}</span>
         <span class="asstes-value">￥{{indexAsset?.hqc_money || '0.00'}}</span>
       </div>
-      <div class="asstes-group-item" @click="onRouter('/hqmc_info?name=HQMC')">
+      <div class="asstes-group-item">
         <span>{{t('hqmc_wallet')}}</span>
         <span class="asstes-value">￥{{indexAsset?.hqmc_money || '0.00'}}</span>
       </div>

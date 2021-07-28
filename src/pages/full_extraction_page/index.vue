@@ -7,13 +7,16 @@
               <span class="assets-head-label">{{query.name}} {{t('current_balance')}}</span>
               <span class="assets-head-value">{{walletUsdt?.money || walletHqc?.hqc_money}}</span>
           </div>
-          <div class="assets-btn-group">
+          <div class="assets-btn-group" v-if="!query.isRecord">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
           </div>
-          <div v-if="record_list && record_list.length > 0">
-                <RecordItem v-for="item in record_list" :key="item.user_id" :item="item"/>
+          <div v-else>
+            <div v-if="record_list && record_list.length > 0">
+                    <RecordItem v-for="item in record_list" :key="item.user_id" :item="item"/>
+            </div>
+            <Empty v-else/>
           </div>
-          <Empty v-else/>
+         
           <!-- <div class="charge-code-panel" v-if="query.name !== 'USDT'">
               <div id="qrcode" class="share-code"></div>
               <img :src="require('@/assets/share_code_black@2x.png')" class="share-code" alt="">

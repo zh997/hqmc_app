@@ -7,13 +7,16 @@
               <span class="assets-head-label">HQMC {{t('current_balance')}}</span>
               <span class="assets-head-value">{{hqmcMoney?.hqmc_money}}</span>
           </div>
-          <div class="assets-btn-group">
+          <div class="assets-btn-group" v-if="!query.isRecord">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
           </div>
-          <div v-if="record_list && record_list.length > 0">
-                <RecordItem v-for="item in record_list" :key="item.user_id" :item="item"/>
+          <div v-else>
+              <div v-if="record_list && record_list.length > 0">
+                    <RecordItem v-for="item in record_list" :key="item.user_id" :item="item"/>
+            </div>
+            <Empty v-else/>
           </div>
-          <Empty v-else/>
+          
           <!-- <div class="warning-text">
               <p class="warning-text-title">充值注意事项：</p>
               <p>此地址只接受TRC20模式的USDT转入充值，请勿充值任何非USDT资产，否则资产不可找回，区块链得到确认后，平台即自动入账，请务必保证您的波场钱包有充足的USDT资产，以及确认电脑及浏览器安全，防止信息被篡改或泄露。</p>
