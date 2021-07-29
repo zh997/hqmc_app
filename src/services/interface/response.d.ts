@@ -180,3 +180,14 @@ export interface IRecordItemResDTO {
     content: string
     created_at: string
 }
+
+
+/** 所有记录/账单 */
+export interface IBillRecordItemResDTO {
+    id: number
+    user_id: number
+    type: string
+    content: string
+    content: string
+    created_at: string
+}

@@ -7,15 +7,15 @@
               <span class="assets-head-label">HQMC {{t('current_balance')}}</span>
               <span class="assets-head-value">{{hqmcMoney?.hqmc_money}}</span>
           </div>
-          <div class="assets-btn-group" v-if="!query.isRecord">
+          <div class="assets-btn-group">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
           </div>
-          <div v-else>
+          <!-- <div v-else>
               <div v-if="record_list && record_list.length > 0">
                     <RecordItem v-for="item in record_list" :key="item.user_id" :item="item"/>
             </div>
             <Empty v-else/>
-          </div>
+          </div> -->
           
           <!-- <div class="warning-text">
               <p class="warning-text-title">充值注意事项：</p>
@@ -50,7 +50,7 @@ export default {
         const { t } = useI18n();
         const { query } = useRoute();
         const router = useRouter();
-        const record_list = ref<IRecordItemResDTO[]>();
+        // const record_list = ref<IRecordItemResDTO[]>();
         const hqmcMoney = ref<IHomeHqmcMoneyResDTO>();
         const btnItems = [
             {
@@ -68,12 +68,12 @@ export default {
         ]
         onMounted(async () => {
             utils.loading(t('loading'));
-            const [resHqcMoney, list] = await Promise.all([services.hqcMoney(), services.moneyope_hqmc_list()]);
+            const [resHqcMoney] = await Promise.all([services.hqcMoney()]);
             hqmcMoney.value = resHqcMoney.data;
-            record_list.value = list.data;
+            // record_list.value = list.data;
             utils.loadingClean();
         })
-        return {query, btnItems, hqmcMoney, t, record_list, onRouter: (path: string) => {
+        return {query, btnItems, hqmcMoney, t, onRouter: (path: string) => {
                 router.push(path);
             }}
     }

@@ -21,3 +21,4 @@ export const publish_order_page: string = '/publish_order_page';
 export const plateform_intro_detail_page: string = '/plateform_intro_detail_page';
 export const edit_profile_page: string = '/edit_profile';
 export const lang_switch: string = '/lang_switch';
+export const bill: string = '/bill';

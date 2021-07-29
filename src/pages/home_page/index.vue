@@ -8,7 +8,7 @@
         <span>{{item.text}}</span>
       </div>
     </div>
-    <BlockTitle :title="t('assets')" :showIcon="true"/>
+    <BlockTitle :title="t('assets')" :showIcon="true" :onClickRight="onToBill"/>
     <div class="asstes-group">
       <div class="asstes-group-item">
         <span>{{t('usdt_wallet')}}</span>
@@ -138,6 +138,9 @@ export default {
         indexAsset, gridItems, onRouter: (path: string) => {
           if (!path) return utils.toast('暂未开放');
           router.push(path)
+        },
+        onToBill: () => {
+          router.push(routesPaths.bill)
         }
       }
     }

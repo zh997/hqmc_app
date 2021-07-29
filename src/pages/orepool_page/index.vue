@@ -21,7 +21,7 @@
 
 <script lang='ts'>
 import { onMounted, ref } from 'vue';
-import { Toast } from 'vant';
+import { Toast, Dialog } from 'vant';
 import { NavBar } from 'vant';
 import { useI18n } from "vue-i18n";
 import { useRouter } from 'vue-router';
@@ -56,11 +56,21 @@ export default {
         const onButMachine = async (item: IMinerListResDTO) => {
             console.log(item);
             if (item.status_tip === 1) {
-                utils.loading(t('loading'));
-                await services.buyMachine({id: item.id});
-                Toast.success({message: t('open_successfully'), onClose: () => {
-                     onInitData();
-                }})
+                Dialog.confirm({
+                    title: '提示',
+                    message: `确定开启吗？`,
+                })
+                .then(async () => {
+                    // on confirm
+                    utils.loading(t('loading'));
+                    await services.buyMachine({id: item.id});
+                    Toast.success({message: t('open_successfully'), onClose: () => {
+                        onInitData();
+                    }})
+                })
+                .catch(() => {
+                    // on cancel
+                });
             }
         }
 

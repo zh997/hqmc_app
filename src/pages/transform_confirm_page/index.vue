@@ -48,7 +48,7 @@
 <script lang='ts'>
 import { onMounted, ref, computed } from 'vue';
 import ClipboardJS from 'clipboard';
-import { Toast  } from 'vant';
+import { Toast, Dialog } from 'vant';
 import { useI18n } from "vue-i18n";
 import { useRoute } from 'vue-router';
 import Decimal from 'decimal.js';
@@ -85,24 +85,36 @@ export default {
             if (!num.value) {
                 return utils.toast(t('transfer_quantity_placeholder'));
             }
-            if (query.type === 'HQC') {
-                utils.loading(t('loading'));
-                await services.hqcTransfer({
-                    address: address.value,
-                    money_type: 'hqc_money',
-                    num:  Number(num.value) 
-                });
-                Toast.success(t('successful_transfer'));
-            }
-            if (query.type === 'HQMC') {
-                utils.loading(t('loading'));
-                await services.hqmcTransfer({
-                    address: address.value,
-                    money_type: 'hqmc_money',
-                    num:  Number(num.value) 
-                });
-                Toast.success(t('successful_transfer'));
-            }
+
+            Dialog.confirm({
+                title: '提示',
+                message: `确定转让吗？`,
+            })
+            .then(async () => {
+                // on confirm
+               if (query.type === 'HQC') {
+                    utils.loading(t('loading'));
+                    await services.hqcTransfer({
+                        address: address.value,
+                        money_type: 'hqc_money',
+                        num:  Number(num.value) 
+                    });
+                    Toast.success(t('successful_transfer'));
+                }
+                if (query.type === 'HQMC') {
+                    utils.loading(t('loading'));
+                    await services.hqmcTransfer({
+                        address: address.value,
+                        money_type: 'hqmc_money',
+                        num:  Number(num.value) 
+                    });
+                    Toast.success(t('successful_transfer'));
+                }
+            })
+            .catch(() => {
+                // on cancel
+            });
+            
         }
 
         const dec_hqc = computed({

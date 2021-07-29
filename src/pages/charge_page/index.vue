@@ -94,19 +94,31 @@ export default {
 
         const onRecharge = async () => {
             if (num.value) {
-                utils.loading(t('recharging'));
+               
                 try {
-                    const amount = (Number(num.value) * Math.pow(10, 18)).toString();
-                    const res = await transaction(amount, query.receive_address);
-                    console.log(res);
-                    utils.loadingClean();
-                    Dialog.alert({
-                        title: t('tips'),
-                        message: t('recharged_tips'),
-                        confirmButtonText: t('confirm'),
-                    }).then(() => {
-                        console.log('on close');
+                    Dialog.confirm({
+                        title: '提示',
+                        message: `确定充值吗？`,
                     })
+                    .then(async () => {
+                        // on confirm
+                         utils.loading(t('recharging'));
+                        const amount = (Number(num.value) * Math.pow(10, 18)).toString();
+                        const res = await transaction(amount, query.receive_address);
+                        console.log(res);
+                        utils.loadingClean();
+                        Dialog.alert({
+                            title: t('tips'),
+                            message: t('recharged_tips'),
+                            confirmButtonText: t('confirm'),
+                        }).then(() => {
+                            console.log('on close');
+                        })
+                    })
+                    .catch(() => {
+                        // on cancel
+                    });
+                    
                 } catch(err) {
                     utils.toast(err.msg || err);
                 }

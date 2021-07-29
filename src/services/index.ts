@@ -18,7 +18,8 @@ import { IAuthLoginResDTO,
     IMoneyConfigResDTO,
     IIncomeListResDTO,
     IHqcPriceListResDTO,
-    IRecordItemResDTO
+    IRecordItemResDTO,
+    IBillRecordItemResDTO
  } from "./interface/response.d";
 import { ResponseDTO, ResponseListDTO } from "@/typing";
 
@@ -138,7 +139,7 @@ export async function plat_form(): Promise<ResponseDTO<IPlatFormResDTO[]>> {
 }
 
 /** 团队收益记录 */
-export async function income_list(params: {type: number | null}): Promise<ResponseDTO<IIncomeListResDTO[]>> {
+export async function income_list(params: {type: string | null | undefined}): Promise<ResponseDTO<IIncomeListResDTO[]>> {
     return await request({url: api.income_list, method: 'POST', data: params});
 }
 
@@ -179,3 +180,12 @@ export async function hqc_pirce_list(params: {stardate: string, enddate: string}
     return await request({url: api.hqc_pirce_list, method: 'POST', data: params});
 }
 
+/** 所有资金记录/账单 */
+export async function money_record(): Promise<ResponseDTO<IBillRecordItemResDTO[]>> {
+    return await request({url: api.money_record, method: 'POST'});
+}
+
+/** 撤销 */
+export async function revokeorder(params: {id: number}): Promise<ResponseDTO<[]>> {
+    return await request({url: api.revokeorder, method: 'POST', data:params});
+}

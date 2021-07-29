@@ -57,7 +57,7 @@ import { onMounted, ref } from 'vue';
 import ClipboardJS from 'clipboard';
 import { useRoute } from 'vue-router';
 import { useI18n } from "vue-i18n";
-import { Toast, Popup, Picker  } from 'vant';
+import { Toast, Popup, Picker,Dialog } from 'vant';
 import { useGlobalHooks } from '@/hooks';
 import * as services from '@/services/index';
 import * as utils from '@/utils';
@@ -96,13 +96,24 @@ export default {
 
         const onSubmit = async () => {
             if (num.value) {
-                utils.loading(t('loading'));
-                await services.usdtWithdraw({
-                    receive_address: query.receive_address,
-                    money_type: 'money',
-                    num: Number(num.value) 
+                Dialog.confirm({
+                    title: '提示',
+                    message: `确定提币吗？`,
+                })
+                .then(async () => {
+                    // on confirm
+                    utils.loading(t('loading'));
+                    await services.usdtWithdraw({
+                        receive_address: query.receive_address,
+                        money_type: 'money',
+                        num: Number(num.value) 
+                    });
+                    Toast.success(t('extraction_successful'));
+                })
+                .catch(() => {
+                    // on cancel
                 });
-                Toast.success(t('extraction_successful'));
+                
             } else {
                 utils.toast(t('extraction_quantity_placeholder'))
             }

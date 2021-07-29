@@ -113,5 +113,8 @@ export default {
     nearly_three_months: '近3个月', 
     nearly_six_months: '近6个月',
     nearly_one_years: '近1年',
-    nearly_three_years: '近3年'
+    nearly_three_years: '近3年',
+    revoke: '撤销',
+    revoke_successfully: '撤销成功',
+    sold_successfully: '卖出成功'
 }

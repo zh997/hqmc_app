@@ -29,7 +29,7 @@
 
 <script lang='ts'>
 import { ref, onMounted, computed } from 'vue';
-import { Toast  } from 'vant';
+import { Toast, Dialog  } from 'vant';
 import { useRoute } from 'vue-router';
 import { useI18n } from "vue-i18n";
 import Decimal from 'decimal.js';
@@ -88,11 +88,22 @@ export default {
             if (!num.value) {
                 return utils.toast(t('destroy_quantity_placeholder'));
             }
-            utils.loading(t('loading'));
-            await services.hqmcDestory({
-                num: parseInt(num.value, 10) 
+            Dialog.confirm({
+                title: '提示',
+                message: `确定销毁吗？`,
+            })
+            .then(async () => {
+                // on confirm
+                 utils.loading(t('loading'));
+                await services.hqmcDestory({
+                    num: parseInt(num.value, 10) 
+                });
+                Toast.success(t('destroyed_successfully'));
+            })
+            .catch(() => {
+                // on cancel
             });
-            Toast.success(t('destroyed_successfully'));
+           
         }
 
         return { query, num, dec_usdt, dec_hqc,indexAsset, t , onSubmit}

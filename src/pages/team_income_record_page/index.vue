@@ -18,7 +18,7 @@
                       {{item.type === 2 ? t('share_income') : ''}}
                       {{item.type === 3 ? t('team_benefits') : ''}}
                   </td>
-                  <td class="table-row-cell">{{item.åcreated_at}}</td>
+                  <td class="table-row-cell">{{item.created_at}}</td>
               </tr>
           </table>
       </div>
@@ -48,9 +48,7 @@ export default {
         const list = ref<IIncomeListResDTO[]>();
         const onGetIncomeList = async () => {
             utils.loading(t('loading'));
-            let type = null;
-            if (query.type !== '0')  type =  Number(query.type);
-            const res = await services.income_list({type: type});
+            const res = await services.income_list({type: query.type?.toString()});
             list.value = res.data;
             utils.loadingClean()
         }

@@ -115,5 +115,7 @@ export default  {
     nearly_three_months: 'Nearly 3 month', 
     nearly_six_months: 'Nearly 6 month',
     nearly_one_years: 'Nearly 1 years',
-    nearly_three_years: 'Nearly 3 years'
+    nearly_three_years: 'Nearly 3 years',
+    revoke: 'revoke',
+    revoke_successfully: 'Revoke successfully'
 }

@@ -7,15 +7,15 @@
               <span class="assets-head-label">{{query.name}} {{t('current_balance')}}</span>
               <span class="assets-head-value">{{walletUsdt?.money || walletHqc?.hqc_money}}</span>
           </div>
-          <div class="assets-btn-group" v-if="!query.isRecord">
+          <div class="assets-btn-group">
               <div class="assets-btn-item" v-for="item,index in btnItems" :key="index" @click="onRouter(item.path)">{{item.text}}</div>
           </div>
-          <div v-else>
+          <!-- <div v-else>
             <div v-if="record_list && record_list.length > 0">
                     <RecordItem v-for="item in record_list" :key="item.user_id" :item="item"/>
             </div>
             <Empty v-else/>
-          </div>
+          </div> -->
          
           <!-- <div class="charge-code-panel" v-if="query.name !== 'USDT'">
               <div id="qrcode" class="share-code"></div>
@@ -55,16 +55,16 @@ export default {
         const router = useRouter();
         const qrcodeDom = ref<HTMLElement>();
         const walletUsdt = ref<IHomeWalletUsdtResDTO>();
-        const record_list = ref<IRecordItemResDTO[]>();
+        // const record_list = ref<IRecordItemResDTO[]>();
         const walletHqc = ref<IHomeWalletHqcResDTO>();
         let btnItems = ref();
         
         onMounted(async () => {
             utils.loading('加载中');
             if (query.name === 'USDT') {
-                const [resWalletUsdt, list] = await Promise.all([services.homeWalletUsdt(), services.moneyope_usdt_list()]);
+                const [resWalletUsdt] = await Promise.all([services.homeWalletUsdt()]);
                 walletUsdt.value = resWalletUsdt.data;
-                record_list.value = list.data;
+                // record_list.value = list.data;
                 utils.loadingClean();
                 btnItems.value = [
                     {
@@ -79,9 +79,9 @@ export default {
                 // onRenderQrcode(walletUsdt.value.usdt_wallet);
             }
             if (query.name === 'HQC') {
-                const [resWalletHqc, list] = await Promise.all([services.homeWalletHqc(), services.moneyope_hqc_list()]);
+                const [resWalletHqc] = await Promise.all([services.homeWalletHqc()]);
                 walletHqc.value = resWalletHqc.data;
-                record_list.value = list.data;
+                // record_list.value = list.data;
                 utils.loadingClean();
                 btnItems.value = [
                     {
@@ -107,7 +107,7 @@ export default {
         //     }
         // }
 
-        return {query, btnItems,walletUsdt, walletHqc, qrcodeDom, t, record_list, onRouter: (path: string) => {
+        return {query, btnItems,walletUsdt, walletHqc, qrcodeDom, t, onRouter: (path: string) => {
                 if (query.name === 'USDT'){
                     path = path + `?receive_address=${walletUsdt.value?.usdt_wallet}&money=${walletUsdt.value?.money}&type=USDT`
                 } else {

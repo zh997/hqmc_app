@@ -29,7 +29,7 @@
 
 <script lang='ts'>
 import { ref, onMounted, computed } from 'vue';
-import { Toast  } from 'vant';
+import { Toast ,Dialog } from 'vant';
 import { useRoute } from 'vue-router';
 import Decimal from 'decimal.js';
 import { useI18n } from "vue-i18n";
@@ -52,11 +52,22 @@ export default {
         const indexAsset = ref<IHomeAssetResDTO>();
         const onSubmit = async () => {
             if (num.value) {
-                utils.loading(t('loading'));
-                await services.hqmcChange({
-                    num: parseInt(num.value, 10) 
+                Dialog.confirm({
+                    title: '提示',
+                    message: `确定兑换吗？`,
+                })
+                .then(async () => {
+                    // on confirm
+                    utils.loading(t('loading'));
+                    await services.hqmcChange({
+                        num: parseInt(num.value, 10) 
+                    });
+                    Toast.success(t('exchange_succeeded'));
+                })
+                .catch(() => {
+                    // on cancel
                 });
-                Toast.success(t('exchange_succeeded'));
+               
             } else {
                 utils.toast(t('exchange_quantity_placeholder'));
             }

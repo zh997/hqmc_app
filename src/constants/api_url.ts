@@ -29,4 +29,6 @@ export const moneyope_hqmc_list: string = '/api/moneyope/hqmc_list';
 export const moneyope_usdt_list: string = '/api/moneyope/usdt_record';
 export const moneyope_hqc_list: string = '/api/moneyope/hqc_record';
 export const hqc_pirce_list: string = '/api/index/hqc_pirce_list';
+export const money_record: string = '/api/index/money_record';
+export const revokeorder: string = '/api/trade/revokeorder';
 

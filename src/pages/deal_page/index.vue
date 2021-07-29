@@ -39,15 +39,20 @@
                             <div class="dealcard-item-head">
                                 <img :src="item.head_img" alt="">
                                 <span class="head-title">{{item.username}}</span>
-                                <span class="head-subtitle"></span>
+                                <span class="head-subtitle">成交量：{{item.volume || '0'}}</span>
                             </div>
                             <div class="dealcard-item-row">
                                 <span class="dealcard-item-row-text">{{t('quantity')}}：{{item?.num}} HQC</span>
                                 <span class="dealcard-item-row-value">$ {{item?.total}}</span>
                             </div>
+                      
                             <div class="dealcard-item-row">
-                                <span class="dealcard-item-row-text"></span>
-                                <span class="dealcard-item-row-btn" @click="onBuyIn(item.id)">{{ current === 1 ? t('purchase') : t('sell_out')}}</span>
+                                <span class="dealcard-item-row-text">{{t('price')}}：{{item?.price}}</span>
+                                <div class="dealcard-item-row-btns">
+                                    <span class="dealcard-item-row-btn" @click="onRevoke(item.id)" v-if="current === 2">{{t('revoke')}}</span>
+                                    <span class="dealcard-item-row-btn" @click="onBuyIn(item.id)">{{ current === 1 ? t('purchase') : t('sell_out')}}</span>
+                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -76,7 +81,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from "vue-i18n";
-import { NavBar, Toast,  Popup, Picker, List, Empty } from 'vant';
+import { NavBar, Toast,  Popup, Picker, List, Empty, Dialog } from 'vant';
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { LineChart } from "echarts/charts";
@@ -294,17 +299,45 @@ export default {
         }
 
         const onBuyIn = async (id: number) => {
-             utils.loading(t('loading'));
-            if (current.value === 1) {
-                await services.buyIn({id: id});
-                Toast.success({message: t('successful_purchase')});
-            }
-             if (current.value === 2) {
-                await services.sellOut({id: id});
-                Toast.success({message: t('sold_successfully'), onClose: () => {
+            Dialog.confirm({
+                title: '提示',
+                message: `确定要${current.value === 1 ? t('purchase') : t('sell_out')}吗？`,
+            })
+            .then(async () => {
+                // on confirm
+                utils.loading(t('loading'));
+                if (current.value === 1) {
+                    await services.buyIn({id: id});
+                    Toast.success({message: t('successful_purchase')});
+                }
+                if (current.value === 2) {
+                    await services.sellOut({id: id});
+                    Toast.success({message: t('sold_successfully'), onClose: () => {
+                        onGetTradeList(1);
+                    }});
+                }
+            })
+            .catch(() => {
+                // on cancel
+            });
+        }
+
+        const onRevoke = async (id: number) => {
+            Dialog.confirm({
+                title: '提示',
+                message: '确定要撤销吗？',
+            })
+            .then(async () => {
+                // on confirm
+                utils.loading(t('loading'));
+                await services.revokeorder({id: id});
+                Toast.success({message: t('revoke_successfully'), onClose: () => {
                     onGetTradeList(1);
                 }});
-            }
+            })
+            .catch(() => {
+                // on cancel
+            });
         }
 
         const onLoad = () => {
@@ -331,7 +364,7 @@ export default {
             router.push(path);
         }
 
-        return {current, banners, tradList, sort, columns, show,loading, finished, option,selectedDateIndex, t, onChangeDate, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
+        return {current, banners, tradList, sort, columns, show,loading, finished, option,selectedDateIndex, t,onRevoke, onChangeDate, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
     }
   };
 </script>

@@ -21,19 +21,19 @@
             </div>
           </div>
           <div class="team-income-type">
-            <div class="team-income-type-item" @click="onRouter(t('pool_income_record'), 1)">
+            <div class="team-income-type-item" @click="onRouter(t('pool_income_record'), 'share_award')">
               <img :src="require('@/assets/team_income_icon_1@2x.png')" alt="">
               <span class="team-income-type-item-label">{{t('pool_income')}}</span>
               <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.mining_profit || '0.00'}}</span>
             </div>
             <div class="line"></div>
-            <div class="team-income-type-item" @click="onRouter(t('share_income_record'), 2)">
+            <div class="team-income-type-item" @click="onRouter(t('share_income_record'), 'static_award')">
               <img :src="require('@/assets/team_income_icon_2@2x.png')" alt="">
               <span class="team-income-type-item-label">{{t('share_income')}}</span>
               <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.share_profit || '0.00'}}</span>
             </div>
             <div class="line"></div>
-            <div class="team-income-type-item" @click="onRouter(t('team_benefits_record'), 3)">
+            <div class="team-income-type-item" @click="onRouter(t('team_benefits_record'), 'team_award')">
               <img :src="require('@/assets/team_income_icon_3@2x.png')" alt="">
               <span class="team-income-type-item-label">{{t('team_benefits')}}</span>
               <span class="team-income-type-item-value">{{teamBenefits?.profit_info?.team_profit || '0.00'}}</span>
@@ -81,7 +81,7 @@ export default {
          teamBenefits,
          t,
          onCheckMore: () => {
-           router.push(routesPaths.team_income_record_page + `?name=${t('team_benefits_record')}&type=0`);
+           router.push(routesPaths.team_income_record_page + `?name=${t('team_benefits_record')}`);
          },
          onRouter(name: string, type: number){
            router.push(routesPaths.team_income_record_page + `?name=${name}&type=${type}`);

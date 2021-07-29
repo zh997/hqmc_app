@@ -26,7 +26,7 @@ const PublishOrderPage = defineAsyncComponent(() => import('@/pages/publish_orde
 const PlateformIntroDetail = defineAsyncComponent(() => import('@/pages/plateform_intro_detail_page/index.vue'));
 const EditProfile = defineAsyncComponent(() => import('@/pages/edit_profile_paege/index.vue'));
 const LangSwitch = defineAsyncComponent(() => import('@/pages/lang_switch_page/index.vue'));
-
+const BillPage = defineAsyncComponent(() => import('@/pages/bill_page/index.vue'));
 
 const routes: RouteRecordRaw[] = [
     {
@@ -127,6 +127,10 @@ const routes: RouteRecordRaw[] = [
     {
         path:  routePath.lang_switch,
         component: LangSwitch
+    },
+    {
+        path:  routePath.bill,
+        component: BillPage
     },
 ]
 
