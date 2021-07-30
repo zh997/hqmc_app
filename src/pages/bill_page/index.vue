@@ -33,18 +33,17 @@ export default {
     setup() {
         const { t } = useI18n();
         const { query } = useRoute();
-        const router = useRouter();
         const record_list = ref<IBillRecordItemResDTO[]>();
 
         onMounted(async () => {
             utils.loading('加载中');
-             const [list] = await Promise.all([services.money_record()]);
+            const [list] = await Promise.all([services.money_record()]);
             record_list.value = list.data;
             utils.loadingClean();
             
         })
 
-        return {query, t}
+        return {query, record_list, t}
     }
   };
 </script>

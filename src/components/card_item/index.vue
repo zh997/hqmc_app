@@ -6,11 +6,11 @@
         <span class="head-text" v-if="showHead">HQC {{t('estimated_output')}} <span class="head-text-active">{{item.output}}</span> {{t('thousand')}}</span>
     </div>
     <div class="card-item-row">
-        <span class="card-item-row-text"><span>{{t('opening_date')}}：</span>{{item.start_time}}</span>
+        <span class="card-item-row-text"><span>{{t('opening_date')}}：</span>{{item.start_time || item.created_at}}</span>
         <span class="card-item-row-text"><span>{{t('end_date')}}：</span>{{item.end_time}}</span>
     </div>
     <div class="card-item-row">
-        <span class="card-item-row-text"><span>{{t('locking')}}HQMC: </span>{{item.price}}</span>
+        <span class="card-item-row-text"><span>{{t('locking')}}HQMC: </span>{{item.price || item.machine_price}}</span>
              <span class="card-item-row-text"><span>{{ language === 'zh-CN' ? '本期' :'' }}HQMC{{t('estimated_consumption')}}: </span>{{item.expected_consume_start}}%-{{item.expected_consume_end}}%</span>
     </div>
     <div class="card-item-row flex-space-between">

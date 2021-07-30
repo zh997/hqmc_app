@@ -49,7 +49,7 @@
                             <div class="dealcard-item-row">
                                 <span class="dealcard-item-row-text">{{t('price')}}：{{item?.price}}</span>
                                 <div class="dealcard-item-row-btns">
-                                    <span class="dealcard-item-row-btn" @click="onRevoke(item.id)" v-if="current === 2">{{t('revoke')}}</span>
+                                    <span class="dealcard-item-row-btn" @click="onRevoke(item.id)" v-if="item.isscance === 1">{{t('revoke')}}</span>
                                     <span class="dealcard-item-row-btn" @click="onBuyIn(item.id)">{{ current === 1 ? t('purchase') : t('sell_out')}}</span>
                                 </div>
                                
