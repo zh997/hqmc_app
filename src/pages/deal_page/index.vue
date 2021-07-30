@@ -300,8 +300,10 @@ export default {
 
         const onBuyIn = async (id: number) => {
             Dialog.confirm({
-                title: '提示',
-                message: `确定要${current.value === 1 ? t('purchase') : t('sell_out')}吗？`,
+                title: t('tips'),
+                message: `${current.value === 1 ? t('confirm_buy') : t('confirm_sell')}？`,
+                confirmButtonText: t('confirm'),
+                    cancelButtonText: t('cancel')
             })
             .then(async () => {
                 // on confirm

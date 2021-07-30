@@ -15,7 +15,7 @@ export default {
     assets: '资产',
     chart: '走势图',
     real_income: '实际收益',
-    estimated_output: '预计产出量',
+    estimated_output: '预产',
     Locking_hqmc_quantity: '锁定HQMC数量',
     actual_consumption: '实际消耗',
     thousand: '万',
@@ -117,5 +117,16 @@ export default {
     revoke: '撤销',
     revoke_successfully: '撤销成功',
     sold_successfully: '卖出成功',
-    open_successfully: '开启成功'
+    open_successfully: '开启成功',
+    pieces: '枚',
+    available: '可用',
+    config_withdraw: '确定要提币吗?',
+    config_transfrom: '确定要转让吗?',
+    confirm_recharge: '确定要充值吗?',
+    confirm_buy: '确定要买入吗?',
+    confirm_sell: '确定要卖出吗?',
+    confirm_destroy: '确定销毁吗？',
+    confirm_excharge: '确定兑换吗？',
+    confirm_open: '确定开启吗？',
+    m_pit: '号M矿池'
 }

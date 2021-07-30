@@ -35,10 +35,10 @@
               </div> -->
               <div class="withdraw-btn" @click="onSubmit">{{t('extract')}}</div>
           </div>
-           <!-- <div class="warning-text">
-              <p class="warning-text-title">注意事项：</p>
-              <p>此地址只接受TRC20模式的USDT转入充值，请勿充值任何非USDT资产，否则资产不可找回，区块链得到确认后，平台即自动入账，请务必保证您的波场钱包有充足的USDT资产，以及确认电脑及浏览器安全，防止信息被篡改或泄露。</p>
-          </div> -->
+           <div class="warning-text">
+              <p class="warning-text-title">温馨提示：</p>
+              <p>为了保障您的资产安全，防止信息被篡改或泄露，系统将对每笔提币申请进行安全审核，提币到账时间T+1</p>
+          </div>
       </div>
       <Popup  v-model:show="show" round position="bottom">
          <Picker title="标题"
@@ -97,8 +97,10 @@ export default {
         const onSubmit = async () => {
             if (num.value) {
                 Dialog.confirm({
-                    title: '提示',
-                    message: `确定提币吗？`,
+                    title: t('tips'),
+                    message: t('config_withdraw'),
+                    confirmButtonText: t('confirm'),
+                    cancelButtonText: t('cancel')
                 })
                 .then(async () => {
                     // on confirm

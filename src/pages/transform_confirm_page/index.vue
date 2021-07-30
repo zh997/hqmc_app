@@ -20,18 +20,23 @@
                   <span class="withdraw-select-label">{{t('transfer')}} {{query?.type}} {{t('quantity')}}：</span>
                   <input type="number" v-model="num" class="withdraw-select-value" :placeholder="t('transfer_quantity_placeholder')">
               </div>
-               <div class="blance-text">{{query?.type}} {{t('balance')}}：{{query?.money}}</div>
+              <div class="blance-text-wrap">
+                   <div class="blance-text">{{t('available')}}：{{indexAsset?.hqmc_money}}</div>
+              </div>
+              
                <div class="withdraw-select" v-if="query?.type === 'HQC'">
                   <span class="withdraw-select-label">{{t('transfer_consumption')}}：</span>
                   <div class="withdraw-select-value border-clean">
                       <span>{{money_config?.hqc_config.hqc_transfer_fee}}% HQC</span>
                   </div>
+                   <div class="blance-text">{{t('available')}}：{{indexAsset?.hqc_money}}</div>
               </div>
               <div class="withdraw-select" v-if="query?.type === 'HQMC'">
                   <span class="withdraw-select-label">{{t('consume')}} HQC {{t('quantity')}}：</span>
                   <div class="withdraw-select-value border-clean">
                       <span>{{dec_hqc}}</span>
                   </div>
+                 <div class="blance-text">{{t('available')}}：{{indexAsset?.hqc_money}}</div>
               </div>
               <!-- <div class="withdraw-select">
                   <span class="withdraw-select-label">消耗HQC数量：</span>
@@ -56,6 +61,8 @@ import { useGlobalHooks } from '@/hooks';
 import * as utils from '@/utils';
 import * as services from '@/services/index';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
+import { IHomeAssetResDTO } from '@/services/interface/response';
+
 export default {
     name: '',
     components: {
@@ -67,7 +74,9 @@ export default {
         const { query } = useRoute();
         const address = ref<string>('');
         const num = ref<string>('');
-        onMounted(() => {
+        const indexAsset = ref<IHomeAssetResDTO>();
+
+        onMounted(async () => {
             let ClipboardJSObj=new ClipboardJS('.team-link-copy,.team-link-copy-img')
             ClipboardJSObj.on('success', function(e) {
                 Toast.success(t('copy_succeeded')); 
@@ -76,6 +85,11 @@ export default {
             ClipboardJSObj.on('error', function(e) {
                 e.clearSelection();
             })
+
+             utils.loading(t('loading'));
+            const [indexAssetRes] = await Promise.all([services.homeWalletAsset()]) ;
+            indexAsset.value = indexAssetRes.data;
+            utils.loadingClean();
         })
 
         const onSubmit = async () => {
@@ -87,8 +101,8 @@ export default {
             }
 
             Dialog.confirm({
-                title: '提示',
-                message: `确定转让吗？`,
+                title: t('tips'),
+                message: t('config_transfrom'),
             })
             .then(async () => {
                 // on confirm
@@ -130,7 +144,7 @@ export default {
             }
         })
 
-        return { query, num, address,dec_hqc, money_config, t , onSubmit}
+        return { query, num, address,dec_hqc, money_config, indexAsset, t , onSubmit}
     }
   };
 </script>

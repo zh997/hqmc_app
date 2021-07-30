@@ -15,7 +15,7 @@
                 <span class="progrecess-item-value">10%</span>
             </span>
         </div> -->
-        <CardItem v-for="item,index in minerList" :item="item" :btnText="t('open')" :key="index" :onClick="onButMachine"/>
+        <CardItem v-for="item,index in minerList" :item="item" :btnText="t('open')" :key="index" :index="index+1" :onClick="onButMachine"/>
     </div>
 </template>
 
@@ -57,8 +57,10 @@ export default {
             console.log(item);
             if (item.status_tip === 1) {
                 Dialog.confirm({
-                    title: '提示',
-                    message: `确定开启吗？`,
+                    title: t('tips'),
+                    message: t('confirm_open'),
+                    confirmButtonText: t('confirm'),
+                    cancelButtonText: t('cancel')
                 })
                 .then(async () => {
                     // on confirm

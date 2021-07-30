@@ -3,7 +3,7 @@
   <div class="card-item">
     <div class="card-item-head">
         <span class="head-stage">{{ language === 'zh-CN' ? `第${item.no}期` : `Issue ${item.no}` }}</span>
-        <span class="head-text" v-if="showHead">HQC {{t('estimated_output')}} <span class="head-text-active">{{item.output}}</span> {{t('thousand')}}</span>
+        <span class="head-text" v-if="showHead">{{index >= 10 ? index : '0' + index}}{{t('m_pit')}}  HQC {{t('estimated_output')}} <span class="head-text-active">{{item.output}}</span> {{t('thousand')}}{{t('pieces')}}</span>
     </div>
     <div class="card-item-row">
         <span class="card-item-row-text"><span>{{t('opening_date')}}：</span>{{item.start_time || item.created_at}}</span>
@@ -26,6 +26,10 @@ import { useI18n } from "vue-i18n";
 export default {
     name: 'card-item',
     props: {
+      index: {
+         type: Number,
+         default: 0
+      },
       btnText: {
           type: String,
           default: '开启'

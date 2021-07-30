@@ -21,12 +21,12 @@
                 color: @color-282828;
                 font-weight: bold;
                 margin-right: 20px;
-                width: 220px;
+                min-width: 220px;
             }
             &-value{
                 border: 2px solid @color-282828;
                 border-radius: 10px;
-                width: 368px;
+                flex: 1;
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
@@ -48,11 +48,16 @@
                 }
             }
         }
+        .blance-text-wrap{
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
         .blance-text{
             font-size: 18px;
             color: @primary-color;
             text-align: right;
-            width: 100%;
             height: 50px;
             line-height: 50px;
         }

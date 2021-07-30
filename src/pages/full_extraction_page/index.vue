@@ -34,20 +34,17 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 // import { qrcanvas } from 'qrcanvas';
 import { useI18n } from "vue-i18n";
-import { Empty } from 'vant';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
-import RecordItem from '@/components/record_item/index.vue';
 import * as routerPaths from '@/constants/app_routes_path';
 import * as services from '@/services/index';
 import * as utils from '@/utils';
-import { IHomeWalletUsdtResDTO, IHomeWalletHqcResDTO, IRecordItemResDTO } from '@/services/interface/response';
+import { IHomeWalletUsdtResDTO, IHomeWalletHqcResDTO } from '@/services/interface/response';
 
 export default {
     name: '',
     components: {
        CustomNavBar,
-       RecordItem,
-       Empty
+
     },
     setup() {
         const { t } = useI18n();
@@ -109,9 +106,9 @@ export default {
 
         return {query, btnItems,walletUsdt, walletHqc, qrcodeDom, t, onRouter: (path: string) => {
                 if (query.name === 'USDT'){
-                    path = path + `?receive_address=${walletUsdt.value?.usdt_wallet}&money=${walletUsdt.value?.money}&type=USDT`
+                    path = path + `?receive_address=${walletUsdt.value?.usdt_wallet}&type=USDT`
                 } else {
-                     path = path + `?receive_address=${walletHqc.value?.hqc_wallet}&money=${walletHqc.value?.hqc_money}&type=HQC`
+                     path = path + `?receive_address=${walletHqc.value?.hqc_wallet}&type=HQC`
                 }
                 router.push(path);
             }}

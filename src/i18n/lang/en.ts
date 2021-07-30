@@ -117,5 +117,16 @@ export default  {
     nearly_one_years: 'Nearly 1 years',
     nearly_three_years: 'Nearly 3 years',
     revoke: 'revoke',
-    revoke_successfully: 'Revoke successfully'
+    revoke_successfully: 'Revoke successfully',
+    pieces: 'pieces',
+    available: 'available',
+    config_withdraw: 'Are you sure you want to withdraw money?',
+    config_transfrom: 'Are you sure you want to transfer?',
+    confirm_recharge: 'Are you sure to recharge?',
+    confirm_buy: 'Are you sure you want to buy?',
+    confirm_sell: 'Are you sure you want to sell?',
+    confirm_destroy: 'Are you sure to destroy it?',
+    confirm_excharge: 'Are you sure to exchange it?',
+    confirm_open: 'Are you sure to turn it on?',
+    m_pit: 'M pit'
 }

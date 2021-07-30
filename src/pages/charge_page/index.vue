@@ -97,8 +97,10 @@ export default {
                
                 try {
                     Dialog.confirm({
-                        title: '提示',
-                        message: `确定充值吗？`,
+                        title: t('tips'),
+                        message: t('confirm_recharge'),
+                        confirmButtonText: t('confirm'),
+                    cancelButtonText: t('cancel')
                     })
                     .then(async () => {
                         // on confirm
