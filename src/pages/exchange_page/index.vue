@@ -8,18 +8,20 @@
                   <span class="withdraw-select-label">{{t('exchange')}} HQMC {{t('quantity')}}：</span>
                   <input type="number" v-model="num" class="withdraw-select-value" :placeholder="t('exchange_quantity_placeholder')">
               </div>
-              <div class="blance-text"></div>
+               <div class="blance-text-wrap">
+                <div class="blance-text">{{t('available')}}：{{indexAsset?.canuse_money}}</div>
+              </div>
                <div class="withdraw-select">
                   <span class="withdraw-select-label">{{t('consume')}} USDT {{t('quantity')}}：</span>
                   <span class="withdraw-select-text">{{dec_usdt || '0'}}</span>
-                  <div class="blance-text">{{t('available')}}：{{indexAsset?.money}}</div>
+                  
                   <!-- <input type="number" class="withdraw-select-value" placeholder="888.88"> -->
               </div>
               <div class="blance-text"></div>
                <div class="withdraw-select">
                   <span class="withdraw-select-label">{{t('consume')}} HQC {{t('quantity')}}：</span>
                   <span class="withdraw-select-text">{{dec_hqc || '0'}}</span>
-                  <div class="blance-text">{{t('available')}}：{{indexAsset?.hqc_money}}</div>
+                  <!-- <div class="blance-text">{{t('available')}}：{{indexAsset?.hqc_money}}</div> -->
                   <!-- <input type="number" class="withdraw-select-value" placeholder="888.88"> -->
               </div>
                <!-- <div class="blance-text">HQMC余额：888</div> -->

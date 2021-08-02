@@ -3,7 +3,7 @@
   <CustomNavBar :title="t('platform_introduction')"/>
   <div class="page-wrap">
       <div class="plateform-intro-page">
-        <img :src="require('@/assets/intro_banner@2x.png')" alt="">
+        <!-- <img :src="require('@/assets/intro_banner@2x.png')" alt=""> -->
         <div class="plateform-intro" v-html="platform && platform[0].content"></div>
         <div class="plateform-intro-group">
             <div class="plateform-intro-item" @click="onRouter(`/plateform_intro_detail_page?name=${t('service_agreement')}&index=1`)">

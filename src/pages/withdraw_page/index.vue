@@ -12,6 +12,10 @@
                   </div>
               </div> -->
               <div class="withdraw-select">
+                  <span class="withdraw-select-label">{{t('draw_address')}}：</span>
+                  <input type="text" v-model="address" :placeholder="t('draw_address_placehoder')" class="withdraw-select-value">
+              </div>
+              <div class="withdraw-select">
                   <span class="withdraw-select-label">{{t('extraction_quantity')}}：</span>
                   <input type="number" v-model="num" :placeholder="t('extraction_quantity_placeholder')" class="withdraw-select-value">
               </div>
@@ -74,10 +78,11 @@ export default {
         const { money_config } = useGlobalHooks();
         const { query } = useRoute();
         const num = ref<string>('');
+        const address = ref<string>('');
         const columns = ['USDT'];
         const money_type = ref<string>(columns[0]) ;
         const show = ref(false);
-        onMounted(() => {
+        onMounted(async () => {
             let ClipboardJSObj=new ClipboardJS('.team-link-copy,.team-link-copy-img')
             ClipboardJSObj.on('success', function(e) {
                 Toast.success(t('copy_succeeded')); 
@@ -86,6 +91,14 @@ export default {
             ClipboardJSObj.on('error', function(e) {
                 e.clearSelection();
             })
+            try {
+               utils.loading('加载中');
+               const response = await services.userCenter();
+               address.value = response.data.name;
+               utils.loadingClean()
+           } catch(err) {
+               utils.toast(err || err.msg);
+           }
         })
         const onChange = (value: any) => {
            money_type.value = value;
@@ -106,7 +119,7 @@ export default {
                     // on confirm
                     utils.loading(t('loading'));
                     await services.usdtWithdraw({
-                        receive_address: query.receive_address,
+                        receive_address: address.value,
                         money_type: 'money',
                         num: Number(num.value) 
                     });
@@ -121,7 +134,7 @@ export default {
             }
         }
 
-        return {columns, show, query, num, money_config, t,  onShowPopup, onConfirm, onCancel, onChange, onSubmit}
+        return {columns, show, query, num, money_config, address, t,  onShowPopup, onConfirm, onCancel, onChange, onSubmit}
     }
   };
 </script>

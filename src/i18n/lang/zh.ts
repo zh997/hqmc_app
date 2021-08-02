@@ -128,5 +128,7 @@ export default {
     confirm_destroy: '确定销毁吗？',
     confirm_excharge: '确定兑换吗？',
     confirm_open: '确定开启吗？',
-    m_pit: '号M矿池'
+    m_pit: '号M矿池',
+    draw_address: '提币地址',
+    draw_address_placehoder: '请输入提币地址'
 }

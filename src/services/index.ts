@@ -189,3 +189,8 @@ export async function money_record(): Promise<ResponseDTO<IBillRecordItemResDTO[
 export async function revokeorder(params: {id: number}): Promise<ResponseDTO<[]>> {
     return await request({url: api.revokeorder, method: 'POST', data:params});
 }
+
+/** 团队收益文案 */
+export async function quotes(): Promise<ResponseDTO<{content: string}>> {
+    return await request({url: api.quotes, method: 'POST'});
+}

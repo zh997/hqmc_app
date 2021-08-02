@@ -2,7 +2,7 @@
 <template>
   <CustomNavBar :title="`${query.name}`"/>
   <div class="page-wrap">
-      <div class="team-income-record-page" v-if="list && list.length > 0">
+      <!-- <div class="team-income-record-page" v-if="list && list.length > 0">
           <table class="table-wrap">
               <tr class="table-header">
                   <td class="table-header-cell">{{t('currency')}}</td>
@@ -22,7 +22,14 @@
               </tr>
           </table>
       </div>
-      <Empty v-else/>
+      <Empty v-else/> -->
+      <div class="team_income_record_page">
+           <div v-if="list && list.length > 0">
+                <RecordItem v-for="item in list" :key="item.user_id" :item="item"/>
+        </div>
+        <Empty v-else/>
+      </div>
+       
   </div>
 </template>
 
@@ -32,6 +39,7 @@ import { useRoute } from 'vue-router';
 import { useI18n } from "vue-i18n";
 import { Empty } from 'vant';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
+import RecordItem from '@/components/record_item/index.vue';
 import * as services from '@/services/index';
 import * as utils from '@/utils';
 import { IIncomeListResDTO } from '@/services/interface/response.d';
@@ -40,7 +48,8 @@ export default {
     name: '',
     components: {
         CustomNavBar,
-        Empty
+        Empty,
+        RecordItem
     },
     setup() {
         const { t } = useI18n();

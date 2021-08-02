@@ -4,13 +4,13 @@
   <div class='page-wrap'>
       <div class="transform_confirm-page">
           <div class="withdraw-code-panel">
-              <div class="withdraw-select" v-if="query?.receive_address">
+              <!-- <div class="withdraw-select" v-if="query?.receive_address">
                   <span class="withdraw-select-label">{{t('my_address')}}：</span>
                   <div class="withdraw-select-value border-clean">
                       <span>{{query?.receive_address}}</span>
                   </div>
               </div>
-              <div class="blance-text"></div>
+              <div class="blance-text"></div> -->
               <div class="withdraw-select">
                   <span class="withdraw-select-label">{{t('transfer_address')}}：</span>
                   <input type="text" v-model="address" class="withdraw-select-value" :placeholder="t('transfer_address_placeholder')">
@@ -20,23 +20,25 @@
                   <span class="withdraw-select-label">{{t('transfer')}} {{query?.type}} {{t('quantity')}}：</span>
                   <input type="number" v-model="num" class="withdraw-select-value" :placeholder="t('transfer_quantity_placeholder')">
               </div>
-              <div class="blance-text-wrap">
-                   <div class="blance-text">{{t('available')}}：{{indexAsset?.hqmc_money}}</div>
+              <div class="blance-text-wrap" v-if="query?.type === 'HQC'">
+                   <div class="blance-text">{{t('available')}}：{{indexAsset?.hqc_money}}</div>
               </div>
-              
+              <div class="blance-text-wrap" v-if="query?.type === 'HQMC'">
+                   <div class="blance-text">{{t('available')}}：{{indexAsset?.canuse_money}}</div>
+              </div>
                <div class="withdraw-select" v-if="query?.type === 'HQC'">
                   <span class="withdraw-select-label">{{t('transfer_consumption')}}：</span>
                   <div class="withdraw-select-value border-clean">
                       <span>{{money_config?.hqc_config.hqc_transfer_fee}}% HQC</span>
                   </div>
-                   <div class="blance-text">{{t('available')}}：{{indexAsset?.hqc_money}}</div>
+                   <!-- <div class="blance-text">{{t('available')}}：{{indexAsset?.hqc_money}}</div> -->
               </div>
               <div class="withdraw-select" v-if="query?.type === 'HQMC'">
                   <span class="withdraw-select-label">{{t('consume')}} HQC {{t('quantity')}}：</span>
                   <div class="withdraw-select-value border-clean">
                       <span>{{dec_hqc}}</span>
                   </div>
-                 <div class="blance-text">{{t('available')}}：{{indexAsset?.hqc_money}}</div>
+                 <!-- <div class="blance-text">{{t('available')}}：{{indexAsset?.hqc_money}}</div> -->
               </div>
               <!-- <div class="withdraw-select">
                   <span class="withdraw-select-label">消耗HQC数量：</span>

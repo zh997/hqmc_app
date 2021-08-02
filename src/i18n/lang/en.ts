@@ -128,5 +128,7 @@ export default  {
     confirm_destroy: 'Are you sure to destroy it?',
     confirm_excharge: 'Are you sure to exchange it?',
     confirm_open: 'Are you sure to turn it on?',
-    m_pit: 'M pit'
+    m_pit: 'M pit',
+    draw_address: 'Withdrawal address',
+    draw_address_placehoder: 'Please enter the withdrawal address'
 }
