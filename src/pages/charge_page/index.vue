@@ -100,22 +100,28 @@ export default {
                         title: t('tips'),
                         message: t('confirm_recharge'),
                         confirmButtonText: t('confirm'),
-                    cancelButtonText: t('cancel')
+                        cancelButtonText: t('cancel')
                     })
                     .then(async () => {
                         // on confirm
-                         utils.loading(t('recharging'));
-                        const amount = (Number(num.value) * Math.pow(10, 18)).toString();
-                        const res = await transaction(amount, query.receive_address);
-                        console.log(res);
-                        utils.loadingClean();
-                        Dialog.alert({
-                            title: t('tips'),
-                            message: t('recharged_tips'),
-                            confirmButtonText: t('confirm'),
-                        }).then(() => {
-                            console.log('on close');
-                        })
+                        try {
+                            utils.loading(t('recharging'));
+                            const amount = (Number(num.value) * Math.pow(10, 6)).toString();
+                            const res = await transaction(amount, query.receive_address);
+                            console.log(res);
+                            utils.loadingClean();
+                            Dialog.alert({
+                                title: t('tips'),
+                                message: t('recharged_tips'),
+                                confirmButtonText: t('confirm'),
+                            }).then(() => {
+                                console.log('on close');
+                            })
+                        } catch(err) {
+                            console.log(err);
+                            utils.toast(err || err.message);
+                        }
+                        
                     })
                     .catch(() => {
                         // on cancel
