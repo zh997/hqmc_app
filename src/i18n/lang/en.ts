@@ -130,5 +130,6 @@ export default  {
     confirm_open: 'Are you sure to turn it on?',
     m_pit: 'M pit',
     draw_address: 'Withdrawal address',
-    draw_address_placehoder: 'Please enter the withdrawal address'
+    draw_address_placehoder: 'Please enter the withdrawal address',
+    latest_reference_price: 'Latest reference price'
 }

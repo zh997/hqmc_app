@@ -5,13 +5,19 @@
 .v-chart-wrap{
     overflow: hidden;
     margin: 25px;
-    padding: 30px 0;
+    padding: 25px 0 30px 0;
     background-color: #fff;
     border-radius: 10px;
     // box-sizing: border-box;
     .v-chart-title{
         font-size: 24px;
         padding: 0 20px 20px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .red-text{
+            color: fade(red, 80) ;
+        }
     }
    .v-chart{
        height:  400px !important;

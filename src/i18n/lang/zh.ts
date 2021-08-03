@@ -130,5 +130,6 @@ export default {
     confirm_open: '确定开启吗？',
     m_pit: '号M矿池',
     draw_address: '提币地址',
-    draw_address_placehoder: '请输入提币地址'
+    draw_address_placehoder: '请输入提币地址',
+    latest_reference_price: '最新参考价格'
 }

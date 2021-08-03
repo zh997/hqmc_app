@@ -10,7 +10,10 @@
         >
             <div>
                 <div class="v-chart-wrap">
-                    <div class="v-chart-title">HQC {{t('chart')}}</div>
+                    <div class="v-chart-title">
+                       <span>HQC {{t('chart')}}</span> 
+                       <span class="red-text">{{t('latest_reference_price')}}: {{ money_config?.price_config?.hqc_usd_price}} USDT</span> 
+                    </div>
                     <v-chart class="v-chart" :option="option" />
                     <div class="v-chart-time-quantum">
                         <div class="time-quantum-item" :class="selectedDateIndex === 1 ? 'time-quantum-active' : ''" @click="onChangeDate(1)">{{t('nearly_one_months')}}</div>
@@ -100,6 +103,7 @@ import * as echarts from "echarts"
 import * as services from '@/services/index';
 import { IHomeBannerResDTO, ITradeListResDTO,IHqcPriceListResDTO } from '@/services/interface/response.d';
 import * as utils from '@/utils';
+import { useGlobalHooks } from '@/hooks';
 use([
   CanvasRenderer,
   LineChart,
@@ -135,6 +139,7 @@ export default {
         const { t } = useI18n();
         const pageSize: number = 10;
         const selectedDateIndex = ref<number>(4);
+        const { money_config } = useGlobalHooks();
         const show = ref<boolean>(false);
         const current = ref<number>(1);
         const page = ref<number>(0);
@@ -366,7 +371,7 @@ export default {
             router.push(path);
         }
 
-        return {current, banners, tradList, sort, columns, show,loading, finished, option,selectedDateIndex, t,onRevoke, onChangeDate, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
+        return {current, banners, tradList, sort, columns, show,loading,money_config, finished, option,selectedDateIndex, t,onRevoke, onChangeDate, onRouter, onSwitch, onBuyIn, onSort, onShowPopup, onConfirm, onCancel, onLoad}
     }
   };
 </script>
