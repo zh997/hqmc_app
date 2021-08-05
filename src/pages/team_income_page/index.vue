@@ -54,7 +54,7 @@
                           <!-- <div class="record-item-row-label">钱包地址：</div> -->
                           <div class="record-item-row-value">{{item.layer_deep}}级会员</div>
                           <div class="record-item-row-value">{{item.name}}</div>
-                          <div class="record-item-row-value">持有HQMC{{item.layer_deep}}枚</div>
+                          <div class="record-item-row-value">持有HQMC{{item.hqmc_money}}枚</div>
                       </div>
                   </div>
             </div>
