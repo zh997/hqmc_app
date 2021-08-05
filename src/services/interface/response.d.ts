@@ -191,3 +191,12 @@ export interface IBillRecordItemResDTO {
     content: string
     created_at: string
 }
+
+/** 我的团队 */
+export interface IMyteamItemResDTO {
+    id: number
+    name: string
+    deep: number
+    layer_deep: number
+    hqmc_money: number
+}

@@ -19,7 +19,8 @@ import { IAuthLoginResDTO,
     IIncomeListResDTO,
     IHqcPriceListResDTO,
     IRecordItemResDTO,
-    IBillRecordItemResDTO
+    IBillRecordItemResDTO,
+    IMyteamItemResDTO
  } from "./interface/response.d";
 import { ResponseDTO, ResponseListDTO } from "@/typing";
 
@@ -193,4 +194,9 @@ export async function revokeorder(params: {id: number}): Promise<ResponseDTO<[]>
 /** 团队收益文案 */
 export async function quotes(): Promise<ResponseDTO<{content: string}>> {
     return await request({url: api.quotes, method: 'POST'});
+}
+
+/** 我的团队 */
+export async function myteam(): Promise<ResponseDTO<IMyteamItemResDTO[]>> {
+    return await request({url: api.myteam, method: 'POST'});
 }

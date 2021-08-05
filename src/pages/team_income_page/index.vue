@@ -46,7 +46,20 @@
             </div>
           </div>
         </div>
-         <div class="quotes-info" v-html="quotes?.content"></div>
+         <!-- <div class="quotes-info" v-html="quotes?.content"></div> -->
+         <div class="myteam-record-wrap">
+           <div v-if="list && list.length > 0">
+                  <div class="record-item" v-for="item in list" :key="item.id">
+                      <div class="record-item-row space-between">
+                          <!-- <div class="record-item-row-label">钱包地址：</div> -->
+                          <div class="record-item-row-value">{{item.layer_deep}}级会员</div>
+                          <div class="record-item-row-value">{{item.name}}</div>
+                          <div class="record-item-row-value">持有HQMC{{item.layer_deep}}枚</div>
+                      </div>
+                  </div>
+            </div>
+            <Empty v-else/>
+         </div>
      </div>
    </div>
    
@@ -56,30 +69,36 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from "vue-i18n";
+import { Empty } from 'vant';
 import CustomNavBar from '@/components/custom_nav_bar/index.vue';
+import RecordItem from '@/components/record_item/index.vue';
 import BlockTitle from '@/components/block_title/index.vue';
 import * as routesPaths from '@/constants/app_routes_path';
 import * as services from '@/services/index';
-import { ITeamBenefitsResDTO } from '@/services/interface/response.d';
+import { ITeamBenefitsResDTO, IMyteamItemResDTO } from '@/services/interface/response.d';
 import * as utils from '@/utils';
 
 export default {
     name: 'team_income_page',
     components: {
       CustomNavBar,
-      BlockTitle
+      BlockTitle,
+      RecordItem,
+      Empty
     },
     setup() {
       const { t } = useI18n();
       const router = useRouter();
         const teamBenefits = ref<ITeamBenefitsResDTO>();
+        const list = ref<IMyteamItemResDTO[]>();
         const quotes = ref<{content:string}>();
         onMounted(async () => {
            try {
                utils.loading(t('loading'));
-               const [teamBenefitsRes, quotesRes] = await Promise.all([services.teamBenefits(), services.quotes()]);
+               const [teamBenefitsRes, quotesRes, myteam] = await Promise.all([services.teamBenefits(), services.quotes(), services.myteam()]);
                teamBenefits.value = teamBenefitsRes.data;
                quotes.value = quotesRes.data;
+               list.value = myteam.data;
                console.log(quotesRes);
                utils.loadingClean()
            } catch(err) {
@@ -90,6 +109,7 @@ export default {
          teamBenefits,
          t,
          quotes,
+         list,
          onCheckMore: () => {
            router.push(routesPaths.team_income_record_page + `?name=${t('team_benefits_record')}`);
          },
